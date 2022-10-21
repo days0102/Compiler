@@ -1,0 +1,28 @@
+[
+    {
+        "arguments": [
+            "g++",
+            "-c",
+            "-g",
+            "-Wno-write-strings",
+            "-o",
+            "parser",
+            "bison.tab.cc"
+        ],
+        "directory": "/home/lwz/compiler",
+        "file": "bison.tab.cc"
+    },
+    {
+        "arguments": [
+            "g++",
+            "-c",
+            "-g",
+            "-Wno-write-strings",
+            "-o",
+            "parser",
+            "main.cc"
+        ],
+        "directory": "/home/lwz/compiler",
+        "file": "main.cc"
+    }
+]

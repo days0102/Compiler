@@ -1,0 +1,10 @@
+using sys
+
+class main{
+    use a = 1
+    use c=a+b
+    a+b-c+e
+}
+class a{
+    
+}
