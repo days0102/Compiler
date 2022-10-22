@@ -2,13 +2,13 @@
  * @Author: Outsider
  * @Date: 2022-10-11 20:22:15
  * @LastEditors: Outsider
- * @LastEditTime: 2022-10-15 20:59:15
+ * @LastEditTime: 2022-10-22 21:23:55
  * @Description: In User Settings Edit
  * @FilePath: /compiler/token.h
  */
 
 using std::string;
-int index=0;
+
 class Token
 {
 private:

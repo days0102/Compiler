@@ -1,5 +1,7 @@
 biston.tab.cc
 biston.tab.h
+biston.tab.hh
+stack.hh
 lex.yy.c
 *.d
 parser

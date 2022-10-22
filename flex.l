@@ -9,7 +9,6 @@ using std::endl;
 
 extern int line;
 extern int word;
-extern int index;
 %}
 
 %option yylineno

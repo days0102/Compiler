@@ -414,8 +414,7 @@ using std::endl;
 
 extern int line;
 extern int word;
-extern int index;
-#line 419 "lex.yy.c"
+#line 418 "lex.yy.c"
 
 /* Macros after this point can all be overridden by user definitions in
  * section 1.
@@ -577,11 +576,11 @@ YY_DECL
 	register char *yy_cp, *yy_bp;
 	register int yy_act;
 
-#line 26 "flex.l"
+#line 25 "flex.l"
 
   
   /* keyword map */
-#line 585 "lex.yy.c"
+#line 584 "lex.yy.c"
 
 	if ( yy_init )
 		{
@@ -674,98 +673,98 @@ do_action:	/* This label is used only to access EOF actions. */
 	{ /* beginning of action switch */
 case 1:
 YY_RULE_SETUP
-#line 29 "flex.l"
+#line 28 "flex.l"
 {return (USING);}
 	YY_BREAK
 case 2:
 YY_RULE_SETUP
-#line 30 "flex.l"
+#line 29 "flex.l"
 {return (CLASS);}
 	YY_BREAK
 case 3:
 YY_RULE_SETUP
-#line 31 "flex.l"
+#line 30 "flex.l"
 {return (USE);}
 	YY_BREAK
 case 4:
 YY_RULE_SETUP
-#line 32 "flex.l"
+#line 31 "flex.l"
 {return (FTN);}
 	YY_BREAK
 /* {DIGIT}     {printf("digit: %s\n",yytext); return INT;}
     {LETTER}    {printf("letter: %s\n",yytext); word++; return STRING; } */
 case 5:
 YY_RULE_SETUP
-#line 36 "flex.l"
+#line 35 "flex.l"
 {yylval.type_token=new Token(yytext,0);return (OBJECT); }
 	YY_BREAK
 case 6:
 YY_RULE_SETUP
-#line 38 "flex.l"
+#line 37 "flex.l"
 {yylval.type_token=new Token(yytext,0);; return NUM;}
 	YY_BREAK
 /* {LETTER}    {printf("letter: %s\n",yytext);yylval.objname=yytext; return STRING;} */
 case 7:
 YY_RULE_SETUP
-#line 40 "flex.l"
+#line 39 "flex.l"
 {return int('+');}
 	YY_BREAK
 case 8:
 YY_RULE_SETUP
-#line 41 "flex.l"
+#line 40 "flex.l"
 {return int('-');}
 	YY_BREAK
 case 9:
 YY_RULE_SETUP
-#line 42 "flex.l"
+#line 41 "flex.l"
 {return int('*');}
 	YY_BREAK
 case 10:
 YY_RULE_SETUP
-#line 43 "flex.l"
+#line 42 "flex.l"
 {return int('/');}
 	YY_BREAK
 case 11:
 YY_RULE_SETUP
-#line 44 "flex.l"
+#line 43 "flex.l"
 {return int('=');}
 	YY_BREAK
 case 12:
 YY_RULE_SETUP
-#line 45 "flex.l"
+#line 44 "flex.l"
 {return int(',');}
 	YY_BREAK
 case 13:
 YY_RULE_SETUP
-#line 46 "flex.l"
+#line 45 "flex.l"
 {return int('{');}
 	YY_BREAK
 case 14:
 YY_RULE_SETUP
-#line 47 "flex.l"
+#line 46 "flex.l"
 {return int('}');}
 	YY_BREAK
 case 15:
 YY_RULE_SETUP
-#line 48 "flex.l"
+#line 47 "flex.l"
 {line++;}
 	YY_BREAK
 case 16:
 YY_RULE_SETUP
-#line 49 "flex.l"
+#line 48 "flex.l"
 {}
 	YY_BREAK
 case 17:
 YY_RULE_SETUP
-#line 50 "flex.l"
+#line 49 "flex.l"
 {}
 	YY_BREAK
 case 18:
 YY_RULE_SETUP
-#line 51 "flex.l"
+#line 50 "flex.l"
 ECHO;
 	YY_BREAK
-#line 769 "lex.yy.c"
+#line 768 "lex.yy.c"
 			case YY_STATE_EOF(INITIAL):
 				yyterminate();
 
@@ -1653,6 +1652,6 @@ int main()
 	return 0;
 	}
 #endif
-#line 51 "flex.l"
+#line 50 "flex.l"
 
 
