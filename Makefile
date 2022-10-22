@@ -1,3 +1,5 @@
+-include ./*.d
+
 BFLAGS = -d
 
 CXX=g++

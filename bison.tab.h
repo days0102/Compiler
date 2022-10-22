@@ -54,7 +54,8 @@ extern int yydebug;
     STRING = 3,
     USING = 4,
     CLASS = 5,
-    OBJECT = 6
+    OBJECT = 6,
+    FTN = 7
   };
 #endif
 
@@ -64,9 +65,6 @@ union YYSTYPE
 {
 #line 13 "bison.y"
 
-    int number;
-    char* objname;
-    char* keyword;
     class Program* type_program;
     class Expression* type_expression;
     class Expressions* type_expressions;
@@ -78,7 +76,7 @@ union YYSTYPE
     class Evaluate* type_evaluate;
     
 
-#line 82 "bison.tab.h"
+#line 80 "bison.tab.h"
 
 };
 typedef union YYSTYPE YYSTYPE;

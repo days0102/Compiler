@@ -131,7 +131,8 @@ extern int yydebug;
     STRING = 3,
     USING = 4,
     CLASS = 5,
-    OBJECT = 6
+    OBJECT = 6,
+    FTN = 7
   };
 #endif
 
@@ -141,9 +142,6 @@ union YYSTYPE
 {
 #line 13 "bison.y"
 
-    int number;
-    char* objname;
-    char* keyword;
     class Program* type_program;
     class Expression* type_expression;
     class Expressions* type_expressions;
@@ -155,7 +153,7 @@ union YYSTYPE
     class Evaluate* type_evaluate;
     
 
-#line 159 "bison.tab.c"
+#line 157 "bison.tab.c"
 
 };
 typedef union YYSTYPE YYSTYPE;
@@ -477,7 +475,7 @@ union yyalloc
 #define YYLAST   43
 
 /* YYNTOKENS -- Number of terminals.  */
-#define YYNTOKENS  17
+#define YYNTOKENS  18
 /* YYNNTS -- Number of nonterminals.  */
 #define YYNNTS  9
 /* YYNRULES -- Number of rules.  */
@@ -498,19 +496,19 @@ union yyalloc
    as returned by yylex.  */
 static const yytype_int8 yytranslate[] =
 {
-       0,     3,     4,     5,     6,     7,     8,     2,     2,     2,
+       0,     3,     4,     5,     6,     7,     8,     9,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,    13,    11,    16,    12,     2,    14,     2,     2,
+       2,     2,    14,    12,    17,    13,     2,    15,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,    15,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
+       2,    16,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
-       2,     2,     2,     9,     2,    10,     2,     2,     2,     2,
+       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
+       2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
+       2,     2,     2,    10,     2,    11,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
        2,     2,     2,     2,     2,     2,     2,     2,     2,     2,
@@ -530,9 +528,9 @@ static const yytype_int8 yytranslate[] =
   /* YYRLINE[YYN] -- Source line where rule number YYN was defined.  */
 static const yytype_int8 yyrline[] =
 {
-       0,    50,    50,    52,    54,    61,    65,    67,    72,    75,
-      76,    80,    81,    83,    87,    88,    90,    91,    93,    95,
-      97,    99,   101,   106,   108
+       0,    47,    47,    49,    51,    58,    62,    64,    69,    74,
+      75,    79,    80,    82,    86,    87,    89,    90,    92,    94,
+      96,    98,   100,   105,   107
 };
 #endif
 
@@ -542,7 +540,7 @@ static const yytype_int8 yyrline[] =
 static const char *const yytname[] =
 {
   "$end", "error", "$undefined", "USE", "NUM", "STRING", "USING", "CLASS",
-  "OBJECT", "'{'", "'}'", "'+'", "'-'", "'*'", "'/'", "'='", "','",
+  "OBJECT", "FTN", "'{'", "'}'", "'+'", "'-'", "'*'", "'/'", "'='", "','",
   "$accept", "t_program", "t_using", "t_classlist", "t_class",
   "t_classbody", "t_explist", "t_exp", "t_evaluation", YY_NULLPTR
 };
@@ -553,8 +551,8 @@ static const char *const yytname[] =
    (internal) symbol number NUM (which must be that of a token).  */
 static const yytype_int16 yytoknum[] =
 {
-       0,   256,   257,     1,     2,     3,     4,     5,     6,   123,
-     125,    43,    45,    42,    47,    61,    44
+       0,   256,   257,     1,     2,     3,     4,     5,     6,     7,
+     123,   125,    43,    45,    42,    47,    61,    44
 };
 # endif
 
@@ -572,10 +570,10 @@ static const yytype_int16 yytoknum[] =
      STATE-NUM.  */
 static const yytype_int8 yypact[] =
 {
-      34,    -3,     6,    15,    18,    18,   -19,   -19,    14,   -19,
-      18,   -19,     8,    19,   -19,   -19,   -19,    22,    16,   -10,
-      23,   -19,   -19,   -10,    31,    31,    31,    31,    31,   -10,
-     -10,   -10,   -10,    17,    19,   -19
+      20,    -3,     6,    15,    10,    10,   -19,   -19,    14,   -19,
+      10,   -19,     8,    21,   -19,   -19,   -19,    23,    17,   -11,
+      24,   -19,   -19,   -11,    33,    33,    33,    33,    33,   -11,
+     -11,   -11,   -11,    18,    21,   -19
 };
 
   /* YYDEFACT[STATE-NUM] -- Default reduction number in state STATE-NUM.
@@ -592,7 +590,7 @@ static const yytype_int8 yydefact[] =
   /* YYPGOTO[NTERM-NUM].  */
 static const yytype_int8 yypgoto[] =
 {
-     -19,   -19,   -19,    33,    12,   -19,   -19,   -18,     9
+     -19,   -19,   -19,    35,    13,   -19,   -19,   -18,     9
 };
 
   /* YYDEFGOTO[NTERM-NUM].  */
@@ -607,37 +605,37 @@ static const yytype_int8 yydefgoto[] =
 static const yytype_int8 yytable[] =
 {
       23,    24,    25,    26,    27,     7,    29,    30,    31,    32,
-      33,    13,    14,    15,     8,     9,    16,    11,    -9,    13,
-      14,    15,    11,    12,    16,     2,   -10,    20,    24,    25,
-      26,    27,    22,    34,    13,    14,    15,    10,    28,    16,
-       1,     2,     0,    35
+      33,    13,    14,    15,     8,     9,    16,     2,    11,    -9,
+      13,    14,    15,    11,    12,    16,     1,     2,   -10,    20,
+      24,    25,    26,    27,    22,    34,    13,    14,    15,    10,
+      28,    16,     0,    35
 };
 
 static const yytype_int8 yycheck[] =
 {
-      18,    11,    12,    13,    14,     8,    24,    25,    26,    27,
-      28,     3,     4,     5,     8,     0,     8,     5,    10,     3,
-       4,     5,    10,     9,     8,     7,    10,     8,    11,    12,
-      13,    14,    10,    16,     3,     4,     5,     4,    15,     8,
-       6,     7,    -1,    34
+      18,    12,    13,    14,    15,     8,    24,    25,    26,    27,
+      28,     3,     4,     5,     8,     0,     8,     7,     5,    11,
+       3,     4,     5,    10,    10,     8,     6,     7,    11,     8,
+      12,    13,    14,    15,    11,    17,     3,     4,     5,     4,
+      16,     8,    -1,    34
 };
 
   /* YYSTOS[STATE-NUM] -- The (internal number of the) accessing
      symbol of state STATE-NUM.  */
 static const yytype_int8 yystos[] =
 {
-       0,     6,     7,    18,    19,    20,    21,     8,     8,     0,
-      20,    21,     9,     3,     4,     5,     8,    22,    23,    24,
-       8,    25,    10,    24,    11,    12,    13,    14,    15,    24,
-      24,    24,    24,    24,    16,    25
+       0,     6,     7,    19,    20,    21,    22,     8,     8,     0,
+      21,    22,    10,     3,     4,     5,     8,    23,    24,    25,
+       8,    26,    11,    25,    12,    13,    14,    15,    16,    25,
+      25,    25,    25,    25,    17,    26
 };
 
   /* YYR1[YYN] -- Symbol number of symbol that rule YYN derives.  */
 static const yytype_int8 yyr1[] =
 {
-       0,    17,    18,    18,    18,    19,    20,    20,    21,    22,
-      22,    23,    23,    23,    24,    24,    24,    24,    24,    24,
-      24,    24,    24,    25,    25
+       0,    18,    19,    19,    19,    20,    21,    21,    22,    23,
+      23,    24,    24,    24,    25,    25,    25,    25,    25,    25,
+      25,    25,    25,    26,    26
 };
 
   /* YYR2[YYN] -- Number of symbols on the right hand side of rule YYN.  */
@@ -1341,124 +1339,124 @@ yyreduce:
   switch (yyn)
     {
   case 2:
-#line 51 "bison.y"
+#line 48 "bison.y"
     { ast_root=new Program(yylineno,(yyvsp[0].type_prohead),nullptr); }
-#line 1347 "bison.tab.c"
+#line 1345 "bison.tab.c"
     break;
 
   case 3:
-#line 53 "bison.y"
+#line 50 "bison.y"
     { ast_root=new Program(yylineno,nullptr,(yyvsp[0].type_proclass));}
-#line 1353 "bison.tab.c"
+#line 1351 "bison.tab.c"
     break;
 
   case 4:
-#line 55 "bison.y"
+#line 52 "bison.y"
     {   
         ast_root=new Program(yylineno,(yyvsp[-1].type_prohead),(yyvsp[0].type_proclass));
-        printf("ast_root:%p line %d",ast_root,ast_root->getline());
+        cout<<"ast_root: "<<ast_root<<"\tline: "<<ast_root->getline()<<endl;
     }
-#line 1362 "bison.tab.c"
+#line 1360 "bison.tab.c"
     break;
 
   case 5:
-#line 62 "bison.y"
+#line 59 "bison.y"
     { (yyval.type_prohead)=new Prohead(yylineno,(yyvsp[0].type_token));}
-#line 1368 "bison.tab.c"
+#line 1366 "bison.tab.c"
     break;
 
   case 6:
-#line 66 "bison.y"
+#line 63 "bison.y"
     { (yyval.type_proclass)=new Proclass(yylineno,(yyvsp[0].type_class));}
-#line 1374 "bison.tab.c"
+#line 1372 "bison.tab.c"
     break;
 
   case 7:
-#line 68 "bison.y"
+#line 65 "bison.y"
     { (yyval.type_proclass)=(yyvsp[-1].type_proclass)->add((yyvsp[0].type_class));}
-#line 1380 "bison.tab.c"
+#line 1378 "bison.tab.c"
     break;
 
   case 8:
-#line 73 "bison.y"
+#line 70 "bison.y"
     { (yyval.type_class)=new Class(yylineno,(yyvsp[-3].type_token),(yyvsp[-1].type_classbody));}
-#line 1386 "bison.tab.c"
+#line 1384 "bison.tab.c"
     break;
 
   case 9:
-#line 75 "bison.y"
-                {(yyval.type_classbody)=nullptr;}
-#line 1392 "bison.tab.c"
+#line 74 "bison.y"
+    {(yyval.type_classbody)=nullptr;}
+#line 1390 "bison.tab.c"
     break;
 
   case 10:
-#line 77 "bison.y"
+#line 76 "bison.y"
     { (yyval.type_classbody)=new Classbody(yylineno,(yyvsp[0].type_expressions));}
-#line 1398 "bison.tab.c"
+#line 1396 "bison.tab.c"
     break;
 
   case 12:
-#line 82 "bison.y"
+#line 81 "bison.y"
     { (yyval.type_expressions)=new Expressions(yylineno,(yyvsp[0].type_expression));}
-#line 1404 "bison.tab.c"
+#line 1402 "bison.tab.c"
     break;
 
   case 13:
-#line 84 "bison.y"
+#line 83 "bison.y"
     { (yyval.type_expressions)=(yyvsp[-1].type_expressions)->add((yyvsp[0].type_expression));}
-#line 1410 "bison.tab.c"
+#line 1408 "bison.tab.c"
     break;
 
   case 15:
-#line 89 "bison.y"
+#line 88 "bison.y"
     { (yyval.type_expression)=new Number(yylineno,(yyvsp[0].type_token));}
-#line 1416 "bison.tab.c"
+#line 1414 "bison.tab.c"
     break;
 
   case 17:
-#line 92 "bison.y"
+#line 91 "bison.y"
     { (yyval.type_expression)=new Object(yylineno,(yyvsp[0].type_token));}
-#line 1422 "bison.tab.c"
+#line 1420 "bison.tab.c"
     break;
 
   case 18:
-#line 94 "bison.y"
+#line 93 "bison.y"
     { (yyval.type_expression)=new Use(yylineno,(yyvsp[0].type_evaluate));}
-#line 1428 "bison.tab.c"
+#line 1426 "bison.tab.c"
     break;
 
   case 19:
-#line 96 "bison.y"
+#line 95 "bison.y"
     { (yyval.type_expression)=new Operation(yylineno,(yyvsp[-2].type_expression),'+',(yyvsp[0].type_expression));}
-#line 1434 "bison.tab.c"
+#line 1432 "bison.tab.c"
     break;
 
   case 20:
-#line 98 "bison.y"
+#line 97 "bison.y"
     { (yyval.type_expression)=new Operation(yylineno,(yyvsp[-2].type_expression),'-',(yyvsp[0].type_expression));}
-#line 1440 "bison.tab.c"
+#line 1438 "bison.tab.c"
     break;
 
   case 21:
-#line 100 "bison.y"
+#line 99 "bison.y"
     { (yyval.type_expression)=new Operation(yylineno,(yyvsp[-2].type_expression),'*',(yyvsp[0].type_expression));}
-#line 1446 "bison.tab.c"
+#line 1444 "bison.tab.c"
     break;
 
   case 22:
-#line 102 "bison.y"
+#line 101 "bison.y"
     { (yyval.type_expression)=new Operation(yylineno,(yyvsp[-2].type_expression),'/',(yyvsp[0].type_expression));}
-#line 1452 "bison.tab.c"
+#line 1450 "bison.tab.c"
     break;
 
   case 23:
-#line 107 "bison.y"
+#line 106 "bison.y"
     { (yyval.type_evaluate)=new Evaluate(yylineno,(yyvsp[-2].type_token),(yyvsp[0].type_expression));}
-#line 1458 "bison.tab.c"
+#line 1456 "bison.tab.c"
     break;
 
 
-#line 1462 "bison.tab.c"
+#line 1460 "bison.tab.c"
 
       default: break;
     }
@@ -1690,11 +1688,11 @@ yyreturn:
 #endif
   return yyresult;
 }
-#line 111 "bison.y"
+#line 110 "bison.y"
 
 
 void yyerror(char *msg)
 {
-    printf("yyerror: line %d %s at '%s'\n",yylineno,msg,yytext);
+    cout<<"yyerror: "<<msg<<" at line "<<yylineno<<" with \""<<yytext<<"\""<<endl;
     /* yyparse(); */
 }

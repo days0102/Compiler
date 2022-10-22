@@ -11,9 +11,6 @@ Program* ast_root;
 %}
 
 %union{
-    int number;
-    char* objname;
-    char* keyword;
     class Program* type_program;
     class Expression* type_expression;
     class Expressions* type_expressions;
@@ -28,7 +25,7 @@ Program* ast_root;
 
 /*language "c++"*/ /* c++支持 */
 
-%token USE 1 NUM 2 STRING 3 USING 4 CLASS 5 OBJECT 6
+%token USE 1 NUM 2 STRING 3 USING 4 CLASS 5 OBJECT 6 FTN 7
 
 %type<type_token> NUM STRING OBJECT
 
@@ -54,7 +51,7 @@ t_program
     | t_using t_classlist
     {   
         ast_root=new Program(yylineno,$1,$2);
-        printf("ast_root:%p line %d",ast_root,ast_root->getline());
+        cout<<"ast_root: "<<ast_root<<"\tline: "<<ast_root->getline()<<endl;
     };
 
 t_using
@@ -72,7 +69,9 @@ t_class
     : CLASS OBJECT '{' t_classbody '}' 
     { $$=new Class(yylineno,$2,$4);}
     ;
-t_classbody:    {$$=nullptr;}
+t_classbody
+    :
+    {$$=nullptr;}
     | t_explist
     { $$=new Classbody(yylineno,$1);}
     ;
@@ -112,6 +111,6 @@ t_evaluation
 
 void yyerror(char *msg)
 {
-    printf("yyerror: line %d %s at '%s'\n",yylineno,msg,yytext);
+    cout<<"yyerror: "<<msg<<" at line "<<yylineno<<" with \""<<yytext<<"\""<<endl;
     /* yyparse(); */
 }

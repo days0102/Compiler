@@ -26,16 +26,16 @@ FTN     ftn
 %%
   
   /* keyword map */
-{USING}     {yylval.keyword=yytext;return (USING);}
-{CLASS}     {yylval.keyword=yytext;return (CLASS);}
-{USE}       {yylval.keyword=yytext;return (USE);}
-{FTN}       {yylval.keyword=yytext;return (FTN);}
+{USING}     {return (USING);}
+{CLASS}     {return (CLASS);}
+{USE}       {return (USE);}
+{FTN}       {return (FTN);}
 
     /* {DIGIT}     {printf("digit: %s\n",yytext); return INT;}
     {LETTER}    {printf("letter: %s\n",yytext); word++; return STRING; } */
-{OBJECT}    {yylval.type_token=new Token(yytext,index++);return (OBJECT); }
+{OBJECT}    {yylval.type_token=new Token(yytext,0);return (OBJECT); }
 
-{DIGIT}     {yylval.type_token=new Token(yytext,index++);; return NUM;}
+{DIGIT}     {yylval.type_token=new Token(yytext,0);; return NUM;}
  /* {LETTER}    {printf("letter: %s\n",yytext);yylval.objname=yytext; return STRING;} */
 "+"         {return int('+');}
 "-"         {return int('-');}
