@@ -1,6 +1,6 @@
-biston.tab.cc
-biston.tab.h
-biston.tab.hh
+bison.tab.cc
+bison.tab.h
+bison.tab.hh
 stack.hh
 lex.yy.c
 *.d
