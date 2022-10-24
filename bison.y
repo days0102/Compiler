@@ -1,7 +1,7 @@
 %{
 #include "lex.yy.c"
-#include "bison.tab.h"
-#include "tree.h"
+#include "bison.tab.hh"
+#include "tree.hh"
 
 extern int line;
 void yyerror(char *s);

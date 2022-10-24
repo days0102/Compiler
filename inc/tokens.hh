@@ -2,11 +2,13 @@
  * @Author: Outsider
  * @Date: 2022-10-11 20:22:15
  * @LastEditors: Outsider
- * @LastEditTime: 2022-10-22 21:23:55
+ * @LastEditTime: 2022-10-23 20:52:19
  * @Description: In User Settings Edit
- * @FilePath: /compiler/token.h
+ * @FilePath: /compiler/inc/tokens.h
  */
-
+#ifndef TOKENS 
+#define TOKENS
+#include<string>
 using std::string;
 
 class Token
@@ -21,5 +23,4 @@ public:
     ~Token();
 };
 
-Token::Token(string str, int index) : str(str), index(index) {}
-Token::~Token() {}
+#endif

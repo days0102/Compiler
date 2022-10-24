@@ -2,12 +2,13 @@
  * @Author: Outsider
  * @Date: 2022-10-13 11:25:25
  * @LastEditors: Outsider
- * @LastEditTime: 2022-10-15 21:51:45
+ * @LastEditTime: 2022-10-23 21:20:09
  * @Description: In User Settings Edit
- * @FilePath: /compiler/tree.h
+ * @FilePath: /compiler/inc/tree.hh
  */
 
 #include <list>
+#include "tokens.hh"
 
 /** abstract syntax tree node */
 class tnode // tree noe
@@ -22,9 +23,6 @@ public:
 
     int getline();
 };
-tnode::tnode(int line) : line(line) {}
-tnode::~tnode() {}
-int tnode::getline() { return line; }
 
 /**
  * @description:
@@ -38,8 +36,6 @@ public:
     Expression(int line);
     ~Expression();
 };
-Expression::Expression(int line) : tnode(line) {}
-Expression::~Expression() {}
 
 class Prohead : public Expression
 {
@@ -52,9 +48,7 @@ public:
     Prohead(Token *using_name);
     ~Prohead();
 };
-Prohead::Prohead(int line, Token *using_name) : Expression(line), using_name(using_name) {}
-Prohead::Prohead(Token *using_name) : using_name(using_name) {}
-Prohead::~Prohead() {}
+
 
 class Expressions : public Expression
 {
@@ -67,16 +61,7 @@ public:
     Expressions *add(Expression *);
     ~Expressions();
 };
-Expressions::Expressions(int line, Expression *exp) : Expression(line)
-{
-    explist.push_back(exp);
-}
-Expressions *Expressions::add(Expression *exp)
-{
-    explist.push_back(exp);
-    return this;
-}
-Expressions::~Expressions() {}
+
 
 class Classbody : public Expression
 {
@@ -88,8 +73,7 @@ public:
     Classbody(int, Expressions *explist);
     ~Classbody();
 };
-Classbody::Classbody(int line, Expressions *explist) : Expression(line), explist(explist) {}
-Classbody::~Classbody() {}
+
 
 class Class : public Expression
 {
@@ -104,15 +88,6 @@ public:
     Class *add(Expression *);
     ~Class();
 };
-Class ::Class(int line, Token *token) : Expression(line), name(token) {}
-Class ::Class(int line, Token *token, Classbody *body)
-    : Expression(line), name(token), classbody(body) {}
-Class *Class::add(Expression *exp)
-{
-    // body.push_back(exp);
-    return this;
-}
-Class ::~Class() {}
 
 class Proclass : public Expression
 {
@@ -126,17 +101,7 @@ public:
     Proclass *add(Class *);
     ~Proclass();
 };
-Proclass::Proclass(int line) : Expression(line) {}
-Proclass::Proclass(int line, Class *a) : Expression(line)
-{
-    classes.push_back(a);
-}
-Proclass *Proclass::add(Class *a)
-{
-    classes.push_back(a);
-    return this;
-}
-Proclass::~Proclass() {}
+
 
 class Program : public tnode
 {
@@ -150,9 +115,7 @@ public:
 
     ~Program();
 };
-Program::Program(int line, Prohead *head, Proclass *proclass)
-    : tnode(line), prohead(head), proclass(proclass) {}
-Program::~Program() {}
+
 
 class Evaluate : public Expression
 {
@@ -165,9 +128,7 @@ public:
     Evaluate(int, Token *, Expression *);
     ~Evaluate();
 };
-Evaluate::Evaluate(int line, Token *left, Expression *right)
-    : Expression(line), left(left), right(right) {}
-Evaluate::~Evaluate() {}
+
 
 class Number : public Expression
 {
@@ -179,8 +140,7 @@ public:
     Number(int line, Token *token);
     ~Number();
 };
-Number::Number(int line, Token *token) : token(token), Expression(line) {}
-Number::~Number() {}
+
 
 class Object : public Expression
 {
@@ -192,8 +152,7 @@ public:
     Object(int line, Token *token);
     ~Object();
 };
-Object::Object(int line, Token *token) : token(token), Expression(line) {}
-Object::~Object() {}
+
 
 class Use : public Expression
 {
@@ -204,8 +163,7 @@ public:
     Use(int line, Expression *exp);
     ~Use();
 };
-Use::Use(int line, Expression *exp) : Expression(line), exp(exp) {}
-Use::~Use() {}
+
 
 class Operation : public Expression
 {
@@ -219,9 +177,7 @@ public:
     Operation(int, Expression *, char, Expression *);
     ~Operation();
 };
-Operation::Operation(int line, Expression *left, char op, Expression *right)
-    : Expression(line), left(left), op(op), right(right) {}
-Operation::~Operation() {}
+
 
 class Parameter : public Expression
 {
@@ -230,8 +186,7 @@ public:
     Parameter(/* args */);
     ~Parameter();
 };
-Parameter::Parameter(/* args */) {}
-Parameter::~Parameter() {}
+
 
 class Parameters : public Expression
 {
@@ -240,8 +195,7 @@ public:
     Parameters(/* args */);
     ~Parameters();
 };
-Parameters::Parameters(/* args */) {}
-Parameters::~Parameters() {}
+
 
 class Function : public Expression
 {
@@ -255,5 +209,3 @@ public:
     Function();
     ~Function();
 };
-Function::Function() {}
-Function::~Function() {}

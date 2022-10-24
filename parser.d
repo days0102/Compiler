@@ -141,7 +141,8 @@ parser: bison.tab.cc /usr/include/stdc-predef.h lex.yy.c \
  /usr/include/c++/9/bits/locale_facets.tcc \
  /usr/include/c++/9/bits/basic_ios.tcc \
  /usr/include/c++/9/bits/ostream.tcc /usr/include/c++/9/istream \
- /usr/include/c++/9/bits/istream.tcc token.h bison.tab.h tree.h \
- /usr/include/c++/9/list /usr/include/c++/9/bits/stl_list.h \
+ /usr/include/c++/9/bits/istream.tcc inc/tokens.hh bison.tab.hh \
+ inc/tree.hh /usr/include/c++/9/list /usr/include/c++/9/bits/stl_list.h \
  /usr/include/c++/9/bits/allocated_ptr.h \
- /usr/include/c++/9/ext/aligned_buffer.h /usr/include/c++/9/bits/list.tcc
+ /usr/include/c++/9/ext/aligned_buffer.h /usr/include/c++/9/bits/list.tcc \
+ inc/tokens.hh

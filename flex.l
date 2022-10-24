@@ -1,8 +1,8 @@
 %{
 
 #include<iostream>
-#include "token.h"
-#include "bison.tab.h"
+#include "tokens.hh"
+#include "bison.tab.hh"
 
 using std::cout;
 using std::endl;

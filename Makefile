@@ -1,12 +1,22 @@
--include ./*.d
+-include */*.d
 
 BFLAGS = -d
 
 CXX=g++
-CXXFLAGES=-g -Wno-write-strings -MD
+CXXFLAGES=-g -Wno-write-strings -MD -Iinc -std=c++11
 
-all: bison.tab.cc main.cc
-	${CXX} ${CXXFLAGES} main.cc bison.tab.cc -o parser -lfl
+SRCS =  src/main.cc \
+		src/tokens.cc \
+		src/tree.cc \
+		bison.tab.cc \
+	
+OBJS = $(SRCS:.cc=.o)
+OBJS += $(SRCS:.c=.o)
+
+TARGET= parser
+
+all: $(SRCS)
+	${CXX} ${CXXFLAGES} ${SRCS} -lfl -o ${TARGET}
 
 lex.yy.c: flex.l
 	flex flex.l
@@ -14,18 +24,25 @@ lex.yy.c: flex.l
 bison.tab.cc: lex.yy.c bison.y
 	bison -d bison.y
 	mv bison.tab.c bison.tab.cc
+	mv bison.tab.h bison.tab.hh
 
-bison.tab.c: bison.y
-	bison ${BFLAGS} bison.y
+.PRECIOUS: %.o # 保留中间过程的 .o 文件
+# %.o : %.cc
+# 	${CXX} ${CXXFLAGES} -c -o $@ $<
+# %.o : %.c
+# 	${CXX} ${CXXFLAGES} -c -o $@ $<
 
-flex: flex.l
-	flex flex.l
+# bison.tab.c: bison.y
+# 	bison ${BFLAGS} bison.y
 
-bison: bison.y
-	bison ${BFLAGS} bison.y
+# flex: flex.l
+# 	flex flex.l
+
+# bison: bison.y
+# 	bison ${BFLAGS} bison.y
 
 clean:
-	rm *.tab.* lex.yy.c parser 
+	rm *.tab.* lex.yy.c parser
 
-run:parser
+run:${TARGET} ${SRCS}
 	@./parser text.dd
