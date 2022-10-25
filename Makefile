@@ -8,6 +8,7 @@ CXXFLAGES=-g -Wno-write-strings -MD -Iinc -std=c++11
 SRCS =  src/main.cc \
 		src/tokens.cc \
 		src/tree.cc \
+		src/symbols.cc \
 		bison.tab.cc \
 	
 OBJS = $(SRCS:.cc=.o)
@@ -42,7 +43,7 @@ bison.tab.cc: lex.yy.c bison.y
 # 	bison ${BFLAGS} bison.y
 
 clean:
-	rm *.tab.* lex.yy.c parser
+	rm *.tab.* lex.yy.c parser 2> /dev/null || :
 
 run:${TARGET} ${SRCS}
 	@./parser text.dd

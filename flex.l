@@ -9,6 +9,7 @@ using std::endl;
 
 extern int line;
 extern int word;
+extern Tokentable tokentable;
 %}
 
 %option yylineno
@@ -32,9 +33,9 @@ FTN     ftn
 
     /* {DIGIT}     {printf("digit: %s\n",yytext); return INT;}
     {LETTER}    {printf("letter: %s\n",yytext); word++; return STRING; } */
-{OBJECT}    {yylval.type_token=new Token(yytext,0);return (OBJECT); }
+{OBJECT}    {yylval.type_token=tokentable.add(yytext);return (OBJECT); }
 
-{DIGIT}     {yylval.type_token=new Token(yytext,0);; return NUM;}
+{DIGIT}     {yylval.type_token=tokentable.add(yytext); return NUM;}
  /* {LETTER}    {printf("letter: %s\n",yytext);yylval.objname=yytext; return STRING;} */
 "+"         {return int('+');}
 "-"         {return int('-');}

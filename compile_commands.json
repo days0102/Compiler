@@ -5,6 +5,53 @@
             "-c",
             "-g",
             "-Wno-write-strings",
+            "-Iinc",
+            "-std=c++11",
+            "-o",
+            "parser",
+            "src/tree.cc"
+        ],
+        "directory": "/home/lwz/compiler",
+        "file": "src/tree.cc"
+    },
+    {
+        "arguments": [
+            "g++",
+            "-c",
+            "-g",
+            "-Wno-write-strings",
+            "-Iinc",
+            "-std=c++11",
+            "-o",
+            "parser",
+            "src/main.cc"
+        ],
+        "directory": "/home/lwz/compiler",
+        "file": "src/main.cc"
+    },
+    {
+        "arguments": [
+            "g++",
+            "-c",
+            "-g",
+            "-Wno-write-strings",
+            "-Iinc",
+            "-std=c++11",
+            "-o",
+            "parser",
+            "src/symbols.cc"
+        ],
+        "directory": "/home/lwz/compiler",
+        "file": "src/symbols.cc"
+    },
+    {
+        "arguments": [
+            "g++",
+            "-c",
+            "-g",
+            "-Wno-write-strings",
+            "-Iinc",
+            "-std=c++11",
             "-o",
             "parser",
             "bison.tab.cc"
@@ -18,11 +65,13 @@
             "-c",
             "-g",
             "-Wno-write-strings",
+            "-Iinc",
+            "-std=c++11",
             "-o",
             "parser",
-            "main.cc"
+            "src/tokens.cc"
         ],
         "directory": "/home/lwz/compiler",
-        "file": "main.cc"
+        "file": "src/tokens.cc"
     }
 ]
