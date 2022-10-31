@@ -2,13 +2,15 @@
  * @Author: Outsider
  * @Date: 2022-10-13 11:25:25
  * @LastEditors: Outsider
- * @LastEditTime: 2022-10-26 16:17:00
+ * @LastEditTime: 2022-10-31 19:19:44
  * @Description: In User Settings Edit
  * @FilePath: /compiler/inc/tree.hh
  */
 
 #include <list>
 #include "tokens.hh"
+
+#include "llvm/IR/Value.h"
 
 /** abstract syntax tree node */
 class tnode // tree noe
@@ -34,6 +36,7 @@ private:
 public:
     Expression() = default;
     Expression(int line);
+    virtual llvm::Value* CodeGen() = 0;
     ~Expression();
 };
 
@@ -46,6 +49,7 @@ public:
     Prohead() = default;
     Prohead(int line, Token *using_name);
     Prohead(Token *using_name);
+    llvm::Value* CodeGen() override;
     ~Prohead();
 };
 
@@ -58,6 +62,7 @@ public:
     Expressions() = default;
     Expressions(int line, Expression *exp);
     Expressions *add(Expression *);
+    llvm::Value* CodeGen() override;
     ~Expressions();
 };
 
@@ -69,6 +74,7 @@ private:
 public:
     Classbody() = default;
     Classbody(int, Expressions *explist);
+    llvm::Value* CodeGen() override;
     ~Classbody();
 };
 
@@ -82,6 +88,7 @@ public:
     Class() = default;
     Class(int, Token *);
     Class(int, Token *, Classbody *);
+    llvm::Value* CodeGen() override;
     Class *add(Expression *);
     ~Class();
 };
@@ -95,6 +102,7 @@ public:
     Proclass() = default;
     Proclass(int);
     Proclass(int, Class *);
+    llvm::Value* CodeGen() override;
     Proclass *add(Class *);
     ~Proclass();
 };
@@ -121,6 +129,7 @@ private:
 public:
     Evaluate() = default;
     Evaluate(int, Token *, Expression *);
+    llvm::Value* CodeGen() override;
     ~Evaluate();
 };
 
@@ -131,6 +140,7 @@ public:
     
     Number() = default;
     Number(int line, Token *token);
+    llvm::Value* CodeGen() override;
     ~Number();
 };
 
@@ -142,6 +152,7 @@ private:
 public:
     Object() = default;
     Object(int line, Token *token);
+    llvm::Value* CodeGen() override;
     ~Object();
 };
 
@@ -152,6 +163,7 @@ private:
 
 public:
     Use(int line, Expression *exp);
+    llvm::Value* CodeGen() override;
     ~Use();
 };
 
@@ -165,6 +177,7 @@ private:
 public:
     Operation() = default;
     Operation(int, Expression *, char, Expression *);
+    llvm::Value* CodeGen() override;
     ~Operation();
 };
 
@@ -176,6 +189,7 @@ private:
 
 public:
     Parameter();
+    llvm::Value* CodeGen() override;
     ~Parameter();
 };
 
@@ -186,6 +200,7 @@ private:
 
 public:
     Parameters();
+    llvm::Value* CodeGen() override;
     ~Parameters();
 };
 
@@ -199,5 +214,6 @@ private:
 
 public:
     Function();
+    llvm::Value* CodeGen() override;
     ~Function();
 };
