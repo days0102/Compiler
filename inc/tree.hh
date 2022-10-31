@@ -2,7 +2,7 @@
  * @Author: Outsider
  * @Date: 2022-10-13 11:25:25
  * @LastEditors: Outsider
- * @LastEditTime: 2022-10-23 21:20:09
+ * @LastEditTime: 2022-10-26 16:17:00
  * @Description: In User Settings Edit
  * @FilePath: /compiler/inc/tree.hh
  */
@@ -49,7 +49,6 @@ public:
     ~Prohead();
 };
 
-
 class Expressions : public Expression
 {
 private:
@@ -62,7 +61,6 @@ public:
     ~Expressions();
 };
 
-
 class Classbody : public Expression
 {
 private:
@@ -73,7 +71,6 @@ public:
     Classbody(int, Expressions *explist);
     ~Classbody();
 };
-
 
 class Class : public Expression
 {
@@ -102,7 +99,6 @@ public:
     ~Proclass();
 };
 
-
 class Program : public tnode
 {
 private:
@@ -116,7 +112,6 @@ public:
     ~Program();
 };
 
-
 class Evaluate : public Expression
 {
 private:
@@ -129,18 +124,15 @@ public:
     ~Evaluate();
 };
 
-
 class Number : public Expression
 {
-private:
-    Token *token;
-
 public:
+    Token *token;
+    
     Number() = default;
     Number(int line, Token *token);
     ~Number();
 };
-
 
 class Object : public Expression
 {
@@ -153,7 +145,6 @@ public:
     ~Object();
 };
 
-
 class Use : public Expression
 {
 private:
@@ -163,7 +154,6 @@ public:
     Use(int line, Expression *exp);
     ~Use();
 };
-
 
 class Operation : public Expression
 {
@@ -178,24 +168,26 @@ public:
     ~Operation();
 };
 
-
 class Parameter : public Expression
 {
 private:
+    string name;
+    Token* type; // or not
+
 public:
-    Parameter(/* args */);
+    Parameter();
     ~Parameter();
 };
-
 
 class Parameters : public Expression
 {
 private:
+    
+
 public:
-    Parameters(/* args */);
+    Parameters();
     ~Parameters();
 };
-
 
 class Function : public Expression
 {

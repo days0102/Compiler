@@ -25,7 +25,7 @@ Program* ast_root;
 
 /*language "c++"*/ /* c++支持 */
 
-%token USE 1 NUM 2 STRING 3 USING 4 CLASS 5 OBJECT 6 FTN 7
+%token USE 1000 NUM 1001 STRING 1002 USING 1003 CLASS 1004 OBJECT 1005 FTN 1006
 
 %type<type_token> NUM STRING OBJECT
 
@@ -66,7 +66,7 @@ t_classlist
     ;
 
 t_class
-    : CLASS OBJECT '{' t_classbody '}' 
+    : CLASS OBJECT '{' t_classbody '}'
     { $$=new Class(yylineno,$2,$4);}
     ;
 t_classbody

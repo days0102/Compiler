@@ -4,6 +4,8 @@
             "name": "Linux",
             "includePath": [
                 "${workspaceFolder}/**",
+                "/usr/include/llvm-10/**",
+                "${default}",
                 "${vcpkgRoot}/x64-linux/include"
             ],
             "defines": [],
