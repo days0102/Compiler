@@ -6,8 +6,10 @@ CXX=g++
 CXXFLAGES=-g -MD
 CXXFLAGES+= -Wno-write-strings
 CXXFLAGES+= -I. -Iinc
-CXXFLAGES+= -I/usr/include/llvm-10
-CXXFLAGES+= -I/usr/include/llvm-c-10
+CXXFLAGES+= -Illvm
+CXXFLAGES+= -Illvm-c
+# CXXFLAGES+= -I/usr/include/llvm-10
+# CXXFLAGES+= -I/usr/include/llvm-c-10
 CXXFLAGES+= -std=c++11
 CXXFLAGES+= `llvm-config --cxxflags --ldflags --system-libs --libs core`
 CXXFLAGES+= -DLLVM_DISABLE_ABI_BREAKING_CHECKS_ENFORCING
