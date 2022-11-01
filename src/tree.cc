@@ -2,11 +2,12 @@
  * @Author: Outsider
  * @Date: 2022-10-23 20:53:44
  * @LastEditors: Outsider
- * @LastEditTime: 2022-10-31 19:26:27
+ * @LastEditTime: 2022-11-01 16:39:39
  * @Description: In User Settings Edit
  * @FilePath: /compiler/src/tree.cc
  */
 #include "tree.hh"
+#include "codegen.hh"
 
 tnode::tnode(int line) : line(line) {}
 tnode::~tnode() {}
@@ -84,9 +85,12 @@ llvm::Value* Evaluate::CodeGen(){
 }
 Evaluate::~Evaluate() {}
 
-Number::Number(int line, Token *token) : token(token), Expression(line) {}
+Number::Number(int line, Token *token) : token(token), Expression(line) {
+    this->val=stold(this->token->str);
+}
+extern llvm::LLVMContext TheContext;
 llvm::Value* Number::CodeGen(){
-    return nullptr;
+    return llvm::ConstantInt::get(llvm::Type::getInt64Ty(TheContext), val, true);
 }
 Number::~Number() {}
 

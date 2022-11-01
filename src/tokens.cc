@@ -2,12 +2,11 @@
  * @Author: Outsider
  * @Date: 2022-10-23 20:16:24
  * @LastEditors: Outsider
- * @LastEditTime: 2022-10-31 18:59:12
+ * @LastEditTime: 2022-10-31 19:33:17
  * @Description: In User Settings Edit
  * @FilePath: /compiler/src/tokens.cc
  */
 #include "tokens.hh"
-#include "llvm/ADT/APFloat.h"
 
 Token::Token(string str, int index) : str(str), index(index) {}
 Token::Token(string str,TokenType type, int index) : str(str),type(type),index(index) {}

@@ -25,7 +25,7 @@ FTN     ftn
 
 %%
   
-  /* keyword map */
+  /* 关键字 相应的值定义在bison.y %token */
 {USING}     {return (USING);}
 {CLASS}     {return (CLASS);}
 {USE}       {return (USE);}
@@ -50,6 +50,7 @@ FTN     ftn
 .           {}
 %%
 
+  /*输出lexer分析的Token*/
 int displaytoken(int token){
   switch(token){
     case (USING):

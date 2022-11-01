@@ -2,7 +2,7 @@
  * @Author: Outsider
  * @Date: 2022-10-05 20:08:20
  * @LastEditors: Outsider
- * @LastEditTime: 2022-10-31 09:49:07
+ * @LastEditTime: 2022-11-01 16:38:39
  * @Description: In User Settings Edit
  * @FilePath: /compiler/src/main.cc
  */
@@ -17,6 +17,7 @@ using std::ostream;
 extern FILE *yyin;
 extern int yylex();
 extern int yyparse();
+extern int yylineno;
 
 extern Tokentable tokentable;
 extern int displaytoken(int);
@@ -41,7 +42,7 @@ int main(int argc, char **argv)
         cout << "usage read filename" << endl;
         return 0;
     }
-    if ((yyin = fopen(argv[1], "r")) < 0)
+    if ((yyin = fopen(argv[1], "r")) == nullptr)
     {
         cout << "fopen" << argv[1] << "error" << endl;
         return 0;
@@ -51,6 +52,7 @@ int main(int argc, char **argv)
     // initkeyword();
     
     cout<<"-------------------"<<endl;
+    yylineno=1;
     fseek(yyin,0,SEEK_SET);
     yyparse();
     cout << endl;

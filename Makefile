@@ -2,7 +2,8 @@
 
 BFLAGS = -d
 
-CXX=g++
+# CXX=g++ #使用LLVM时会出错
+CXX=clang++
 CXXFLAGES=-g -MD
 CXXFLAGES+= -Wno-write-strings
 CXXFLAGES+= -I. -Iinc
@@ -11,13 +12,14 @@ CXXFLAGES+= -Illvm-c
 # CXXFLAGES+= -I/usr/include/llvm-10
 # CXXFLAGES+= -I/usr/include/llvm-c-10
 CXXFLAGES+= -std=c++11
-CXXFLAGES+= `llvm-config --cxxflags --ldflags --system-libs --libs core`
+CXXFLAGES+= `llvm-config --cxxflags --ldflags --system-libs --libs core` #--link-static
 CXXFLAGES+= -DLLVM_DISABLE_ABI_BREAKING_CHECKS_ENFORCING
 
 SRCS =  src/main.cc \
 		src/tokens.cc \
 		src/tree.cc \
 		src/symbols.cc \
+		src/codegen.cc \
 		bison.tab.cc \
 	
 OBJS = $(SRCS:.cc=.o)

@@ -2,7 +2,7 @@
  * @Author: Outsider
  * @Date: 2022-10-13 11:25:25
  * @LastEditors: Outsider
- * @LastEditTime: 2022-10-31 19:19:44
+ * @LastEditTime: 2022-10-31 20:58:25
  * @Description: In User Settings Edit
  * @FilePath: /compiler/inc/tree.hh
  */
@@ -137,6 +137,7 @@ class Number : public Expression
 {
 public:
     Token *token;
+    double val;
     
     Number() = default;
     Number(int line, Token *token);
