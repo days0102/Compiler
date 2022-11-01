@@ -6,12 +6,14 @@ BFLAGS = -d
 CXX=clang++
 CXXFLAGES=-g -MD
 CXXFLAGES+= -Wno-write-strings
+CXXFLAGES+= -Wno-deprecated-register # 禁止c++17 register 警告
+CXXFLAGES+= -std=c++11
 CXXFLAGES+= -I. -Iinc
 CXXFLAGES+= -Illvm
 CXXFLAGES+= -Illvm-c
 # CXXFLAGES+= -I/usr/include/llvm-10
 # CXXFLAGES+= -I/usr/include/llvm-c-10
-CXXFLAGES+= -std=c++11
+# LLVM 参数
 CXXFLAGES+= `llvm-config --cxxflags --ldflags --system-libs --libs core` #--link-static
 CXXFLAGES+= -DLLVM_DISABLE_ABI_BREAKING_CHECKS_ENFORCING
 
