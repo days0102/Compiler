@@ -5,17 +5,21 @@ BFLAGS = -d
 # CXX=g++ #使用LLVM时会出错
 CXX=clang++
 CXXFLAGES=-g -MD
-CXXFLAGES+= -Wno-write-strings
-CXXFLAGES+= -Wno-deprecated-register # 禁止c++17 register 警告
-CXXFLAGES+= -std=c++11
-CXXFLAGES+= -I. -Iinc
-CXXFLAGES+= -Illvm
-CXXFLAGES+= -Illvm-c
+#使用clang++时vscode调试无法显示std::string的值
+#设置-fno-limit-debug-info以显示string值
+#(vscode将gdb改为lldb是一种方案,linux下安装libstdc++也可能可行,-D_GLIBCXX_DEBUG也可能可行)
+CXXFLAGES+=-fno-limit-debug-info
+CXXFLAGES+=-Wno-write-strings
+CXXFLAGES+=-Wno-deprecated-register#禁止c++17 register 警告
+CXXFLAGES+=-std=c++11
+CXXFLAGES+=-I. -Iinc
+CXXFLAGES+=-Illvm
+CXXFLAGES+=-Illvm-c
 # CXXFLAGES+= -I/usr/include/llvm-10
 # CXXFLAGES+= -I/usr/include/llvm-c-10
 # LLVM 参数
-CXXFLAGES+= `llvm-config --cxxflags --ldflags --system-libs --libs core` #--link-static
-CXXFLAGES+= -DLLVM_DISABLE_ABI_BREAKING_CHECKS_ENFORCING
+CXXFLAGES+=`llvm-config --cxxflags --ldflags --system-libs --libs core`#--link-static
+CXXFLAGES+=-DLLVM_DISABLE_ABI_BREAKING_CHECKS_ENFORCING
 
 SRCS =  src/main.cc \
 		src/tokens.cc \

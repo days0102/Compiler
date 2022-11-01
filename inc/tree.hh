@@ -2,7 +2,7 @@
  * @Author: Outsider
  * @Date: 2022-10-13 11:25:25
  * @LastEditors: Outsider
- * @LastEditTime: 2022-10-31 20:58:25
+ * @LastEditTime: 2022-11-01 21:11:30
  * @Description: In User Settings Edit
  * @FilePath: /compiler/inc/tree.hh
  */
@@ -42,14 +42,14 @@ public:
 
 class Prohead : public Expression
 {
-private:
-    Token *using_name;
-
 public:
+    Token *name;
+
     Prohead() = default;
     Prohead(int line, Token *using_name);
     Prohead(Token *using_name);
     llvm::Value* CodeGen() override;
+    void print();
     ~Prohead();
 };
 
@@ -95,10 +95,9 @@ public:
 
 class Proclass : public Expression
 {
-private:
+public:
     std::list<Class *> classes;
 
-public:
     Proclass() = default;
     Proclass(int);
     Proclass(int, Class *);
@@ -109,14 +108,13 @@ public:
 
 class Program : public tnode
 {
-private:
+public:
     Prohead *prohead;
     Proclass *proclass;
-
-public:
+    
     Program() = default;
     Program(int line, Prohead *head, Proclass *proclass);
-
+    void print();
     ~Program();
 };
 

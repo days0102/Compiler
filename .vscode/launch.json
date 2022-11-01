@@ -17,6 +17,8 @@
             "environment": [],
             "externalConsole": false,
             "MIMode": "gdb",
+            // "miDebuggerPath": "/usr/bin/lldb",
+            // "MIMode": "lldb",
             "setupCommands": [
                 {
                     "description": "为 gdb 启用整齐打印",

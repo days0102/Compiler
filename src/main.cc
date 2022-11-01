@@ -2,11 +2,12 @@
  * @Author: Outsider
  * @Date: 2022-10-05 20:08:20
  * @LastEditors: Outsider
- * @LastEditTime: 2022-11-01 16:38:39
+ * @LastEditTime: 2022-11-01 20:25:06
  * @Description: In User Settings Edit
  * @FilePath: /compiler/src/main.cc
  */
 #include <iostream>
+#include "tree.hh"
 #include "tokens.hh"
 // #include "bison.tab.hh"
 
@@ -18,6 +19,8 @@ extern FILE *yyin;
 extern int yylex();
 extern int yyparse();
 extern int yylineno;
+
+extern Program* ast_root;
 
 extern Tokentable tokentable;
 extern int displaytoken(int);
@@ -55,6 +58,10 @@ int main(int argc, char **argv)
     yylineno=1;
     fseek(yyin,0,SEEK_SET);
     yyparse();
+    cout << endl;
+    
+    ast_root->print();
+
     cout << endl;
     cout << "line: " << line << endl
          << "word: " << word << endl;

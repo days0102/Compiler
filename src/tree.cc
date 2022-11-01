@@ -2,12 +2,16 @@
  * @Author: Outsider
  * @Date: 2022-10-23 20:53:44
  * @LastEditors: Outsider
- * @LastEditTime: 2022-11-01 16:39:39
+ * @LastEditTime: 2022-11-01 20:21:55
  * @Description: In User Settings Edit
  * @FilePath: /compiler/src/tree.cc
  */
+#include<iostream>
 #include "tree.hh"
 #include "codegen.hh"
+
+using std::cout;
+using std::endl;
 
 tnode::tnode(int line) : line(line) {}
 tnode::~tnode() {}
@@ -16,10 +20,13 @@ int tnode::getline() { return line; }
 Expression::Expression(int line) : tnode(line) {}
 Expression::~Expression() {}
 
-Prohead::Prohead(int line, Token *using_name) : Expression(line), using_name(using_name) {}
-Prohead::Prohead(Token *using_name) : using_name(using_name) {}
+Prohead::Prohead(int line, Token *using_name) : Expression(line), name(using_name) {}
+Prohead::Prohead(Token *using_name) : name(using_name) {}
 llvm::Value* Prohead::CodeGen() {
     return nullptr;
+}
+void Prohead::print(){
+    cout<<"using "<<this->name->str<<endl;
 }
 Prohead::~Prohead() {}
 
@@ -76,6 +83,9 @@ Proclass::~Proclass() {}
 
 Program::Program(int line, Prohead *head, Proclass *proclass)
     : tnode(line), prohead(head), proclass(proclass) {}
+void Program::print(){
+    this->prohead->print();
+}
 Program::~Program() {}
 
 Evaluate::Evaluate(int line, Token *left, Expression *right)
