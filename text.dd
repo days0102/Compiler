@@ -1,8 +1,8 @@
 using sys
 
 class main{
+    5+3
     use a = 1
-    1+3
 }
 class ab{
     

@@ -2,7 +2,7 @@
  * @Author: Outsider
  * @Date: 2022-10-13 11:25:25
  * @LastEditors: Outsider
- * @LastEditTime: 2022-11-01 21:11:30
+ * @LastEditTime: 2022-11-02 09:27:06
  * @Description: In User Settings Edit
  * @FilePath: /compiler/inc/tree.hh
  */
@@ -22,7 +22,6 @@ public:
     tnode() = default;
     tnode(int line);
     virtual ~tnode();
-
     int getline();
 };
 
@@ -55,10 +54,9 @@ public:
 
 class Expressions : public Expression
 {
-private:
+public:
     std::list<Expression *> explist;
 
-public:
     Expressions() = default;
     Expressions(int line, Expression *exp);
     Expressions *add(Expression *);
@@ -68,10 +66,9 @@ public:
 
 class Classbody : public Expression
 {
-private:
+public:
     Expressions *explist;
 
-public:
     Classbody() = default;
     Classbody(int, Expressions *explist);
     llvm::Value* CodeGen() override;
@@ -80,11 +77,10 @@ public:
 
 class Class : public Expression
 {
-private:
+public:
     Token *name;
     Classbody *classbody;
 
-public:
     Class() = default;
     Class(int, Token *);
     Class(int, Token *, Classbody *);
@@ -157,10 +153,9 @@ public:
 
 class Use : public Expression
 {
-private:
+public:
     Expression *exp;
 
-public:
     Use(int line, Expression *exp);
     llvm::Value* CodeGen() override;
     ~Use();

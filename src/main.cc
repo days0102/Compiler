@@ -2,7 +2,7 @@
  * @Author: Outsider
  * @Date: 2022-10-05 20:08:20
  * @LastEditors: Outsider
- * @LastEditTime: 2022-11-01 20:25:06
+ * @LastEditTime: 2022-11-02 10:40:03
  * @Description: In User Settings Edit
  * @FilePath: /compiler/src/main.cc
  */
@@ -10,6 +10,7 @@
 #include "tree.hh"
 #include "tokens.hh"
 // #include "bison.tab.hh"
+#include "llvm/Support/raw_ostream.h"
 
 using std::cout;
 using std::endl;
@@ -20,7 +21,7 @@ extern int yylex();
 extern int yyparse();
 extern int yylineno;
 
-extern Program* ast_root;
+extern Program *ast_root;
 
 extern Tokentable tokentable;
 extern int displaytoken(int);
@@ -53,16 +54,19 @@ int main(int argc, char **argv)
     while (displaytoken(yylex()) != 0)
         ;
     // initkeyword();
-    
-    cout<<"-------------------"<<endl;
-    yylineno=1;
-    fseek(yyin,0,SEEK_SET);
+
+    cout << "-------------------" << endl;
+    yylineno = 1;
+    fseek(yyin, 0, SEEK_SET);
     yyparse();
     cout << endl;
-    
+
     ast_root->print();
+    llvm::Value *v = ast_root->proclass->classes.front()->classbody->explist->explist.front()->CodeGen();
+    v->print(llvm::outs());
 
     cout << endl;
+    cout << "------------" << endl;
     cout << "line: " << line << endl
          << "word: " << word << endl;
 }
