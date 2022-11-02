@@ -1,8 +1,10 @@
 using sys
 
 class main{
-    5+3
+    5-3
+    3-6+6
     use a = 1
+    use b=a+4
 }
 class ab{
     

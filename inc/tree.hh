@@ -2,7 +2,7 @@
  * @Author: Outsider
  * @Date: 2022-10-13 11:25:25
  * @LastEditors: Outsider
- * @LastEditTime: 2022-11-02 09:27:06
+ * @LastEditTime: 2022-11-02 16:14:39
  * @Description: In User Settings Edit
  * @FilePath: /compiler/inc/tree.hh
  */
@@ -22,6 +22,7 @@ public:
     tnode() = default;
     tnode(int line);
     virtual ~tnode();
+    virtual void print(int level) = 0;
     int getline();
 };
 
@@ -35,7 +36,8 @@ private:
 public:
     Expression() = default;
     Expression(int line);
-    virtual llvm::Value* CodeGen() = 0;
+    virtual llvm::Value *CodeGen() = 0;
+    void print(int level);
     ~Expression();
 };
 
@@ -47,8 +49,8 @@ public:
     Prohead() = default;
     Prohead(int line, Token *using_name);
     Prohead(Token *using_name);
-    llvm::Value* CodeGen() override;
-    void print();
+    llvm::Value *CodeGen() override;
+    void print(int level) override;
     ~Prohead();
 };
 
@@ -60,7 +62,8 @@ public:
     Expressions() = default;
     Expressions(int line, Expression *exp);
     Expressions *add(Expression *);
-    llvm::Value* CodeGen() override;
+    llvm::Value *CodeGen() override;
+    void print(int level) override;
     ~Expressions();
 };
 
@@ -71,7 +74,8 @@ public:
 
     Classbody() = default;
     Classbody(int, Expressions *explist);
-    llvm::Value* CodeGen() override;
+    llvm::Value *CodeGen() override;
+    void print(int level) override;
     ~Classbody();
 };
 
@@ -84,8 +88,9 @@ public:
     Class() = default;
     Class(int, Token *);
     Class(int, Token *, Classbody *);
-    llvm::Value* CodeGen() override;
+    llvm::Value *CodeGen() override;
     Class *add(Expression *);
+    void print(int level) override;
     ~Class();
 };
 
@@ -97,8 +102,9 @@ public:
     Proclass() = default;
     Proclass(int);
     Proclass(int, Class *);
-    llvm::Value* CodeGen() override;
+    llvm::Value *CodeGen() override;
     Proclass *add(Class *);
+    void print(int level) override;
     ~Proclass();
 };
 
@@ -107,10 +113,10 @@ class Program : public tnode
 public:
     Prohead *prohead;
     Proclass *proclass;
-    
+
     Program() = default;
     Program(int line, Prohead *head, Proclass *proclass);
-    void print();
+    void print(int level) override;
     ~Program();
 };
 
@@ -123,7 +129,8 @@ private:
 public:
     Evaluate() = default;
     Evaluate(int, Token *, Expression *);
-    llvm::Value* CodeGen() override;
+    llvm::Value *CodeGen() override;
+    void print(int level) override;
     ~Evaluate();
 };
 
@@ -132,10 +139,11 @@ class Number : public Expression
 public:
     Token *token;
     double val;
-    
+
     Number() = default;
     Number(int line, Token *token);
-    llvm::Value* CodeGen() override;
+    llvm::Value *CodeGen() override;
+    void print(int level) override;
     ~Number();
 };
 
@@ -147,7 +155,8 @@ private:
 public:
     Object() = default;
     Object(int line, Token *token);
-    llvm::Value* CodeGen() override;
+    llvm::Value *CodeGen() override;
+    void print(int level) override;
     ~Object();
 };
 
@@ -157,21 +166,22 @@ public:
     Expression *exp;
 
     Use(int line, Expression *exp);
-    llvm::Value* CodeGen() override;
+    llvm::Value *CodeGen() override;
+    void print(int level) override;
     ~Use();
 };
 
 class Operation : public Expression
 {
-private:
+public:
     Expression *left;
     char op;
     Expression *right;
 
-public:
     Operation() = default;
     Operation(int, Expression *, char, Expression *);
-    llvm::Value* CodeGen() override;
+    llvm::Value *CodeGen() override;
+    void print(int level) override;
     ~Operation();
 };
 
@@ -179,35 +189,35 @@ class Parameter : public Expression
 {
 private:
     string name;
-    Token* type; // or not
+    Token *type; // or not
 
 public:
     Parameter();
-    llvm::Value* CodeGen() override;
+    llvm::Value *CodeGen() override;
+    void print(int level) override;
     ~Parameter();
 };
 
 class Parameters : public Expression
 {
 private:
-    
-
 public:
     Parameters();
-    llvm::Value* CodeGen() override;
+    llvm::Value *CodeGen() override;
+    void print(int level) override;
     ~Parameters();
 };
 
 class Function : public Expression
 {
-private:
+public:
     Token *name;
     Token *returntype;
     Parameters *parameters;
     Expressions *explist;
 
-public:
     Function();
-    llvm::Value* CodeGen() override;
+    llvm::Value *CodeGen() override;
+    void print(int level) override;
     ~Function();
 };
