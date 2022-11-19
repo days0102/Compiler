@@ -11,8 +11,8 @@ CXXFLAGES=-g -MD
 CXXFLAGES+=-fno-limit-debug-info
 CXXFLAGES+=-Wno-write-strings
 CXXFLAGES+=-Wno-deprecated-register#禁止c++17 register 警告
-CXXFLAGES+=-std=c++17  # 兼容树结构打印库
-CXXFLAGES+=-I. -Iinc
+CXXFLAGES+=-std=c++17# 兼容树结构打印库
+CXXFLAGES+=-I. -Iinc -Ilib
 CXXFLAGES+=-Illvm
 CXXFLAGES+=-Illvm-c
 # CXXFLAGES+= -I/usr/include/llvm-10
@@ -26,7 +26,12 @@ SRCS =  src/main.cc \
 		src/tree.cc \
 		src/symbols.cc \
 		src/codegen.cc \
+		src/print.cc \
 		bison.tab.cc \
+
+LIBS = lib/array.cpp \
+	   lib/string_utils.cpp \
+	   lib/tree_printer.cpp
 	
 OBJS = $(SRCS:.cc=.o)
 OBJS += $(SRCS:.c=.o)
@@ -34,7 +39,7 @@ OBJS += $(SRCS:.c=.o)
 TARGET= parser
 
 all: $(SRCS)
-	${CXX} ${CXXFLAGES} ${SRCS} -lfl -o ${TARGET}
+	${CXX} ${CXXFLAGES} ${SRCS} ${LIBS} -lfl -o ${TARGET}
 
 lex.yy.c: flex.l
 	flex flex.l

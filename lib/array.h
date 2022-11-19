@@ -163,9 +163,9 @@ class Array<bool> {
             public:
                 Reference(bool value) :value_(value), char_ptr_(nullptr), bit_index_(0) {
                 }
-                Reference(const Reference&) = delete;
-                Reference& operator=(const Reference& o) = delete;
-                Reference(Reference&&) = delete;
+                Reference(const Reference&);                //修改(删除=delete)
+                Reference& operator=(const Reference& o);   //修改(删除=delete)
+                Reference(Reference&&);                     //修改(删除=delete)
                 Reference& operator=(Reference&& o) {
                     if (o.value_)
                         *char_ptr_ |= (0x80 >> bit_index_);

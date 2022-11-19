@@ -2,13 +2,14 @@
  * @Author: Outsider
  * @Date: 2022-10-13 11:25:25
  * @LastEditors: Outsider
- * @LastEditTime: 2022-11-02 16:14:39
+ * @LastEditTime: 2022-11-19 14:48:40
  * @Description: In User Settings Edit
  * @FilePath: /compiler/inc/tree.hh
  */
 
 #include <list>
 #include "tokens.hh"
+#include "print.hh"
 
 #include "llvm/IR/Value.h"
 
@@ -51,6 +52,7 @@ public:
     Prohead(Token *using_name);
     llvm::Value *CodeGen() override;
     void print(int level) override;
+    Node getNode();
     ~Prohead();
 };
 
@@ -105,6 +107,7 @@ public:
     llvm::Value *CodeGen() override;
     Proclass *add(Class *);
     void print(int level) override;
+    Node getNode();
     ~Proclass();
 };
 
@@ -117,6 +120,7 @@ public:
     Program() = default;
     Program(int line, Prohead *head, Proclass *proclass);
     void print(int level) override;
+    Node getNode();
     ~Program();
 };
 

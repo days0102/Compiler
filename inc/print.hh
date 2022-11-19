@@ -2,10 +2,13 @@
  * @Author: Outsider
  * @Date: 2022-11-19 14:13:37
  * @LastEditors: Outsider
- * @LastEditTime: 2022-11-19 14:35:17
+ * @LastEditTime: 2022-11-19 15:42:43
  * @Description: In User Settings Edit
- * @FilePath: /compiler/inc/print.h
+ * @FilePath: /compiler/inc/print.hh
  */
+#ifndef PRINT_H
+#define PRINT_H
+
 #include "lib/tree.h"
 #include "lib/tree_printer.h"
 
@@ -18,5 +21,7 @@ auto to_string(const N &node)
     return ss.str();
 }
 
-using node = Array_tree_node<int>;
-using nodes = Array<node>;
+using Node = Array_tree_node<std::string>;
+using Nodes = Array<Node>;
+
+#endif
