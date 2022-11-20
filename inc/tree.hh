@@ -2,7 +2,7 @@
  * @Author: Outsider
  * @Date: 2022-10-13 11:25:25
  * @LastEditors: Outsider
- * @LastEditTime: 2022-11-19 14:48:40
+ * @LastEditTime: 2022-11-19 21:43:45
  * @Description: In User Settings Edit
  * @FilePath: /compiler/inc/tree.hh
  */
@@ -39,6 +39,7 @@ public:
     Expression(int line);
     virtual llvm::Value *CodeGen() = 0;
     void print(int level);
+    virtual Node getNode() = 0;
     ~Expression();
 };
 
@@ -52,7 +53,7 @@ public:
     Prohead(Token *using_name);
     llvm::Value *CodeGen() override;
     void print(int level) override;
-    Node getNode();
+    Node getNode() override;
     ~Prohead();
 };
 
@@ -66,6 +67,7 @@ public:
     Expressions *add(Expression *);
     llvm::Value *CodeGen() override;
     void print(int level) override;
+    Node getNode() override;
     ~Expressions();
 };
 
@@ -78,6 +80,8 @@ public:
     Classbody(int, Expressions *explist);
     llvm::Value *CodeGen() override;
     void print(int level) override;
+    Node getNode() override;
+    Nodes getNodes();
     ~Classbody();
 };
 
@@ -93,6 +97,7 @@ public:
     llvm::Value *CodeGen() override;
     Class *add(Expression *);
     void print(int level) override;
+    Node getNode() override;
     ~Class();
 };
 
@@ -107,7 +112,7 @@ public:
     llvm::Value *CodeGen() override;
     Proclass *add(Class *);
     void print(int level) override;
-    Node getNode();
+    Node getNode() override;
     ~Proclass();
 };
 
@@ -135,6 +140,7 @@ public:
     Evaluate(int, Token *, Expression *);
     llvm::Value *CodeGen() override;
     void print(int level) override;
+    Node getNode() override;
     ~Evaluate();
 };
 
@@ -148,6 +154,7 @@ public:
     Number(int line, Token *token);
     llvm::Value *CodeGen() override;
     void print(int level) override;
+    Node getNode() override;
     ~Number();
 };
 
@@ -161,6 +168,7 @@ public:
     Object(int line, Token *token);
     llvm::Value *CodeGen() override;
     void print(int level) override;
+    Node getNode() override;
     ~Object();
 };
 
@@ -172,6 +180,7 @@ public:
     Use(int line, Expression *exp);
     llvm::Value *CodeGen() override;
     void print(int level) override;
+    Node getNode() override;
     ~Use();
 };
 
@@ -186,6 +195,7 @@ public:
     Operation(int, Expression *, char, Expression *);
     llvm::Value *CodeGen() override;
     void print(int level) override;
+    Node getNode() override;
     ~Operation();
 };
 
@@ -199,6 +209,7 @@ public:
     Parameter();
     llvm::Value *CodeGen() override;
     void print(int level) override;
+    Node getNode() override;
     ~Parameter();
 };
 
@@ -209,6 +220,7 @@ public:
     Parameters();
     llvm::Value *CodeGen() override;
     void print(int level) override;
+    Node getNode() override;
     ~Parameters();
 };
 
@@ -223,5 +235,6 @@ public:
     Function();
     llvm::Value *CodeGen() override;
     void print(int level) override;
+    Node getNode() override;
     ~Function();
 };

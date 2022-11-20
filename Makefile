@@ -11,6 +11,7 @@ CXXFLAGES=-g -MD
 CXXFLAGES+=-fno-limit-debug-info
 CXXFLAGES+=-Wno-write-strings
 CXXFLAGES+=-Wno-deprecated-register#禁止c++17 register 警告
+# (未知 bug)当使用LLVM时-std=c++17无法生效
 CXXFLAGES+=-std=c++17# 兼容树结构打印库
 CXXFLAGES+=-I. -Iinc -Ilib
 CXXFLAGES+=-Illvm

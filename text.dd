@@ -6,6 +6,6 @@ class main{
     use a = 1
     use b=a+4
 }
-class ab{
+class abc{
     
 }
