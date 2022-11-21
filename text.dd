@@ -7,5 +7,5 @@ class main{
     use b=a+4
 }
 class abc{
-    
+    use c=3+5
 }

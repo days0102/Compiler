@@ -2,7 +2,7 @@
  * @Author: Outsider
  * @Date: 2022-11-19 14:35:45
  * @LastEditors: Outsider
- * @LastEditTime: 2022-11-20 08:36:28
+ * @LastEditTime: 2022-11-20 09:08:25
  * @Description: In User Settings Edit
  * @FilePath: /compiler/src/print.cc
  */
@@ -143,15 +143,14 @@ Node Use::getNode()
 
 Node Operation::getNode()
 {
-    Node n(std::string(1, this->op));
     Array_builder<Nodes, Node> b;
     b.add(this->left->getNode());
     b.add(this->right->getNode());
 
-    n = {
-        std::string(1, this->op),
-        b.build()};
-
+    Node n(std::string(1, this->op),b.build());
+    // n = {
+    //     std::string(1, this->op),
+    //     b.build()};
     return n;
 }
 

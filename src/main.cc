@@ -2,7 +2,7 @@
  * @Author: Outsider
  * @Date: 2022-10-05 20:08:20
  * @LastEditors: Outsider
- * @LastEditTime: 2022-11-20 08:38:01
+ * @LastEditTime: 2022-11-20 09:23:15
  * @Description: In User Settings Edit
  * @FilePath: /compiler/src/main.cc
  */
@@ -54,6 +54,9 @@ int main(int argc, char **argv)
     while (displaytoken(yylex()) != 0)
         ;
     // initkeyword();
+    cout << "------------" << endl;
+    cout << "line: " << line << endl
+         << "word: " << word << endl;
 
     cout << "-------------------" << endl;
     yylineno = 1;
@@ -62,13 +65,10 @@ int main(int argc, char **argv)
     cout << endl;
 
     // ast_root->print(0);
-    cout<<to_string(ast_root->getNode())<<endl;
+    cout << to_string(ast_root->getNode()) << endl;
 
     llvm::Value *v = ast_root->proclass->classes.front()->classbody->explist->explist.front()->CodeGen();
     v->print(llvm::outs());
 
     cout << endl;
-    cout << "------------" << endl;
-    cout << "line: " << line << endl
-         << "word: " << word << endl;
 }
