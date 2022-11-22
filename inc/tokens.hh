@@ -2,12 +2,12 @@
  * @Author: Outsider
  * @Date: 2022-10-11 20:22:15
  * @LastEditors: Outsider
- * @LastEditTime: 2022-10-31 09:28:03
+ * @LastEditTime: 2022-11-21 20:47:12
  * @Description: In User Settings Edit
  * @FilePath: /compiler/inc/tokens.hh
  */
-#ifndef H_TOKENS
-#define H_TOKENS
+#ifndef TOKENS_H
+#define TOKENS_H
 #include <string>
 #include <list>
 

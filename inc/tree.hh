@@ -2,10 +2,12 @@
  * @Author: Outsider
  * @Date: 2022-10-13 11:25:25
  * @LastEditors: Outsider
- * @LastEditTime: 2022-11-19 21:43:45
+ * @LastEditTime: 2022-11-21 20:47:39
  * @Description: In User Settings Edit
  * @FilePath: /compiler/inc/tree.hh
  */
+#ifndef TREE_H
+#define TREE_H
 
 #include <list>
 #include "tokens.hh"
@@ -238,3 +240,5 @@ public:
     Node getNode() override;
     ~Function();
 };
+
+#endif

@@ -28,6 +28,7 @@ SRCS =  src/main.cc \
 		src/symbols.cc \
 		src/codegen.cc \
 		src/print.cc \
+		src/semantic.cc \
 		bison.tab.cc \
 
 LIBS = lib/array.cpp \

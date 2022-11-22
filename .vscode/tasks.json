@@ -3,7 +3,8 @@
         {
             "type": "shell",
             "label": "make",
-            "command": "cd /home/lwz/compiler && make all",
+            // "command": "cd /home/lwz/compiler && make all",
+            "command": "cd /home/lwz/compiler",
             // "args": [
             //     "-fdiagnostics-color=always",
             //     "-g",

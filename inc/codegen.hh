@@ -2,10 +2,13 @@
  * @Author: Outsider
  * @Date: 2022-10-31 20:32:31
  * @LastEditors: Outsider
- * @LastEditTime: 2022-11-02 10:36:39
+ * @LastEditTime: 2022-11-21 20:46:19
  * @Description: In User Settings Edit
  * @FilePath: /compiler/inc/codegen.hh
  */
+#ifndef CODEGEN_H
+#define CODEGEN_H
+
 #include<map>
 #include "llvm/IR/Constants.h"
 #include "llvm/ADT/STLExtras.h"
@@ -31,3 +34,5 @@ static llvm::LLVMContext TheContext;
 static std::unique_ptr<llvm::Module> TheModule;
 static llvm::IRBuilder<> Builder(TheContext);
 static std::map<std::string, llvm::Value *> NamedValues;
+
+#endif

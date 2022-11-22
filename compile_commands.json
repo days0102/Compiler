@@ -23,10 +23,10 @@
             "-DLLVM_DISABLE_ABI_BREAKING_CHECKS_ENFORCING",
             "-o",
             "parser",
-            "bison.tab.cc"
+            "lib/string_utils.cpp"
         ],
         "directory": "/home/lwz/compiler",
-        "file": "bison.tab.cc"
+        "file": "lib/string_utils.cpp"
     },
     {
         "arguments": [
@@ -52,10 +52,39 @@
             "-DLLVM_DISABLE_ABI_BREAKING_CHECKS_ENFORCING",
             "-o",
             "parser",
-            "src/print.cc"
+            "src/main.cc"
         ],
         "directory": "/home/lwz/compiler",
-        "file": "src/print.cc"
+        "file": "src/main.cc"
+    },
+    {
+        "arguments": [
+            "clang++",
+            "-c",
+            "-g",
+            "-fno-limit-debug-info",
+            "-Wno-write-strings",
+            "-Wno-deprecated-register",
+            "-std=c++17",
+            "-I.",
+            "-Iinc",
+            "-Ilib",
+            "-Illvm",
+            "-Illvm-c",
+            "-I/usr/lib/llvm-10/include",
+            "-std=c++14",
+            "-fno-exceptions",
+            "-D_GNU_SOURCE",
+            "-D__STDC_CONSTANT_MACROS",
+            "-D__STDC_FORMAT_MACROS",
+            "-D__STDC_LIMIT_MACROS",
+            "-DLLVM_DISABLE_ABI_BREAKING_CHECKS_ENFORCING",
+            "-o",
+            "parser",
+            "src/tokens.cc"
+        ],
+        "directory": "/home/lwz/compiler",
+        "file": "src/tokens.cc"
     },
     {
         "arguments": [
@@ -110,10 +139,10 @@
             "-DLLVM_DISABLE_ABI_BREAKING_CHECKS_ENFORCING",
             "-o",
             "parser",
-            "lib/array.cpp"
+            "src/print.cc"
         ],
         "directory": "/home/lwz/compiler",
-        "file": "lib/array.cpp"
+        "file": "src/print.cc"
     },
     {
         "arguments": [
@@ -139,10 +168,68 @@
             "-DLLVM_DISABLE_ABI_BREAKING_CHECKS_ENFORCING",
             "-o",
             "parser",
-            "src/tokens.cc"
+            "bison.tab.cc"
         ],
         "directory": "/home/lwz/compiler",
-        "file": "src/tokens.cc"
+        "file": "bison.tab.cc"
+    },
+    {
+        "arguments": [
+            "clang++",
+            "-c",
+            "-g",
+            "-fno-limit-debug-info",
+            "-Wno-write-strings",
+            "-Wno-deprecated-register",
+            "-std=c++17",
+            "-I.",
+            "-Iinc",
+            "-Ilib",
+            "-Illvm",
+            "-Illvm-c",
+            "-I/usr/lib/llvm-10/include",
+            "-std=c++14",
+            "-fno-exceptions",
+            "-D_GNU_SOURCE",
+            "-D__STDC_CONSTANT_MACROS",
+            "-D__STDC_FORMAT_MACROS",
+            "-D__STDC_LIMIT_MACROS",
+            "-DLLVM_DISABLE_ABI_BREAKING_CHECKS_ENFORCING",
+            "-o",
+            "parser",
+            "lib/tree_printer.cpp"
+        ],
+        "directory": "/home/lwz/compiler",
+        "file": "lib/tree_printer.cpp"
+    },
+    {
+        "arguments": [
+            "clang++",
+            "-c",
+            "-g",
+            "-fno-limit-debug-info",
+            "-Wno-write-strings",
+            "-Wno-deprecated-register",
+            "-std=c++17",
+            "-I.",
+            "-Iinc",
+            "-Ilib",
+            "-Illvm",
+            "-Illvm-c",
+            "-I/usr/lib/llvm-10/include",
+            "-std=c++14",
+            "-fno-exceptions",
+            "-D_GNU_SOURCE",
+            "-D__STDC_CONSTANT_MACROS",
+            "-D__STDC_FORMAT_MACROS",
+            "-D__STDC_LIMIT_MACROS",
+            "-DLLVM_DISABLE_ABI_BREAKING_CHECKS_ENFORCING",
+            "-o",
+            "parser",
+            "lib/array.cpp"
+        ],
+        "directory": "/home/lwz/compiler",
+        "file": "lib/array.cpp"
     },
     {
         "arguments": [
@@ -226,67 +313,9 @@
             "-DLLVM_DISABLE_ABI_BREAKING_CHECKS_ENFORCING",
             "-o",
             "parser",
-            "lib/string_utils.cpp"
+            "src/semantic.cc"
         ],
         "directory": "/home/lwz/compiler",
-        "file": "lib/string_utils.cpp"
-    },
-    {
-        "arguments": [
-            "clang++",
-            "-c",
-            "-g",
-            "-fno-limit-debug-info",
-            "-Wno-write-strings",
-            "-Wno-deprecated-register",
-            "-std=c++17",
-            "-I.",
-            "-Iinc",
-            "-Ilib",
-            "-Illvm",
-            "-Illvm-c",
-            "-I/usr/lib/llvm-10/include",
-            "-std=c++14",
-            "-fno-exceptions",
-            "-D_GNU_SOURCE",
-            "-D__STDC_CONSTANT_MACROS",
-            "-D__STDC_FORMAT_MACROS",
-            "-D__STDC_LIMIT_MACROS",
-            "-DLLVM_DISABLE_ABI_BREAKING_CHECKS_ENFORCING",
-            "-o",
-            "parser",
-            "src/main.cc"
-        ],
-        "directory": "/home/lwz/compiler",
-        "file": "src/main.cc"
-    },
-    {
-        "arguments": [
-            "clang++",
-            "-c",
-            "-g",
-            "-fno-limit-debug-info",
-            "-Wno-write-strings",
-            "-Wno-deprecated-register",
-            "-std=c++17",
-            "-I.",
-            "-Iinc",
-            "-Ilib",
-            "-Illvm",
-            "-Illvm-c",
-            "-I/usr/lib/llvm-10/include",
-            "-std=c++14",
-            "-fno-exceptions",
-            "-D_GNU_SOURCE",
-            "-D__STDC_CONSTANT_MACROS",
-            "-D__STDC_FORMAT_MACROS",
-            "-D__STDC_LIMIT_MACROS",
-            "-DLLVM_DISABLE_ABI_BREAKING_CHECKS_ENFORCING",
-            "-o",
-            "parser",
-            "lib/tree_printer.cpp"
-        ],
-        "directory": "/home/lwz/compiler",
-        "file": "lib/tree_printer.cpp"
+        "file": "src/semantic.cc"
     }
 ]

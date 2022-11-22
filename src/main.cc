@@ -2,13 +2,14 @@
  * @Author: Outsider
  * @Date: 2022-10-05 20:08:20
  * @LastEditors: Outsider
- * @LastEditTime: 2022-11-20 09:23:15
+ * @LastEditTime: 2022-11-21 21:04:44
  * @Description: In User Settings Edit
  * @FilePath: /compiler/src/main.cc
  */
 #include <iostream>
 #include "tree.hh"
 #include "tokens.hh"
+#include "semantic.hh"
 // #include "bison.tab.hh"
 #include "llvm/Support/raw_ostream.h"
 
@@ -66,6 +67,8 @@ int main(int argc, char **argv)
 
     // ast_root->print(0);
     cout << to_string(ast_root->getNode()) << endl;
+
+    semantics(ast_root);
 
     llvm::Value *v = ast_root->proclass->classes.front()->classbody->explist->explist.front()->CodeGen();
     v->print(llvm::outs());
