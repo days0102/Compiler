@@ -17,13 +17,13 @@ Expression::Expression(int line) : tnode(line) {}
 void Expression::print(int level) {}
 Expression::~Expression() {}
 
-Prohead::Prohead(int line, Token *using_name) : Expression(line), name(using_name) {}
-Prohead::Prohead(Token *using_name) : name(using_name) {}
+Prohead::Prohead(int line, Token *using_name) : Expression(line), token(using_name) {}
+Prohead::Prohead(Token *using_name) : token(using_name) {}
 void Prohead::print(int level)
 {
     std::string str = std::string(level, ' ');
     cout << str;
-    cout << "USING " << this->name->str << endl;
+    cout << "USING " << this->token->name << endl;
 }
 Prohead::~Prohead() {}
 
@@ -58,15 +58,15 @@ void Classbody::print(int level)
 }
 Classbody::~Classbody() {}
 
-Class ::Class(int line, Token *token) : Expression(line), name(token) {}
+Class ::Class(int line, Token *token) : Expression(line), token(token) {}
 Class ::Class(int line, Token *token, Classbody *body)
-    : Expression(line), name(token), classbody(body) {}
+    : Expression(line), token(token), classbody(body) {}
 
 void Class::print(int level)
 {
     std::string str = std::string(level, ' ');
     cout << str;
-    cout << "CLASS " << this->name->str << endl;
+    cout << "CLASS " << this->token->name << endl;
     if (this->classbody != nullptr)
         this->classbody->print(level);
 }
@@ -118,21 +118,21 @@ void Evaluate::print(int level)
 {
     std::string str = std::string(level, ' ');
     cout << str;
-    cout << "EVALUATE " << this->left->str << endl;
+    cout << "EVALUATE " << this->left->name << endl;
     this->right->print(level);
 }
 Evaluate::~Evaluate() {}
 
 Number::Number(int line, Token *token) : token(token), Expression(line)
 {
-    this->val = stold(this->token->str);
+    this->val = stold(this->token->name);
 }
 
 void Number::print(int level)
 {
     std::string str = std::string(level, ' ');
     cout << str;
-    cout << "NUMBER " << this->token->str << endl;
+    cout << "NUMBER " << this->token->name << endl;
 }
 Number::~Number() {}
 
@@ -142,7 +142,7 @@ void Object::print(int level)
 {
     std::string str = std::string(level, ' ');
     cout << str;
-    cout << "OBJECT " << this->token->str << endl;
+    cout << "OBJECT " << this->token->name << endl;
 }
 Object::~Object() {}
 

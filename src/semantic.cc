@@ -12,14 +12,14 @@ SymbolTable *stb;
 
 void check_using(class Prohead *head)
 {
-    auto res = stb->find(head->name->str);
+    auto res = stb->find(head->token->name);
     if (res == nullptr)
     {
-        stb->add(head->name->str, new IdSymbol(head->name, head->name->str));
+        stb->add(head->token->name, new IdSymbol(head->token, head->token->name));
     }
     else
     {
-        std::cout << "reuse head " << head->name << std::endl;
+        std::cout << "reuse head " << head->token << std::endl;
     }
 }
 
@@ -38,17 +38,17 @@ void check_classbody(Classbody *cb)
 
 void check_class(Class *cs)
 {
-    auto res = stb->find(cs->name->str);
+    auto res = stb->find(cs->token->name);
     if (res == nullptr)
     {
-        stb->add(cs->name->str, new IdSymbol(cs->name, cs->name->str));
+        stb->add(cs->token->name, new IdSymbol(cs->token, cs->token->name));
         stb = stb->enter();
         check_classbody(cs->classbody);
         stb = stb->exit();
     }
     else
     {
-        std::cout << "redefine class " << cs->name << std::endl;
+        std::cout << "redefine class " << cs->token << std::endl;
         // std::cout << "first define at line " << cs->getline() << std::endl;
         // std::cout << "redeine define at line "  << std::endl;
     }

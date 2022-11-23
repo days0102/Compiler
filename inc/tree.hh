@@ -2,7 +2,7 @@
  * @Author: Outsider
  * @Date: 2022-10-13 11:25:25
  * @LastEditors: Outsider
- * @LastEditTime: 2022-11-21 20:47:39
+ * @LastEditTime: 2022-11-23 10:02:51
  * @Description: In User Settings Edit
  * @FilePath: /compiler/inc/tree.hh
  */
@@ -48,7 +48,7 @@ public:
 class Prohead : public Expression
 {
 public:
-    Token *name;
+    Token *token;
 
     Prohead() = default;
     Prohead(int line, Token *using_name);
@@ -90,7 +90,7 @@ public:
 class Class : public Expression
 {
 public:
-    Token *name;
+    Token *token;
     Classbody *classbody;
 
     Class() = default;
@@ -229,7 +229,7 @@ public:
 class Function : public Expression
 {
 public:
-    Token *name;
+    Token *token;
     Token *returntype;
     Parameters *parameters;
     Expressions *explist;

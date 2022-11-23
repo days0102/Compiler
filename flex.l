@@ -90,10 +90,10 @@ int displaytoken(int token){
       cout<<" Sym\t->  "<<'}'<<endl;
       break;
     case 1001:
-      cout<<" Num\t->  "<<yylval.type_token->str<<endl;
+      cout<<" Num\t->  "<<yylval.type_token->name<<endl;
       break;
     case 1005:
-      cout<<" Id\t->  "<<yylval.type_token->str<<endl;
+      cout<<" Id\t->  "<<yylval.type_token->name<<endl;
       break;
   }
   return token;

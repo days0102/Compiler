@@ -26,7 +26,7 @@ Node Prohead::getNode()
     Node n("using");
     n = {
         "using",
-        Nodes::build_array(this->name->str)};
+        Nodes::build_array(this->token->name)};
 
     return n;
 }
@@ -58,13 +58,13 @@ Node Proclass::getNode()
 
 Node Class::getNode()
 {
-    Node n(this->name->str);
+    Node n(this->token->name);
     if (this->classbody == nullptr)
     {
         return n;
     }
     n = {
-        this->name->str,
+        this->token->name,
         this->classbody->getNodes()};
 
     return n;
@@ -109,7 +109,7 @@ Node Expressions::getNode()
 Node Evaluate::getNode()
 {
     Array_builder<Nodes, Node> builder;
-    builder.add(Node(this->left->str));
+    builder.add(Node(this->left->name));
     builder.add(this->right->getNode());
     Node n("evaluate");
     n = {
@@ -120,13 +120,13 @@ Node Evaluate::getNode()
 
 Node Number::getNode()
 {
-    Node n(this->token->str);
+    Node n(this->token->name);
     return n;
 }
 
 Node Object::getNode()
 {
-    Node n(this->token->str);
+    Node n(this->token->name);
     return n;
 }
 

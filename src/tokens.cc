@@ -8,8 +8,8 @@
  */
 #include "tokens.hh"
 
-Token::Token(string str, int index) : str(str), index(index) {}
-Token::Token(string str,TokenType type, int index) : str(str),type(type),index(index) {}
+Token::Token(string str, int index) : name(str), index(index) {}
+Token::Token(string str,TokenType type, int index) : name(str),type(type),index(index) {}
 Token::~Token() {}
 
 Tokentable::Tokentable() : idx(0) {}

@@ -2,7 +2,7 @@
  * @Author: Outsider
  * @Date: 2022-10-31 21:28:22
  * @LastEditors: Outsider
- * @LastEditTime: 2022-11-22 16:00:14
+ * @LastEditTime: 2022-11-22 21:46:29
  * @Description: In User Settings Edit
  * @FilePath: /compiler/src/codegen.cc
  */
@@ -22,20 +22,33 @@ llvm::Value *Prohead::CodeGen()
 
 llvm::Value *Expressions::CodeGen()
 {
+    auto it = this->explist.begin();
+    for (; it != this->explist.end(); ++it)
+    {
+        (*it)->CodeGen();
+    }
     return nullptr;
 }
 llvm::Value *Classbody::CodeGen()
 {
+    this->explist->CodeGen();
     return nullptr;
 }
 
 llvm::Value *Class::CodeGen()
 {
+    llvm::BasicBlock *block = llvm::BasicBlock::Create(TheContext, this->token->name);
+    this->classbody->CodeGen();
     return nullptr;
 }
 
 llvm::Value *Proclass::CodeGen()
 {
+    auto it = this->classes.begin();
+    for (; it != this->classes.end(); ++it)
+    {
+        (*it)->CodeGen();
+    }
     return nullptr;
 }
 

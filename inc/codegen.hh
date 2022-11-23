@@ -2,14 +2,14 @@
  * @Author: Outsider
  * @Date: 2022-10-31 20:32:31
  * @LastEditors: Outsider
- * @LastEditTime: 2022-11-21 20:46:19
+ * @LastEditTime: 2022-11-23 10:04:11
  * @Description: In User Settings Edit
  * @FilePath: /compiler/inc/codegen.hh
  */
 #ifndef CODEGEN_H
 #define CODEGEN_H
 
-#include<map>
+#include <map>
 #include "llvm/IR/Constants.h"
 #include "llvm/ADT/STLExtras.h"
 #include "llvm/IR/BasicBlock.h"
@@ -22,7 +22,6 @@
 #include "llvm/ADT/APFloat.h"
 #include "llvm/Support/DataTypes.h"
 
-
 #include <iostream>
 using std::cout;
 using std::endl;
@@ -34,5 +33,14 @@ static llvm::LLVMContext TheContext;
 static std::unique_ptr<llvm::Module> TheModule;
 static llvm::IRBuilder<> Builder(TheContext);
 static std::map<std::string, llvm::Value *> NamedValues;
+
+namespace codeGen
+{
+    class SymbolTable
+    {
+    private:
+        std::map<std::string, llvm::Value *> table;
+    };
+}
 
 #endif
