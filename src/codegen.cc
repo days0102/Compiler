@@ -2,7 +2,7 @@
  * @Author: Outsider
  * @Date: 2022-10-31 21:28:22
  * @LastEditors: Outsider
- * @LastEditTime: 2022-11-22 21:46:29
+ * @LastEditTime: 2022-11-23 19:55:44
  * @Description: In User Settings Edit
  * @FilePath: /compiler/src/codegen.cc
  */
@@ -13,6 +13,42 @@ llvm::Value *LogErrorV(const char *Str)
 {
     cout << Str << endl;
     return nullptr;
+}
+codeGen::SymbolTable *cgStb;
+
+codeGen::SymbolTable::SymbolTable() : block(nullptr), parent(nullptr) {}
+codeGen::SymbolTable::SymbolTable(llvm::BasicBlock *block) : block(block),
+                                                             parent(nullptr) {}
+void codeGen::SymbolTable::enter(llvm::BasicBlock *block)
+{
+    auto stb = new codeGen::SymbolTable(block);
+    stb->parent = cgStb;
+    cgStb = stb;
+}
+void codeGen::SymbolTable::exit()
+{
+    cgStb = cgStb->parent;
+}
+llvm::Value *Program::CodeGen()
+{
+    // 把整个程序作为一个函数
+    llvm::Type *voidType = llvm::Type::getVoidTy(TheContext);
+    llvm::FunctionType *functionType = llvm::FunctionType::get(voidType, false);
+    llvm::Function *function = llvm::Function::Create(functionType, llvm::GlobalValue::ExternalLinkage, "program", TheModule);
+
+    llvm::BasicBlock *block = llvm::BasicBlock::Create(TheContext, "global", function);
+    llvm::BasicBlock *b = llvm::BasicBlock::Create(TheContext, "g", nullptr, block);
+    cgStb = new codeGen::SymbolTable(block);
+
+    Builder.SetInsertPoint(block);
+    llvm::BinaryOperator::Create(llvm::Instruction::Add, llvm::ConstantFP::get(TheContext, llvm::APFloat(2.0)),
+                                 llvm::ConstantFP::get(TheContext, llvm::APFloat(3.3)), "", block);
+    llvm::BinaryOperator::Create(llvm::Instruction::Add, llvm::ConstantFP::get(TheContext, llvm::APFloat(2.0)),
+                                 llvm::ConstantFP::get(TheContext, llvm::APFloat(3.3)), "", b);
+    this->prohead->CodeGen();
+    this->proclass->CodeGen();
+    llvm::ReturnInst::Create(TheContext, block);
+    return function;
 }
 
 llvm::Value *Prohead::CodeGen()
@@ -38,7 +74,9 @@ llvm::Value *Classbody::CodeGen()
 llvm::Value *Class::CodeGen()
 {
     llvm::BasicBlock *block = llvm::BasicBlock::Create(TheContext, this->token->name);
+    cgStb->enter(block);
     this->classbody->CodeGen();
+    cgStb->exit();
     return nullptr;
 }
 

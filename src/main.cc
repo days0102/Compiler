@@ -2,7 +2,7 @@
  * @Author: Outsider
  * @Date: 2022-10-05 20:08:20
  * @LastEditors: Outsider
- * @LastEditTime: 2022-11-21 21:04:44
+ * @LastEditTime: 2022-11-23 21:43:10
  * @Description: In User Settings Edit
  * @FilePath: /compiler/src/main.cc
  */
@@ -68,9 +68,10 @@ int main(int argc, char **argv)
     // ast_root->print(0);
     cout << to_string(ast_root->getNode()) << endl;
 
-    semantics(ast_root);
+    ast_root->semantic();
 
-    llvm::Value *v = ast_root->proclass->classes.front()->classbody->explist->explist.front()->CodeGen();
+    // llvm::Value *v = ast_root->proclass->classes.front()->classbody->explist->explist.front()->CodeGen();
+    llvm::Value *v = ast_root->CodeGen();
     v->print(llvm::outs());
 
     cout << endl;

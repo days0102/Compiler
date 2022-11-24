@@ -39,6 +39,8 @@ Program* ast_root;
 %type<type_evaluate>t_evaluation
 
 /* %nonassoc '=' */
+%left '+' '-'
+%left '*' '/'
 
 %start t_program
 %%
@@ -89,8 +91,10 @@ t_exp :
     | STRING
     | OBJECT
     { $$=new Object(yylineno,$1);}
-    | USE t_evaluation 
+    | USE t_evaluation
     { $$=new Use(yylineno,$2);}
+    | t_evaluation
+    { $$=$1;}
     | t_exp '+' t_exp
     { $$=new Operation(yylineno,$1,'+',$3);}
     | t_exp '-' t_exp

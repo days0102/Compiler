@@ -2,7 +2,7 @@
  * @Author: Outsider
  * @Date: 2022-10-24 09:42:02
  * @LastEditors: Outsider
- * @LastEditTime: 2022-11-22 10:54:28
+ * @LastEditTime: 2022-11-24 09:05:57
  * @Description: In User Settings Edit
  * @FilePath: /compiler/src/symbols.cc
  */
@@ -23,7 +23,7 @@ SymbolTable::SymbolTable(SymbolTable *parent)
 {
     this->parent = parent;
 }
-Symbol *SymbolTable::find(std::string name)
+Symbol *SymbolTable::globalFind(std::string name)
 {
     auto res = this->table.find(name);
     if (res != this->table.end())
@@ -33,6 +33,15 @@ Symbol *SymbolTable::find(std::string name)
     if (this->parent != nullptr)
     {
         return this->parent->find(name);
+    }
+    return nullptr;
+}
+Symbol *SymbolTable::find(std::string name)
+{
+    auto res = this->table.find(name);
+    if (res != this->table.end())
+    {
+        return res->second;
     }
     return nullptr;
 }

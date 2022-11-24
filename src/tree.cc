@@ -2,7 +2,7 @@
  * @Author: Outsider
  * @Date: 2022-10-23 20:53:44
  * @LastEditors: Outsider
- * @LastEditTime: 2022-11-22 15:58:55
+ * @LastEditTime: 2022-11-24 08:40:48
  * @Description: In User Settings Edit
  * @FilePath: /compiler/src/tree.cc
  */
@@ -146,7 +146,8 @@ void Object::print(int level)
 }
 Object::~Object() {}
 
-Use::Use(int line, Expression *exp) : Expression(line), exp(exp) {}
+// todo
+Use::Use(int line, Evaluate *exp) : Expression(line), exp(exp) {}
 
 void Use::print(int level)
 {

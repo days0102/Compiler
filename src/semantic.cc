@@ -2,7 +2,7 @@
  * @Author: Outsider
  * @Date: 2022-11-21 20:13:24
  * @LastEditors: Outsider
- * @LastEditTime: 2022-11-22 11:13:42
+ * @LastEditTime: 2022-11-24 09:15:23
  * @Description: In User Settings Edit
  * @FilePath: /compiler/src/semantic.cc
  */
@@ -10,62 +10,107 @@
 
 SymbolTable *stb;
 
-void check_using(class Prohead *head)
+void Prohead::semantic()
 {
-    auto res = stb->find(head->token->name);
+    auto res = stb->find(this->token->name);
     if (res == nullptr)
     {
-        stb->add(head->token->name, new IdSymbol(head->token, head->token->name));
+        stb->add(this->token->name, new IdSymbol(this->token, this->token->name));
     }
     else
     {
-        std::cout << "reuse head " << head->token << std::endl;
+        std::cout << "reuse head " << this->token << std::endl;
     }
 }
 
-void check_expressions(Expressions *exps)
+void Expressions::semantic()
 {
-    auto it = exps->explist.begin();
-    for (; it != exps->explist.end(); ++it)
-    {
-    }
+    auto it = this->explist.begin();
+    for (; it != this->explist.end(); ++it)
+        (*it)->semantic();
 }
 
-void check_classbody(Classbody *cb)
+void Classbody::semantic()
 {
-    check_expressions(cb->explist);
+    this->explist->semantic();
 }
 
-void check_class(Class *cs)
+void Class::semantic()
 {
-    auto res = stb->find(cs->token->name);
+    auto res = stb->find(this->token->name);
     if (res == nullptr)
     {
-        stb->add(cs->token->name, new IdSymbol(cs->token, cs->token->name));
+        stb->add(this->token->name, new IdSymbol(this->token, this->token->name));
         stb = stb->enter();
-        check_classbody(cs->classbody);
+        this->classbody->semantic();
         stb = stb->exit();
     }
     else
     {
-        std::cout << "redefine class " << cs->token << std::endl;
+        std::cout << "redefine class " << this->token << std::endl;
         // std::cout << "first define at line " << cs->getline() << std::endl;
         // std::cout << "redeine define at line "  << std::endl;
     }
 }
 
-void check_classess(class Proclass *classes)
+void Proclass::semantic()
 {
-    auto it = classes->classes.begin();
-    for (; it != classes->classes.end(); ++it)
+    auto it = this->classes.begin();
+    for (; it != this->classes.end(); ++it)
     {
-        check_class(*it);
+        (*it)->semantic();
     }
 }
 
-void semantics(Program *ast_root)
+void Evaluate::semantic()
+{
+    auto res = stb->find(this->left->name);
+    if (res == nullptr)
+    {
+        std::cout << "undefine id " << this->left->name << std::endl;
+    }
+    else
+    {
+        // todo 赋值号左右两边类型检查
+    }
+    this->right->semantic();
+}
+
+void Number::semantic() {}
+
+void Object::semantic() {}
+
+void Use::semantic()
+{
+    auto res = stb->find(this->exp->left->name);
+    if (res == nullptr)
+    {
+        stb->add(this->exp->left->name, new IdSymbol(this->exp->left, this->exp->left->name));
+    }
+    else
+    {
+        std::cout << "redefine id " << this->exp->left->name << std::endl;
+    }
+    this->exp->right->semantic();
+}
+
+void Operation::semantic() {}
+
+void Parameter::semantic() {}
+
+void Parameters::semantic() {}
+
+void Function::semantic() {}
+
+void initSymboltable()
+{
+    // 初始化添加关键字
+    
+}
+
+void Program::semantic()
 {
     stb = new SymbolTable();
-    check_using(ast_root->prohead);
-    check_classess(ast_root->proclass);
+    this->prohead->semantic();
+    this->proclass->semantic();
 }

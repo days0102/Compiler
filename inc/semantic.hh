@@ -2,7 +2,7 @@
  * @Author: Outsider
  * @Date: 2022-11-21 20:13:35
  * @LastEditors: Outsider
- * @LastEditTime: 2022-11-21 21:05:30
+ * @LastEditTime: 2022-11-23 21:42:52
  * @Description: In User Settings Edit
  * @FilePath: /compiler/inc/semantic.hh
  */
@@ -11,8 +11,5 @@
 
 #include "symbols.hh"
 #include "tree.hh"
-
-
-void semantics(Program *);
 
 #endif

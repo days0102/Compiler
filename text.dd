@@ -1,7 +1,7 @@
 using sys
 
 class main{
-    5-3
+    5-3-1+1+3
     3-6+6
     use a = 1
     use b=a+4
@@ -9,6 +9,6 @@ class main{
 class abc{
     use c=3+5
 }
-class abc{
+class abcd{
     use c=3+5
 }

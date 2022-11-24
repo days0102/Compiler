@@ -2,7 +2,7 @@
  * @Author: Outsider
  * @Date: 2022-10-13 11:25:25
  * @LastEditors: Outsider
- * @LastEditTime: 2022-11-23 10:02:51
+ * @LastEditTime: 2022-11-24 08:42:08
  * @Description: In User Settings Edit
  * @FilePath: /compiler/inc/tree.hh
  */
@@ -42,6 +42,7 @@ public:
     virtual llvm::Value *CodeGen() = 0;
     void print(int level);
     virtual Node getNode() = 0;
+    virtual void semantic() = 0;
     ~Expression();
 };
 
@@ -55,6 +56,7 @@ public:
     Prohead(Token *using_name);
     llvm::Value *CodeGen() override;
     void print(int level) override;
+    void semantic() override;
     Node getNode() override;
     ~Prohead();
 };
@@ -69,6 +71,7 @@ public:
     Expressions *add(Expression *);
     llvm::Value *CodeGen() override;
     void print(int level) override;
+    void semantic() override;
     Node getNode() override;
     ~Expressions();
 };
@@ -82,6 +85,7 @@ public:
     Classbody(int, Expressions *explist);
     llvm::Value *CodeGen() override;
     void print(int level) override;
+    void semantic() override;
     Node getNode() override;
     Nodes getNodes();
     ~Classbody();
@@ -99,6 +103,7 @@ public:
     llvm::Value *CodeGen() override;
     Class *add(Expression *);
     void print(int level) override;
+    void semantic() override;
     Node getNode() override;
     ~Class();
 };
@@ -114,6 +119,7 @@ public:
     llvm::Value *CodeGen() override;
     Proclass *add(Class *);
     void print(int level) override;
+    void semantic() override;
     Node getNode() override;
     ~Proclass();
 };
@@ -127,21 +133,23 @@ public:
     Program() = default;
     Program(int line, Prohead *head, Proclass *proclass);
     void print(int level) override;
+    void semantic();
+    llvm::Value *CodeGen();
     Node getNode();
     ~Program();
 };
 
 class Evaluate : public Expression
 {
-private:
+public:
     Token *left;
     Expression *right;
 
-public:
     Evaluate() = default;
     Evaluate(int, Token *, Expression *);
     llvm::Value *CodeGen() override;
     void print(int level) override;
+    void semantic() override;
     Node getNode() override;
     ~Evaluate();
 };
@@ -156,6 +164,7 @@ public:
     Number(int line, Token *token);
     llvm::Value *CodeGen() override;
     void print(int level) override;
+    void semantic() override;
     Node getNode() override;
     ~Number();
 };
@@ -170,6 +179,7 @@ public:
     Object(int line, Token *token);
     llvm::Value *CodeGen() override;
     void print(int level) override;
+    void semantic() override;
     Node getNode() override;
     ~Object();
 };
@@ -177,11 +187,12 @@ public:
 class Use : public Expression
 {
 public:
-    Expression *exp;
+    Evaluate *exp;
 
-    Use(int line, Expression *exp);
+    Use(int line, Evaluate *exp);
     llvm::Value *CodeGen() override;
     void print(int level) override;
+    void semantic() override;
     Node getNode() override;
     ~Use();
 };
@@ -197,6 +208,7 @@ public:
     Operation(int, Expression *, char, Expression *);
     llvm::Value *CodeGen() override;
     void print(int level) override;
+    void semantic() override;
     Node getNode() override;
     ~Operation();
 };
@@ -211,6 +223,7 @@ public:
     Parameter();
     llvm::Value *CodeGen() override;
     void print(int level) override;
+    void semantic() override;
     Node getNode() override;
     ~Parameter();
 };
@@ -222,6 +235,7 @@ public:
     Parameters();
     llvm::Value *CodeGen() override;
     void print(int level) override;
+    void semantic() override;
     Node getNode() override;
     ~Parameters();
 };
@@ -237,6 +251,7 @@ public:
     Function();
     llvm::Value *CodeGen() override;
     void print(int level) override;
+    void semantic() override;
     Node getNode() override;
     ~Function();
 };

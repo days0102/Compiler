@@ -2,7 +2,7 @@
  * @Author: Outsider
  * @Date: 2022-10-31 20:32:31
  * @LastEditors: Outsider
- * @LastEditTime: 2022-11-23 10:04:11
+ * @LastEditTime: 2022-11-23 10:53:53
  * @Description: In User Settings Edit
  * @FilePath: /compiler/inc/codegen.hh
  */
@@ -30,7 +30,7 @@ llvm::Value *LogErrorV(const char *Str);
 
 // static std::unique_ptr<llvm::LLVMContext> TheContext;
 static llvm::LLVMContext TheContext;
-static std::unique_ptr<llvm::Module> TheModule;
+static llvm::Module* TheModule=new llvm::Module("module",TheContext);
 static llvm::IRBuilder<> Builder(TheContext);
 static std::map<std::string, llvm::Value *> NamedValues;
 
@@ -40,6 +40,14 @@ namespace codeGen
     {
     private:
         std::map<std::string, llvm::Value *> table;
+        llvm::BasicBlock *block;
+        SymbolTable *parent;
+
+    public:
+        SymbolTable();
+        SymbolTable(llvm::BasicBlock *block);
+        void enter(llvm::BasicBlock *block);
+        void exit();
     };
 }
 
