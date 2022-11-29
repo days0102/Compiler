@@ -2,7 +2,7 @@
  * @Author: Outsider
  * @Date: 2022-10-31 21:28:22
  * @LastEditors: Outsider
- * @LastEditTime: 2022-11-23 19:55:44
+ * @LastEditTime: 2022-11-29 15:43:36
  * @Description: In User Settings Edit
  * @FilePath: /compiler/src/codegen.cc
  */
@@ -14,11 +14,81 @@ llvm::Value *LogErrorV(const char *Str)
     cout << Str << endl;
     return nullptr;
 }
+
+void ObjectCode()
+{
+    auto TargetTriple = llvm::sys::getDefaultTargetTriple();
+    cout << TargetTriple << endl;
+    llvm::InitializeAllTargetInfos();
+    llvm::InitializeAllTargets();
+    llvm::InitializeAllTargetMCs();
+    llvm::InitializeAllAsmParsers();
+    llvm::InitializeAllAsmPrinters();
+
+    std::string Error;
+    auto Target = llvm::TargetRegistry::lookupTarget(TargetTriple, Error);
+
+    // Print an error and exit if we couldn't find the requested target.
+    // This generally occurs if we've forgotten to initialise the
+    // TargetRegistry or we have a bogus target triple.
+    if (!Target)
+    {
+        llvm::errs() << Error;
+        return;
+    }
+
+    auto CPU = "generic";
+    auto Features = "";
+
+    llvm::TargetOptions opt;
+    auto RM = llvm::Optional<llvm::Reloc::Model>();
+    auto TargetMachine = Target->createTargetMachine(TargetTriple, CPU, Features, opt, RM);
+    TheModule->setDataLayout(TargetMachine->createDataLayout());
+    TheModule->setTargetTriple(TargetTriple);
+
+    auto Filename = "output.o";
+    std::error_code EC;
+    llvm::raw_fd_ostream dest(Filename, EC, llvm::sys::fs::OF_None);
+
+    if (EC)
+    {
+        llvm::errs() << "Could not open file: " << EC.message();
+        return;
+    }
+    llvm::legacy::PassManager pass;
+    auto FileType = llvm::CGFT_ObjectFile;
+
+    if (TargetMachine->addPassesToEmitFile(pass, dest, nullptr, FileType))
+    {
+        llvm::errs() << "TargetMachine can't emit a file of this type";
+        return;
+    }
+
+    pass.run(*TheModule);
+    dest.flush();
+}
+
 codeGen::SymbolTable *cgStb;
 
 codeGen::SymbolTable::SymbolTable() : block(nullptr), parent(nullptr) {}
 codeGen::SymbolTable::SymbolTable(llvm::BasicBlock *block) : block(block),
                                                              parent(nullptr) {}
+
+llvm::BasicBlock *codeGen::SymbolTable::curBlock()
+{
+    return this->block;
+}
+
+llvm::Value *codeGen::SymbolTable::find(std::string name)
+{
+    auto res = this->table.find(name);
+    if (res != this->table.end())
+        return res->second;
+    else
+        return this->parent->find(name);
+    return nullptr;
+}
+
 void codeGen::SymbolTable::enter(llvm::BasicBlock *block)
 {
     auto stb = new codeGen::SymbolTable(block);
@@ -29,7 +99,7 @@ void codeGen::SymbolTable::exit()
 {
     cgStb = cgStb->parent;
 }
-llvm::Value *Program::CodeGen()
+llvm::Module *Program::CodeGen()
 {
     // 把整个程序作为一个函数
     llvm::Type *voidType = llvm::Type::getVoidTy(TheContext);
@@ -37,18 +107,20 @@ llvm::Value *Program::CodeGen()
     llvm::Function *function = llvm::Function::Create(functionType, llvm::GlobalValue::ExternalLinkage, "program", TheModule);
 
     llvm::BasicBlock *block = llvm::BasicBlock::Create(TheContext, "global", function);
-    llvm::BasicBlock *b = llvm::BasicBlock::Create(TheContext, "g", nullptr, block);
+    // llvm::BasicBlock *b = llvm::BasicBlock::Create(TheContext, "g", nullptr, block);
     cgStb = new codeGen::SymbolTable(block);
 
-    Builder.SetInsertPoint(block);
-    llvm::BinaryOperator::Create(llvm::Instruction::Add, llvm::ConstantFP::get(TheContext, llvm::APFloat(2.0)),
-                                 llvm::ConstantFP::get(TheContext, llvm::APFloat(3.3)), "", block);
-    llvm::BinaryOperator::Create(llvm::Instruction::Add, llvm::ConstantFP::get(TheContext, llvm::APFloat(2.0)),
-                                 llvm::ConstantFP::get(TheContext, llvm::APFloat(3.3)), "", b);
+    // llvm::BinaryOperator::Create(llvm::Instruction::Add, llvm::ConstantFP::get(TheContext, llvm::APFloat(2.0)),
+    //                              llvm::ConstantFP::get(TheContext, llvm::APFloat(3.3)), "", block);
+    // llvm::BinaryOperator::Create(llvm::Instruction::Add, llvm::ConstantFP::get(TheContext, llvm::APFloat(2.0)),
+    //  llvm::ConstantFP::get(TheContext, llvm::APFloat(3.3)), "", b);
     this->prohead->CodeGen();
     this->proclass->CodeGen();
     llvm::ReturnInst::Create(TheContext, block);
-    return function;
+    Builder.SetInsertPoint(block);
+    // Builder.CreateAnd(llvm::ConstantFP::get(TheContext, llvm::APFloat(3.3)), llvm::ConstantFP::get(TheContext, llvm::APFloat(3.3)));
+
+    return TheModule;
 }
 
 llvm::Value *Prohead::CodeGen()
@@ -73,9 +145,15 @@ llvm::Value *Classbody::CodeGen()
 
 llvm::Value *Class::CodeGen()
 {
-    llvm::BasicBlock *block = llvm::BasicBlock::Create(TheContext, this->token->name);
+    llvm::Type *voidType = llvm::Type::getVoidTy(TheContext);
+    llvm::FunctionType *functionType = llvm::FunctionType::get(voidType, false);
+    llvm::Function *function = llvm::Function::Create(functionType, llvm::GlobalValue::ExternalLinkage, this->token->name, TheModule);
+
+    llvm::BasicBlock *block = llvm::BasicBlock::Create(TheContext, "class", function);
+    
     cgStb->enter(block);
     this->classbody->CodeGen();
+    llvm::ReturnInst::Create(TheContext, cgStb->curBlock());
     cgStb->exit();
     return nullptr;
 }
@@ -92,6 +170,8 @@ llvm::Value *Proclass::CodeGen()
 
 llvm::Value *Evaluate::CodeGen()
 {
+    llvm::Value *alloc = cgStb->find(this->left->name);
+    Builder.CreateStore(this->right->CodeGen(), alloc);
     return nullptr;
 }
 
@@ -102,11 +182,16 @@ llvm::Value *Number::CodeGen()
 
 llvm::Value *Object::CodeGen()
 {
-    return nullptr;
+    llvm::Value *alloc = cgStb->find(this->token->name);
+    return Builder.CreateLoad(alloc);
 }
 
 llvm::Value *Use::CodeGen()
 {
+    llvm::AllocaInst *alloc = new llvm::AllocaInst(llvm::Type::getDoubleTy(TheContext), 0, this->exp->left->name, cgStb->curBlock());
+    cgStb->table[this->exp->left->name] = alloc;
+    Builder.SetInsertPoint(cgStb->curBlock());
+    Builder.CreateStore(this->exp->right->CodeGen(), alloc);
     return nullptr;
 }
 
@@ -118,13 +203,21 @@ llvm::Value *Operation::CodeGen()
     switch (this->op)
     {
     case '+':
-        return Builder.CreateFAdd(lv, rv, "addtmp");
+        return llvm::BinaryOperator::Create(llvm::Instruction::FAdd, lv,
+                                            rv, "", cgStb->curBlock());
+        // return Builder.CreateFAdd(lv, rv, "addtmp");
     case '-':
-        return Builder.CreateFSub(lv, rv, "subtmp");
+        return llvm::BinaryOperator::Create(llvm::Instruction::FSub, lv,
+                                            rv, "", cgStb->curBlock());
+        // return Builder.CreateFSub(lv, rv, "subtmp");
     case '*':
-        return Builder.CreateFMul(lv, rv, "multmp");
+        return llvm::BinaryOperator::Create(llvm::Instruction::FMul, lv,
+                                            rv, "", cgStb->curBlock());
+        // return Builder.CreateFMul(lv, rv, "multmp");
     case '/':
-        return Builder.CreateFDiv(lv, rv, "divtmp");
+        return llvm::BinaryOperator::Create(llvm::Instruction::FDiv, lv,
+                                            rv, "", cgStb->curBlock());
+        // return Builder.CreateFDiv(lv, rv, "divtmp");
     default:
         return LogErrorV("invalid binary operator");
     }
@@ -137,6 +230,8 @@ llvm::Value *Parameter::CodeGen()
 
 llvm::Value *Parameters::CodeGen()
 {
+    llvm::StructType *treeType = llvm::StructType::create(TheContext, llvm::StringRef("Tree"));
+
     return nullptr;
 }
 

@@ -1,0 +1,46 @@
+define void @program() {
+global:
+  ret void
+}
+
+define void @main() {
+class:
+  %0 = fsub double 5.000000e+00, 3.000000e+00
+  %1 = fsub double %0, 1.000000e+00
+  %2 = fadd double %1, 1.000000e+00
+  %3 = fadd double %2, 3.000000e+00
+  %4 = fsub double 3.000000e+00, 6.000000e+00
+  %5 = fadd double %4, 6.000000e+00
+  %a = alloca double
+  store double 1.000000e+00, double* %a
+  %b = alloca double
+  %6 = load double, double* %a
+  %7 = fadd double %6, 4.000000e+00
+  store double %7, double* %b
+  ret void
+}
+
+define void @abc() {
+class:
+  %c = alloca double
+  %0 = fadd double 3.000000e+00, 5.000000e+00
+  store double %0, double* %c
+  %name = alloca double
+  %1 = load double, double* %c
+  %2 = load double, double* %c
+  %3 = fadd double %1, %2
+  store double %3, double* %name
+  %4 = load double, double* %name
+  %5 = load double, double* %c
+  %6 = fadd double %4, %5
+  store double %6, double* %c
+  ret void
+}
+
+define void @abcd() {
+class:
+  %c = alloca double
+  %0 = fadd double 3.000000e+00, 5.000000e+00
+  store double %0, double* %c
+  ret void
+}

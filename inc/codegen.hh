@@ -2,7 +2,7 @@
  * @Author: Outsider
  * @Date: 2022-10-31 20:32:31
  * @LastEditors: Outsider
- * @LastEditTime: 2022-11-23 10:53:53
+ * @LastEditTime: 2022-11-29 14:13:01
  * @Description: In User Settings Edit
  * @FilePath: /compiler/inc/codegen.hh
  */
@@ -22,6 +22,15 @@
 #include "llvm/ADT/APFloat.h"
 #include "llvm/Support/DataTypes.h"
 
+#include "llvm/Support/TargetSelect.h"
+#include "llvm/Support/TargetRegistry.h"
+#include "llvm/Target/TargetOptions.h"
+#include "llvm/Support/CodeGen.h"
+#include "llvm/Target/TargetMachine.h"
+#include "llvm/Support/raw_ostream.h"
+#include "llvm/IR/LegacyPassManager.h"
+#include "llvm/Support/FileSystem.h"
+
 #include <iostream>
 using std::cout;
 using std::endl;
@@ -38,7 +47,8 @@ namespace codeGen
 {
     class SymbolTable
     {
-    private:
+    // private:
+    public:
         std::map<std::string, llvm::Value *> table;
         llvm::BasicBlock *block;
         SymbolTable *parent;
@@ -46,9 +56,13 @@ namespace codeGen
     public:
         SymbolTable();
         SymbolTable(llvm::BasicBlock *block);
+        llvm::BasicBlock* curBlock();
+        llvm::Value* find(std::string);
         void enter(llvm::BasicBlock *block);
         void exit();
     };
 }
 
+
+void ObjectCode();
 #endif

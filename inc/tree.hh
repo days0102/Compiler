@@ -2,7 +2,7 @@
  * @Author: Outsider
  * @Date: 2022-10-13 11:25:25
  * @LastEditors: Outsider
- * @LastEditTime: 2022-11-24 08:42:08
+ * @LastEditTime: 2022-11-28 20:35:22
  * @Description: In User Settings Edit
  * @FilePath: /compiler/inc/tree.hh
  */
@@ -134,7 +134,7 @@ public:
     Program(int line, Prohead *head, Proclass *proclass);
     void print(int level) override;
     void semantic();
-    llvm::Value *CodeGen();
+    llvm::Module *CodeGen();
     Node getNode();
     ~Program();
 };

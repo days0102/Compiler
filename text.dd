@@ -8,6 +8,8 @@ class main{
 }
 class abc{
     use c=3+5
+    use name=c+c
+    c=name+c
 }
 class abcd{
     use c=3+5

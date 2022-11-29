@@ -2,7 +2,7 @@
  * @Author: Outsider
  * @Date: 2022-10-05 20:08:20
  * @LastEditors: Outsider
- * @LastEditTime: 2022-11-23 21:43:10
+ * @LastEditTime: 2022-11-29 15:23:27
  * @Description: In User Settings Edit
  * @FilePath: /compiler/src/main.cc
  */
@@ -10,8 +10,10 @@
 #include "tree.hh"
 #include "tokens.hh"
 #include "semantic.hh"
+#include "codegen.hh"
 // #include "bison.tab.hh"
-#include "llvm/Support/raw_ostream.h"
+// #include "llvm/Support/raw_ostream.h"
+// #include "llvm/IR/Module.h"
 
 using std::cout;
 using std::endl;
@@ -71,8 +73,10 @@ int main(int argc, char **argv)
     ast_root->semantic();
 
     // llvm::Value *v = ast_root->proclass->classes.front()->classbody->explist->explist.front()->CodeGen();
-    llvm::Value *v = ast_root->CodeGen();
-    v->print(llvm::outs());
+    llvm::Module *m = ast_root->CodeGen();
+    m->print(llvm::outs(), nullptr,false,true);
+
+    ObjectCode();
 
     cout << endl;
 }

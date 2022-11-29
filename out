@@ -1,0 +1,136 @@
+ Key	->  using
+ Id	->  sys
+ Key	->  class
+ Id	->  main
+ Sym	->  {
+ Num	->  5
+ Sym	->  -
+ Num	->  3
+ Sym	->  -
+ Num	->  1
+ Sym	->  +
+ Num	->  1
+ Sym	->  +
+ Num	->  3
+ Num	->  3
+ Sym	->  -
+ Num	->  6
+ Sym	->  +
+ Num	->  6
+ Key	->  use
+ Id	->  a
+ Sym	->  =
+ Num	->  1
+ Key	->  use
+ Id	->  b
+ Sym	->  =
+ Id	->  a
+ Sym	->  +
+ Num	->  4
+ Sym	->  }
+ Key	->  class
+ Id	->  abc
+ Sym	->  {
+ Key	->  use
+ Id	->  c
+ Sym	->  =
+ Num	->  3
+ Sym	->  +
+ Num	->  5
+ Key	->  use
+ Id	->  name
+ Sym	->  =
+ Id	->  c
+ Sym	->  +
+ Id	->  c
+ Id	->  c
+ Sym	->  =
+ Id	->  name
+ Sym	->  +
+ Id	->  c
+ Sym	->  }
+ Key	->  class
+ Id	->  abcd
+ Sym	->  {
+ Key	->  use
+ Id	->  c
+ Sym	->  =
+ Num	->  3
+ Sym	->  +
+ Num	->  5
+ Sym	->  }
+------------
+line: 16
+word: 0
+-------------------
+ast_root: 0x74aa50	line: 16
+
+
+                    program
+  ┌────────────────────┴────────────────────┐
+using                                     class
+  │                   ┌─────────────────────┼─────────────────────┐
+ sys                main                   abc                  abcd
+                ┌─────┴────┐          ┌─────┴────┐          ┌─────┴────┐
+           expression  function  expression  function  expression  function
+        ┌─────┬─┴─┬─────┐      ┌──────┴┬─────┐              │
+        +     +  use   use    use     use    =             use
+      ┌─┴┐  ┌─┴┐  │     │      │       │  ┌──┴──┐           │
+      +  3  -  6  =     =      =       =  c     +           =
+    ┌─┴┐  ┌─┴┐  ┌─┴┐  ┌─┴┐   ┌─┴┐    ┌─┴─┐    ┌─┴─┐       ┌─┴┐
+    -  1  3  6  a  1  b  +   c  +  name  +  name  c       c  +
+  ┌─┴┐                 ┌─┴┐   ┌─┴┐     ┌─┴┐                ┌─┴┐
+  -  1                 a  4   3  5     c  c                3  5
+┌─┴┐
+5  3
+; ModuleID = 'module'
+source_filename = "module"
+
+define void @program() {
+global:
+  ret void
+}
+
+define void @main() {
+class:
+  %0 = fsub double 5.000000e+00, 3.000000e+00
+  %1 = fsub double %0, 1.000000e+00
+  %2 = fadd double %1, 1.000000e+00
+  %3 = fadd double %2, 3.000000e+00
+  %4 = fsub double 3.000000e+00, 6.000000e+00
+  %5 = fadd double %4, 6.000000e+00
+  %a = alloca double
+  store double 1.000000e+00, double* %a
+  %b = alloca double
+  %6 = load double, double* %a
+  %7 = fadd double %6, 4.000000e+00
+  store double %7, double* %b
+  ret void
+}
+
+define void @abc() {
+class:
+  %c = alloca double
+  %0 = fadd double 3.000000e+00, 5.000000e+00
+  store double %0, double* %c
+  %name = alloca double
+  %1 = load double, double* %c
+  %2 = load double, double* %c
+  %3 = fadd double %1, %2
+  store double %3, double* %name
+  %4 = load double, double* %name
+  %5 = load double, double* %c
+  %6 = fadd double %4, %5
+  store double %6, double* %c
+  ret void
+}
+
+define void @abcd() {
+class:
+  %c = alloca double
+  %0 = fadd double 3.000000e+00, 5.000000e+00
+  store double %0, double* %c
+  ret void
+}
+x86_64-pc-linux-gnu
+
