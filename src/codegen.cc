@@ -2,7 +2,7 @@
  * @Author: Outsider
  * @Date: 2022-10-31 21:28:22
  * @LastEditors: Outsider
- * @LastEditTime: 2022-11-29 15:43:36
+ * @LastEditTime: 2022-11-29 15:49:41
  * @Description: In User Settings Edit
  * @FilePath: /compiler/src/codegen.cc
  */
@@ -230,8 +230,6 @@ llvm::Value *Parameter::CodeGen()
 
 llvm::Value *Parameters::CodeGen()
 {
-    llvm::StructType *treeType = llvm::StructType::create(TheContext, llvm::StringRef("Tree"));
-
     return nullptr;
 }
 
