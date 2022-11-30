@@ -67,7 +67,7 @@ bison.tab.cc: lex.yy.c bison.y
 # 	bison ${BFLAGS} bison.y
 
 clean:
-	rm *.tab.* lex.yy.c parser 2> /dev/null || :
+	rm *.tab.* lex.yy.c parser ir ir.bc ir.s output.o output.S a.out 2> /dev/null || :
 
 run:${TARGET} ${SRCS}
-	@./parser text.dd
+	@./parser text.dd -A -a

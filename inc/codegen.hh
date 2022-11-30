@@ -2,7 +2,7 @@
  * @Author: Outsider
  * @Date: 2022-10-31 20:32:31
  * @LastEditors: Outsider
- * @LastEditTime: 2022-11-30 14:35:20
+ * @LastEditTime: 2022-11-30 16:35:14
  * @Description: In User Settings Edit
  * @FilePath: /compiler/inc/codegen.hh
  */
@@ -39,16 +39,21 @@ using std::endl;
 llvm::Value *LogErrorV(const char *Str);
 
 // static std::unique_ptr<llvm::LLVMContext> TheContext;
-static llvm::LLVMContext TheContext;
-static llvm::Module* TheModule=new llvm::Module("module",TheContext);
+static llvm::LLVMContext TheContext; // LLVM 上下文，主要用于生成各种对象
+// TheModule是一个包含函数和全局变量的LLVM构造器。
+static llvm::Module *TheModule = new llvm::Module("module", TheContext);
+/*
+Builder对象是一个帮助器对象，可以方便地生成LLVM指令。
+IRBuilder类模板的实例跟踪插入指令的当前位置，并具有创建新指令的方法。
+*/
 static llvm::IRBuilder<> Builder(TheContext);
-static std::map<std::string, llvm::Value *> NamedValues;
+// static std::map<std::string, llvm::Value *> NamedValues;
 
 namespace codeGen
 {
     class SymbolTable
     {
-    // private:
+        // private:
     public:
         std::map<std::string, llvm::Value *> table;
         llvm::BasicBlock *block;
@@ -57,13 +62,13 @@ namespace codeGen
     public:
         SymbolTable();
         SymbolTable(llvm::BasicBlock *block);
-        llvm::BasicBlock* curBlock();
-        llvm::Value* find(std::string);
+        llvm::BasicBlock *curBlock();
+        llvm::Value *find(std::string);
         void enter(llvm::BasicBlock *block);
         void exit();
     };
 }
 
 void IRCode();
-void ObjectCode();
+void ObjectCode(int);
 #endif

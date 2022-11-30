@@ -2,7 +2,7 @@
  * @Author: Outsider
  * @Date: 2022-10-31 21:28:22
  * @LastEditors: Outsider
- * @LastEditTime: 2022-11-30 15:25:10
+ * @LastEditTime: 2022-11-30 16:54:55
  * @Description: In User Settings Edit
  * @FilePath: /compiler/src/codegen.cc
  */
@@ -21,14 +21,14 @@ void IRCode()
 {
     std::error_code EC;
     llvm::raw_fd_ostream dest("ir", EC, llvm::sys::fs::OF_None);
-    TheModule->print(dest,nullptr);
+    TheModule->print(dest, nullptr);
     dest.flush();
 }
 
-void ObjectCode()
+void ObjectCode(int type)
 {
     auto TargetTriple = llvm::sys::getDefaultTargetTriple();
-    cout << TargetTriple << endl;
+    // cout << TargetTriple << endl;
     llvm::InitializeAllTargetInfos();
     llvm::InitializeAllTargets();
     llvm::InitializeAllTargetMCs();
@@ -61,7 +61,16 @@ void ObjectCode()
     TheModule->setDataLayout(TargetMachine->createDataLayout());
     TheModule->setTargetTriple(TargetTriple);
 
-    auto Filename = "output.o";
+    std::string Filename = "output.o";
+    llvm::CodeGenFileType FileType;
+    if (type == 0)
+    {
+        FileType = llvm::CGFT_AssemblyFile;
+        Filename = "output.S";
+    }
+    else if (type == 1)
+        FileType = llvm::CGFT_ObjectFile;
+
     std::error_code EC;
     llvm::raw_fd_ostream dest(Filename, EC, llvm::sys::fs::OF_None);
 
@@ -71,8 +80,6 @@ void ObjectCode()
         return;
     }
     llvm::legacy::PassManager pass;
-    // auto FileType = llvm::CGFT_AssemblyFile;
-    auto FileType = llvm::CGFT_ObjectFile;
 
     if (TargetMachine->addPassesToEmitFile(pass, dest, nullptr, FileType))
     {

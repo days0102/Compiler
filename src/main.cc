@@ -2,7 +2,7 @@
  * @Author: Outsider
  * @Date: 2022-10-05 20:08:20
  * @LastEditors: Outsider
- * @LastEditTime: 2022-11-30 14:35:07
+ * @LastEditTime: 2022-11-30 16:40:55
  * @Description: In User Settings Edit
  * @FilePath: /compiler/src/main.cc
  */
@@ -44,40 +44,86 @@ void initkeyword()
 
 int main(int argc, char **argv)
 {
+    std::map<std::string, int> args;
     if (argc <= 1)
     {
         cout << "usage read filename" << endl;
         return 0;
     }
+    for (int i = 2; i < argc; i++)
+    {
+        args[argv[i]]++;
+    }
+
     if ((yyin = fopen(argv[1], "r")) == nullptr)
     {
         cout << "fopen" << argv[1] << "error" << endl;
         return 0;
     }
-    while (displaytoken(yylex()) != 0)
-        ;
-    // initkeyword();
-    cout << "------------" << endl;
-    cout << "line: " << line << endl
-         << "word: " << word << endl;
 
-    cout << "-------------------" << endl;
+    /*
+        -S 输出汇编代码到文件         -s 控制台输出汇编
+        -T 输出语法树到文件           -t 控制台输出
+        -I 输出 LLVM IR 代码到文件   -i 控制台输出
+                                   -l  控制台输出token序列
+        -B 输出符号表
+        -o 生成目标代码
+        -A 生成所有文件
+        -a 输出所有内容
+    */
+
+    if (args.find("-a") != args.end() || args.find("-l") != args.end())
+    {
+        cout << "--------Tokens-----------" << endl;
+        while (displaytoken(yylex()) != 0)
+            ;
+        cout << "-------------------------" << endl;
+    }
+
+    // initkeyword();
+    // cout << "------------" << endl;
+    // cout << "line: " << line << endl
+    //      << "word: " << word << endl;
+
     yylineno = 1;
     fseek(yyin, 0, SEEK_SET);
     yyparse();
     cout << endl;
 
-    // ast_root->print(0);
-    cout << to_string(ast_root->getNode()) << endl;
+    if (args.find("-a") != args.end() || args.find("-t") != args.end())
+    {
+        cout << "--------Tree-----------" << endl;
+        // ast_root->print(0);
+        cout << to_string(ast_root->getNode()) << endl;
+        cout << "-----------------------" << endl;
+    }
 
     ast_root->semantic();
 
     // llvm::Value *v = ast_root->proclass->classes.front()->classbody->explist->explist.front()->CodeGen();
     llvm::Module *m = ast_root->CodeGen();
-    m->print(llvm::outs(), nullptr,false,false);
 
-    IRCode();
-    ObjectCode();
+    if (args.find("-a") != args.end() || args.find("-i") != args.end())
+    {
+        cout << "--------LLVM IR-----------" << endl;
+        m->print(llvm::outs(), nullptr, false, false);
+        cout << "--------------------------" << endl;
+    }
+    if (args.find("-A") != args.end() || args.find("-I") != args.end())
+        IRCode();
+    if (args.find("-A") != args.end())
+    {
+        ObjectCode(0);
+        ObjectCode(1);
+    }
+    else if (args.find("-o") != args.end() || args.size() == 0)
+    {
+        ObjectCode(1);
+        if (args.find("-S") != args.end())
+            ObjectCode(0);
+    }
+    else if (args.find("-S") != args.end())
+        ObjectCode(0);
 
     cout << endl;
 }
