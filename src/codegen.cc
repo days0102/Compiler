@@ -2,17 +2,27 @@
  * @Author: Outsider
  * @Date: 2022-10-31 21:28:22
  * @LastEditors: Outsider
- * @LastEditTime: 2022-11-30 11:17:44
+ * @LastEditTime: 2022-11-30 15:25:10
  * @Description: In User Settings Edit
  * @FilePath: /compiler/src/codegen.cc
  */
 #include "codegen.hh"
 #include "tree.hh"
 
+// 用于报告 LLVM 代码生成过程中发现的错误
 llvm::Value *LogErrorV(const char *Str)
 {
     cout << Str << endl;
     return nullptr;
+}
+
+// 输出LLVM IR
+void IRCode()
+{
+    std::error_code EC;
+    llvm::raw_fd_ostream dest("ir", EC, llvm::sys::fs::OF_None);
+    TheModule->print(dest,nullptr);
+    dest.flush();
 }
 
 void ObjectCode()
@@ -25,10 +35,10 @@ void ObjectCode()
     llvm::InitializeAllAsmParsers();
     llvm::InitializeAllAsmPrinters();
 
-    llvm::ExecutionEngine *ee= llvm::EngineBuilder(std::unique_ptr<llvm::Module>(TheModule)).setEngineKind(llvm::EngineKind::JIT).create();
-	
-    auto func=TheModule->getFunction(llvm::StringRef("printf"));
-	ee->addGlobalMapping(func,(void*)printf);
+    llvm::ExecutionEngine *ee = llvm::EngineBuilder(std::unique_ptr<llvm::Module>(TheModule)).setEngineKind(llvm::EngineKind::JIT).create();
+
+    auto func = TheModule->getFunction(llvm::StringRef("printf"));
+    ee->addGlobalMapping(func, (void *)printf);
 
     std::string Error;
     auto Target = llvm::TargetRegistry::lookupTarget(TargetTriple, Error);
@@ -141,14 +151,21 @@ llvm::Value *Prohead::CodeGen()
                 llvm::Type::getInt8Ty(TheContext)->getPointerTo(),
                 true /* this is variadic func */
                 ));
+        // 声明输入函数
+        TheModule->getOrInsertFunction(
+            "scanf",
+            llvm::FunctionType::get(
+                llvm::IntegerType::getInt32Ty(TheContext),
+                llvm::Type::getInt8Ty(TheContext)->getPointerTo(),
+                true /* this is variadic func */
+                ));
 
         TheModule->getOrInsertFunction(
             "out",
             llvm::FunctionType::get(
                 llvm::IntegerType::getInt32Ty(TheContext),
                 llvm::IntegerType::getDoubleTy(TheContext),
-                false
-                ));
+                false));
     }
     auto function = TheModule->getFunction(llvm::StringRef("out"));
 
@@ -157,7 +174,7 @@ llvm::Value *Prohead::CodeGen()
 
     auto print = TheModule->getFunction(llvm::StringRef("printf"));
     std::vector<llvm::Value *> printfArgs;
-    llvm::Value *formatStrVal = Builder.CreateGlobalStringPtr("%f");
+    llvm::Value *formatStrVal = Builder.CreateGlobalStringPtr("%f\n");
     printfArgs.push_back(formatStrVal);
     // std::cout<<function->arg_size()<<std::endl;
     printfArgs.push_back(function->getArg(0));
@@ -282,7 +299,7 @@ llvm::Value *Call::CodeGen()
     // {
     //     args.push_back(arg->CodeGen());
     // }
-    auto it=this->args.begin();
+    auto it = this->args.begin();
     Builder.CreateCall(func, (*it)->CodeGen());
     return nullptr;
 }

@@ -2,7 +2,7 @@
  * @Author: Outsider
  * @Date: 2022-11-19 14:35:45
  * @LastEditors: Outsider
- * @LastEditTime: 2022-11-30 08:40:32
+ * @LastEditTime: 2022-11-30 14:24:08
  * @Description: In User Settings Edit
  * @FilePath: /compiler/src/print.cc
  */
@@ -186,6 +186,6 @@ Node Call::getNode()
     Node n("call");
     n = {
         "call",
-        Nodes::build_array("...")};
+        Nodes::build_array(this->token->name)};
     return n;
 }

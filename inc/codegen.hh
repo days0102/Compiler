@@ -2,7 +2,7 @@
  * @Author: Outsider
  * @Date: 2022-10-31 20:32:31
  * @LastEditors: Outsider
- * @LastEditTime: 2022-11-30 10:54:17
+ * @LastEditTime: 2022-11-30 14:35:20
  * @Description: In User Settings Edit
  * @FilePath: /compiler/inc/codegen.hh
  */
@@ -64,6 +64,6 @@ namespace codeGen
     };
 }
 
-
+void IRCode();
 void ObjectCode();
 #endif

@@ -2,7 +2,7 @@
  * @Author: Outsider
  * @Date: 2022-10-05 20:08:20
  * @LastEditors: Outsider
- * @LastEditTime: 2022-11-29 17:17:45
+ * @LastEditTime: 2022-11-30 14:35:07
  * @Description: In User Settings Edit
  * @FilePath: /compiler/src/main.cc
  */
@@ -76,6 +76,7 @@ int main(int argc, char **argv)
     llvm::Module *m = ast_root->CodeGen();
     m->print(llvm::outs(), nullptr,false,false);
 
+    IRCode();
     ObjectCode();
 
     cout << endl;
