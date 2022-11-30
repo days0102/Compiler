@@ -2,7 +2,7 @@
  * @Author: Outsider
  * @Date: 2022-11-19 14:35:45
  * @LastEditors: Outsider
- * @LastEditTime: 2022-11-20 09:08:25
+ * @LastEditTime: 2022-11-30 08:40:32
  * @Description: In User Settings Edit
  * @FilePath: /compiler/src/print.cc
  */
@@ -147,7 +147,7 @@ Node Operation::getNode()
     b.add(this->left->getNode());
     b.add(this->right->getNode());
 
-    Node n(std::string(1, this->op),b.build());
+    Node n(std::string(1, this->op), b.build());
     // n = {
     //     std::string(1, this->op),
     //     b.build()};
@@ -177,6 +177,15 @@ Node Function::getNode()
     Node n("funtion");
     n = {
         "funtion",
+        Nodes::build_array("...")};
+    return n;
+}
+
+Node Call::getNode()
+{
+    Node n("call");
+    n = {
+        "call",
         Nodes::build_array("...")};
     return n;
 }

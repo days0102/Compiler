@@ -45,6 +45,8 @@ FTN     ftn
 ","         {return int(',');}
 "{"         {return int('{');}
 "}"         {return int('}');}
+"("         {return int('(');}
+")"         {return int(')');}
 "\n"        {line++;}
 [ \t]       {}
 .           {}

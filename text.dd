@@ -5,6 +5,9 @@ class main{
     3-6+6
     use a = 1
     use b=a+4
+    out(b)
+    use c=b+b
+    out(c)
 }
 class abc{
     use c=3+5

@@ -1,6 +1,16 @@
+@0 = private unnamed_addr constant [3 x i8] c"%f\00", align 1
+
 define void @program() {
 global:
   ret void
+}
+
+declare i32 @printf(i8*, ...)
+
+define i32 @out(double %0) {
+print:
+  %1 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @0, i32 0, i32 0), double %0)
+  ret i32 %1
 }
 
 define void @main() {
@@ -17,6 +27,15 @@ class:
   %6 = load double, double* %a
   %7 = fadd double %6, 4.000000e+00
   store double %7, double* %b
+  %8 = load double, double* %b
+  %9 = call i32 @out(double %8)
+  %c = alloca double
+  %10 = load double, double* %b
+  %11 = load double, double* %b
+  %12 = fadd double %10, %11
+  store double %12, double* %c
+  %13 = load double, double* %c
+  %14 = call i32 @out(double %13)
   ret void
 }
 

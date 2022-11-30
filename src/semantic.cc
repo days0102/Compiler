@@ -2,7 +2,7 @@
  * @Author: Outsider
  * @Date: 2022-11-21 20:13:24
  * @LastEditors: Outsider
- * @LastEditTime: 2022-11-24 09:15:23
+ * @LastEditTime: 2022-11-30 08:41:37
  * @Description: In User Settings Edit
  * @FilePath: /compiler/src/semantic.cc
  */
@@ -102,10 +102,11 @@ void Parameters::semantic() {}
 
 void Function::semantic() {}
 
+void Call::semantic() {}
+
 void initSymboltable()
 {
     // 初始化添加关键字
-    
 }
 
 void Program::semantic()

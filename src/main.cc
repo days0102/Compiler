@@ -2,7 +2,7 @@
  * @Author: Outsider
  * @Date: 2022-10-05 20:08:20
  * @LastEditors: Outsider
- * @LastEditTime: 2022-11-29 15:23:27
+ * @LastEditTime: 2022-11-29 17:17:45
  * @Description: In User Settings Edit
  * @FilePath: /compiler/src/main.cc
  */
@@ -74,7 +74,7 @@ int main(int argc, char **argv)
 
     // llvm::Value *v = ast_root->proclass->classes.front()->classbody->explist->explist.front()->CodeGen();
     llvm::Module *m = ast_root->CodeGen();
-    m->print(llvm::outs(), nullptr,false,true);
+    m->print(llvm::outs(), nullptr,false,false);
 
     ObjectCode();
 

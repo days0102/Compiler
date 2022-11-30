@@ -2,7 +2,7 @@
  * @Author: Outsider
  * @Date: 2022-10-31 20:32:31
  * @LastEditors: Outsider
- * @LastEditTime: 2022-11-29 14:13:01
+ * @LastEditTime: 2022-11-30 10:54:17
  * @Description: In User Settings Edit
  * @FilePath: /compiler/inc/codegen.hh
  */
@@ -30,6 +30,7 @@
 #include "llvm/Support/raw_ostream.h"
 #include "llvm/IR/LegacyPassManager.h"
 #include "llvm/Support/FileSystem.h"
+#include "llvm/ExecutionEngine/ExecutionEngine.h"
 
 #include <iostream>
 using std::cout;

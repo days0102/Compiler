@@ -2,7 +2,7 @@
  * @Author: Outsider
  * @Date: 2022-10-13 11:25:25
  * @LastEditors: Outsider
- * @LastEditTime: 2022-11-28 20:35:22
+ * @LastEditTime: 2022-11-30 09:25:22
  * @Description: In User Settings Edit
  * @FilePath: /compiler/inc/tree.hh
  */
@@ -254,6 +254,20 @@ public:
     void semantic() override;
     Node getNode() override;
     ~Function();
+};
+
+class Call : public Expression
+{
+public:
+    Token *token;
+    std::list<Expression *> args;
+
+    Call(Token *);
+    Call(int,Token *, Expression *);
+    llvm::Value *CodeGen() override;
+    void print(int level) override;
+    void semantic() override;
+    Node getNode() override;
 };
 
 #endif

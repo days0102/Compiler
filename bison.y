@@ -103,13 +103,17 @@ t_exp :
     { $$=new Operation(yylineno,$1,'*',$3);}
     | t_exp '/' t_exp
     { $$=new Operation(yylineno,$1,'/',$3);}
+    |'(' t_exp ')'
+    { $$=$2;}
+    | OBJECT '(' t_exp ')'
+    { $$=new Call(yylineno,$1,$3);}
     ;
 
 t_evaluation
     : OBJECT '=' t_exp
     { $$=new Evaluate(yylineno,$1,$3);}
     | OBJECT '=' t_exp ',' t_evaluation
-    
+    {cout<<","<<endl;}
     ;
 %%
 

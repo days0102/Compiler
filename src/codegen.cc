@@ -2,7 +2,7 @@
  * @Author: Outsider
  * @Date: 2022-10-31 21:28:22
  * @LastEditors: Outsider
- * @LastEditTime: 2022-11-29 15:49:41
+ * @LastEditTime: 2022-11-30 11:17:44
  * @Description: In User Settings Edit
  * @FilePath: /compiler/src/codegen.cc
  */
@@ -24,6 +24,11 @@ void ObjectCode()
     llvm::InitializeAllTargetMCs();
     llvm::InitializeAllAsmParsers();
     llvm::InitializeAllAsmPrinters();
+
+    llvm::ExecutionEngine *ee= llvm::EngineBuilder(std::unique_ptr<llvm::Module>(TheModule)).setEngineKind(llvm::EngineKind::JIT).create();
+	
+    auto func=TheModule->getFunction(llvm::StringRef("printf"));
+	ee->addGlobalMapping(func,(void*)printf);
 
     std::string Error;
     auto Target = llvm::TargetRegistry::lookupTarget(TargetTriple, Error);
@@ -56,6 +61,7 @@ void ObjectCode()
         return;
     }
     llvm::legacy::PassManager pass;
+    // auto FileType = llvm::CGFT_AssemblyFile;
     auto FileType = llvm::CGFT_ObjectFile;
 
     if (TargetMachine->addPassesToEmitFile(pass, dest, nullptr, FileType))
@@ -125,6 +131,37 @@ llvm::Module *Program::CodeGen()
 
 llvm::Value *Prohead::CodeGen()
 {
+    if (this->token->name == "sys")
+    {
+        // 声明输出函数
+        TheModule->getOrInsertFunction(
+            "printf",
+            llvm::FunctionType::get(
+                llvm::IntegerType::getInt32Ty(TheContext),
+                llvm::Type::getInt8Ty(TheContext)->getPointerTo(),
+                true /* this is variadic func */
+                ));
+
+        TheModule->getOrInsertFunction(
+            "out",
+            llvm::FunctionType::get(
+                llvm::IntegerType::getInt32Ty(TheContext),
+                llvm::IntegerType::getDoubleTy(TheContext),
+                false
+                ));
+    }
+    auto function = TheModule->getFunction(llvm::StringRef("out"));
+
+    auto block = llvm::BasicBlock::Create(TheContext, "print", function);
+    Builder.SetInsertPoint(block);
+
+    auto print = TheModule->getFunction(llvm::StringRef("printf"));
+    std::vector<llvm::Value *> printfArgs;
+    llvm::Value *formatStrVal = Builder.CreateGlobalStringPtr("%f");
+    printfArgs.push_back(formatStrVal);
+    // std::cout<<function->arg_size()<<std::endl;
+    printfArgs.push_back(function->getArg(0));
+    Builder.CreateRet(Builder.CreateCall(print, printfArgs));
     return nullptr;
 }
 
@@ -150,7 +187,7 @@ llvm::Value *Class::CodeGen()
     llvm::Function *function = llvm::Function::Create(functionType, llvm::GlobalValue::ExternalLinkage, this->token->name, TheModule);
 
     llvm::BasicBlock *block = llvm::BasicBlock::Create(TheContext, "class", function);
-    
+
     cgStb->enter(block);
     this->classbody->CodeGen();
     llvm::ReturnInst::Create(TheContext, cgStb->curBlock());
@@ -235,5 +272,17 @@ llvm::Value *Parameters::CodeGen()
 
 llvm::Value *Function::CodeGen()
 {
+    return nullptr;
+}
+llvm::Value *Call::CodeGen()
+{
+    auto func = TheModule->getFunction(llvm::StringRef(this->token->name));
+    // std::vector<llvm::Value *> args;
+    // for (auto arg : this->args)
+    // {
+    //     args.push_back(arg->CodeGen());
+    // }
+    auto it=this->args.begin();
+    Builder.CreateCall(func, (*it)->CodeGen());
     return nullptr;
 }
