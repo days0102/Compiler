@@ -27,11 +27,30 @@ out:
 	.size	out, .Lfunc_end1-out
 	.cfi_endproc
 
+	.globl	in
+	.p2align	4, 0x90
+	.type	in,@function
+in:
+	.cfi_startproc
+	pushq	%rax
+	.cfi_def_cfa_offset 16
+	movq	%rsp, %rsi
+	movl	$.L__unnamed_2, %edi
+	xorl	%eax, %eax
+	callq	scanf
+	movsd	(%rsp), %xmm0
+	popq	%rax
+	.cfi_def_cfa_offset 8
+	retq
+.Lfunc_end2:
+	.size	in, .Lfunc_end2-in
+	.cfi_endproc
+
 	.section	.rodata.cst8,"aM",@progbits,8
 	.p2align	3
-.LCPI2_0:
+.LCPI3_0:
 	.quad	4617315517961601024
-.LCPI2_1:
+.LCPI3_1:
 	.quad	4620693217682128896
 	.text
 	.globl	main
@@ -45,24 +64,29 @@ main:
 	movq	%rax, 16(%rsp)
 	movabsq	$4617315517961601024, %rax
 	movq	%rax, (%rsp)
-	movsd	.LCPI2_0(%rip), %xmm0
+	movsd	.LCPI3_0(%rip), %xmm0
 	callq	out
 	movsd	(%rsp), %xmm0
 	addsd	%xmm0, %xmm0
 	movsd	%xmm0, 8(%rsp)
 	callq	out
-	movsd	.LCPI2_1(%rip), %xmm0
+	callq	in
+	movsd	%xmm0, 8(%rsp)
+	callq	out
+	movsd	(%rsp), %xmm0
+	callq	out
+	movsd	.LCPI3_1(%rip), %xmm0
 	callq	out
 	addq	$24, %rsp
 	.cfi_def_cfa_offset 8
 	retq
-.Lfunc_end2:
-	.size	main, .Lfunc_end2-main
+.Lfunc_end3:
+	.size	main, .Lfunc_end3-main
 	.cfi_endproc
 
 	.section	.rodata.cst8,"aM",@progbits,8
 	.p2align	3
-.LCPI3_0:
+.LCPI4_0:
 	.quad	4607182418800017408
 	.text
 	.globl	abc
@@ -76,13 +100,13 @@ abc:
 	movq	%rax, 8(%rsp)
 	movabsq	$4627448617123184640, %rax
 	movq	%rax, 16(%rsp)
-	movsd	.LCPI3_0(%rip), %xmm0
+	movsd	.LCPI4_0(%rip), %xmm0
 	callq	out
 	addq	$24, %rsp
 	.cfi_def_cfa_offset 8
 	retq
-.Lfunc_end3:
-	.size	abc, .Lfunc_end3-abc
+.Lfunc_end4:
+	.size	abc, .Lfunc_end4-abc
 	.cfi_endproc
 
 	.globl	abcd
@@ -93,8 +117,8 @@ abcd:
 	movabsq	$4620693217682128896, %rax
 	movq	%rax, -8(%rsp)
 	retq
-.Lfunc_end4:
-	.size	abcd, .Lfunc_end4-abcd
+.Lfunc_end5:
+	.size	abcd, .Lfunc_end5-abcd
 	.cfi_endproc
 
 	.type	.L__unnamed_1,@object
@@ -102,5 +126,10 @@ abcd:
 .L__unnamed_1:
 	.asciz	"%f\n"
 	.size	.L__unnamed_1, 4
+
+	.type	.L__unnamed_2,@object
+.L__unnamed_2:
+	.asciz	"%d"
+	.size	.L__unnamed_2, 3
 
 	.section	".note.GNU-stack","",@progbits

@@ -2,7 +2,7 @@
  * @Author: Outsider
  * @Date: 2022-10-23 20:53:44
  * @LastEditors: Outsider
- * @LastEditTime: 2022-11-30 09:03:53
+ * @LastEditTime: 2022-12-05 23:14:45
  * @Description: In User Settings Edit
  * @FilePath: /compiler/src/tree.cc
  */
@@ -198,8 +198,8 @@ void Function::print(int level)
 }
 Function::~Function() {}
 
-Call::Call(Token *name) : token(name) {}
-Call::Call(int line,Token *name,Expression *arg) : token(name),Expression(line)
+Call::Call(int line, Token *name) : token(name), Expression(line) {}
+Call::Call(int line, Token *name, Expression *arg) : token(name), Expression(line)
 {
     this->args.push_back(arg);
 }

@@ -2,7 +2,7 @@
  * @Author: Outsider
  * @Date: 2022-10-13 11:25:25
  * @LastEditors: Outsider
- * @LastEditTime: 2022-11-30 09:25:22
+ * @LastEditTime: 2022-12-05 23:14:29
  * @Description: In User Settings Edit
  * @FilePath: /compiler/inc/tree.hh
  */
@@ -262,8 +262,8 @@ public:
     Token *token;
     std::list<Expression *> args;
 
-    Call(Token *);
-    Call(int,Token *, Expression *);
+    Call(int, Token *);
+    Call(int, Token *, Expression *);
     llvm::Value *CodeGen() override;
     void print(int level) override;
     void semantic() override;

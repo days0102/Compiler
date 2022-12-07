@@ -113,17 +113,17 @@ int main(int argc, char **argv)
         IRCode();
     if (args.find("-A") != args.end())
     {
-        ObjectCode(0);
-        ObjectCode(1);
+        GenCode(0);
+        GenCode(1);
     }
     else if (args.find("-o") != args.end() || args.size() == 0)
     {
-        ObjectCode(1);
+        GenCode(1);
         if (args.find("-S") != args.end())
-            ObjectCode(0);
+            GenCode(0);
     }
     else if (args.find("-S") != args.end())
-        ObjectCode(0);
+        GenCode(0);
 
     cout << endl;
 }

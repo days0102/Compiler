@@ -2,7 +2,7 @@
  * @Author: Outsider
  * @Date: 2022-10-31 20:32:31
  * @LastEditors: Outsider
- * @LastEditTime: 2022-11-30 16:35:14
+ * @LastEditTime: 2022-11-30 17:40:46
  * @Description: In User Settings Edit
  * @FilePath: /compiler/inc/codegen.hh
  */
@@ -36,39 +36,43 @@
 using std::cout;
 using std::endl;
 
-llvm::Value *LogErrorV(const char *Str);
+llvm::Value *LogErrorV(const char *Str); // 用于报告 LLVM 代码生成过程中发现的错误
 
 // static std::unique_ptr<llvm::LLVMContext> TheContext;
 static llvm::LLVMContext TheContext; // LLVM 上下文，主要用于生成各种对象
 // TheModule是一个包含函数和全局变量的LLVM构造器。
 static llvm::Module *TheModule = new llvm::Module("module", TheContext);
 /*
-Builder对象是一个帮助器对象，可以方便地生成LLVM指令。
+Builder对象是一个帮助器对象，可以方便地生成LLVM指令。当然不使用也可以
 IRBuilder类模板的实例跟踪插入指令的当前位置，并具有创建新指令的方法。
 */
 static llvm::IRBuilder<> Builder(TheContext);
 // static std::map<std::string, llvm::Value *> NamedValues;
 
+// 代码生成时所使用的符号表，与语义分析时使用的符号表不同
+// 这个更多保存的时LLVM的对象，用以LLVM生成代码
 namespace codeGen
 {
     class SymbolTable
     {
         // private:
     public:
-        std::map<std::string, llvm::Value *> table;
-        llvm::BasicBlock *block;
-        SymbolTable *parent;
+        std::map<std::string, llvm::Value *> table; // 存储 Value
+        llvm::BasicBlock *block;                    // LLVM 基本块
+        SymbolTable *parent;                        // 指向父作用域的符合表
 
     public:
+        // 以下函数定义在Codegen.cc
+
         SymbolTable();
         SymbolTable(llvm::BasicBlock *block);
-        llvm::BasicBlock *curBlock();
-        llvm::Value *find(std::string);
-        void enter(llvm::BasicBlock *block);
-        void exit();
+        llvm::BasicBlock *curBlock();        // 当前所处作用域的基本块
+        llvm::Value *find(std::string);      // 在当前作用域查找LLVM value
+        void enter(llvm::BasicBlock *block); // 进入作用域，更新基本块
+        void exit();                         // 退出作用域
     };
 }
 
-void IRCode();
-void ObjectCode(int);
+void IRCode();     // 输出IR代码到文件
+void GenCode(int); // 输出汇编或目标代码到文件
 #endif

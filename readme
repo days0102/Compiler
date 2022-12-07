@@ -1,0 +1,11 @@
+# flex
+## flex 版本 flex 2.5.4  (apt install flex-old)
+
+# llvm
+## (apt install llvm)
+
+# clang
+## (apt install clang)
+
+# bison
+## bison 版本 bison 3.5.1

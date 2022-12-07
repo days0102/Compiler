@@ -8,6 +8,9 @@ class main{
     out(b)      @@ 输出b的值
     use c=b+b
     out(c)
+    c=in()
+    out(c)
+    out(b)
     out(3+5)
 }
 class abc{

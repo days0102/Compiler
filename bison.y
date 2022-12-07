@@ -35,7 +35,7 @@ Program* ast_root;
 %type<type_class> t_class
 %type<type_prohead> t_using
 %type<type_expressions> t_explist
-%type<type_expression> t_exp 
+%type<type_expression> t_exp
 %type<type_evaluate>t_evaluation
 
 /* %nonassoc '=' */
@@ -107,6 +107,8 @@ t_exp :
     { $$=$2;}
     | OBJECT '(' t_exp ')'
     { $$=new Call(yylineno,$1,$3);}
+    | OBJECT '(' ')'
+    { $$=new Call(yylineno,$1);}
     ;
 
 t_evaluation

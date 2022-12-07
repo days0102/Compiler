@@ -2,6 +2,7 @@
 source_filename = "module"
 
 @0 = private unnamed_addr constant [4 x i8] c"%f\0A\00", align 1
+@1 = private unnamed_addr constant [3 x i8] c"%d\00", align 1
 
 define void @program() {
 global:
@@ -16,6 +17,14 @@ define i32 @out(double %0) {
 print:
   %1 = call i32 (i8*, ...) @printf(i8* getelementptr inbounds ([4 x i8], [4 x i8]* @0, i32 0, i32 0), double %0)
   ret i32 %1
+}
+
+define double @in() {
+scan:
+  %temp = alloca double
+  %0 = call i32 (i8*, ...) @scanf(i8* getelementptr inbounds ([3 x i8], [3 x i8]* @1, i32 0, i32 0), double* %temp)
+  %1 = load double, double* %temp
+  ret double %1
 }
 
 define void @main() {
@@ -41,8 +50,14 @@ class:
   store double %12, double* %c
   %13 = load double, double* %c
   %14 = call i32 @out(double %13)
-  %15 = fadd double 3.000000e+00, 5.000000e+00
-  %16 = call i32 @out(double %15)
+  %15 = call double @in()
+  store double %15, double* %c
+  %16 = load double, double* %c
+  %17 = call i32 @out(double %16)
+  %18 = load double, double* %b
+  %19 = call i32 @out(double %18)
+  %20 = fadd double 3.000000e+00, 5.000000e+00
+  %21 = call i32 @out(double %20)
   ret void
 }
 
