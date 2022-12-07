@@ -9,3 +9,6 @@ output.o
 output.S
 out
 a.out
+ir
+ir.bc
+ir.s
