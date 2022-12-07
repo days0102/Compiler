@@ -2,12 +2,19 @@
  * @Author: Outsider
  * @Date: 2022-11-19 14:35:45
  * @LastEditors: Outsider
- * @LastEditTime: 2022-11-30 14:24:08
- * @Description: In User Settings Edit
+ * @LastEditTime: 2022-12-07 19:45:48
+ * @Description: 打印 AST
  * @FilePath: /compiler/src/print.cc
  */
 #include "print.hh"
 #include "tree.hh"
+
+/*
+    Node 有两个构造函数
+    1. string 节点名
+    2. string 节点名 
+       Nodes 子节点序列
+*/
 
 Node Program::getNode()
 {

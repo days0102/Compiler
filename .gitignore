@@ -5,3 +5,7 @@ stack.hh
 lex.yy.c
 *.d
 parser
+output.o
+output.S
+out
+a.out

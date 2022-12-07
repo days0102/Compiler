@@ -2,8 +2,8 @@
  * @Author: Outsider
  * @Date: 2022-11-21 20:13:24
  * @LastEditors: Outsider
- * @LastEditTime: 2022-11-30 08:41:37
- * @Description: In User Settings Edit
+ * @LastEditTime: 2022-12-07 20:13:44
+ * @Description: 简要的语义分析
  * @FilePath: /compiler/src/semantic.cc
  */
 #include "semantic.hh"
@@ -64,7 +64,7 @@ void Proclass::semantic()
 
 void Evaluate::semantic()
 {
-    auto res = stb->find(this->left->name);
+    auto res = stb->globalFind(this->left->name);
     if (res == nullptr)
     {
         std::cout << "undefine id " << this->left->name << std::endl;

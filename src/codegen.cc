@@ -2,7 +2,7 @@
  * @Author: Outsider
  * @Date: 2022-10-31 21:28:22
  * @LastEditors: Outsider
- * @LastEditTime: 2022-12-07 15:59:04
+ * @LastEditTime: 2022-12-07 18:03:27
  * @Description: In User Settings Edit
  * @FilePath: /compiler/src/codegen.cc
  */
@@ -193,13 +193,14 @@ llvm::Module *Program::CodeGen()
 // 程序头using语句的代码生成
 llvm::Value *Prohead::CodeGen()
 {
+    // 声明语言的运行时系统，用于输入和输出
     if (this->token->name == "sys")
     {
         /* 在本语言中输出函数输出实现思路
            在自己定义的语言中，
         */
 
-        // 声明printf输出函数
+        // 声明printf输出函数,将c库printf函数映射到这声明的函数中
         TheModule->getOrInsertFunction(
             "printf",
             llvm::FunctionType::get(
@@ -207,7 +208,7 @@ llvm::Value *Prohead::CodeGen()
                 llvm::Type::getInt8Ty(TheContext)->getPointerTo(), /* 参数 */
                 true                                               /* 可变参数 */
                 ));
-        // 声明输入函数,将c库
+        // 声明输入函数,将c库scanf映射到这声明的函数中
         TheModule->getOrInsertFunction(
             "scanf",
             llvm::FunctionType::get(
@@ -215,12 +216,20 @@ llvm::Value *Prohead::CodeGen()
                 llvm::Type::getInt8Ty(TheContext)->getPointerTo(),
                 true));
 
+        /* sys中的输出函数 out()
+           out目前只接收一个参数，参数可以是变量或表达式
+           后面会通过IR实现该函数(调用声明printf函数)
+        */
         TheModule->getOrInsertFunction(
             "out",
             llvm::FunctionType::get(
                 llvm::IntegerType::getInt32Ty(TheContext),
                 llvm::IntegerType::getDoubleTy(TheContext),
                 false));
+        /* sys中的输出函数 in()
+            in目前不接受参数，返回从控制台输入的值
+            后面会通过IR实现该函数(调用scanf函数)
+        */
         TheModule->getOrInsertFunction(
             "in",
             llvm::FunctionType::get(
@@ -228,19 +237,20 @@ llvm::Value *Prohead::CodeGen()
                 llvm::NoneType::None,
                 false));
     }
+    // 实现out函数
     auto function = TheModule->getFunction(llvm::StringRef("out"));
-
     auto block = llvm::BasicBlock::Create(TheContext, "print", function);
     Builder.SetInsertPoint(block);
-
+    // 调用printf函数
     auto print = TheModule->getFunction(llvm::StringRef("printf"));
-    std::vector<llvm::Value *> printfArgs;
+    std::vector<llvm::Value *> printfArgs; // 参数列表
     llvm::Value *formatStrVal = Builder.CreateGlobalStringPtr("%f\n");
     printfArgs.push_back(formatStrVal);
     // std::cout<<function->arg_size()<<std::endl;
-    printfArgs.push_back(function->getArg(0));
-    Builder.CreateRet(Builder.CreateCall(print, printfArgs));
+    printfArgs.push_back(function->getArg(0));                // out的第一个参数作为printfmap的第二个参数
+    Builder.CreateRet(Builder.CreateCall(print, printfArgs)); // 调用printfmap
 
+    // 实现in函数
     auto func = TheModule->getFunction(llvm::StringRef("in"));
     auto inblock = llvm::BasicBlock::Create(TheContext, "scan", func);
     Builder.SetInsertPoint(inblock);
@@ -248,11 +258,11 @@ llvm::Value *Prohead::CodeGen()
     std::vector<llvm::Value *> scanfArgs;
     llvm::Value *fStrVal = Builder.CreateGlobalStringPtr("%d");
     scanfArgs.push_back(fStrVal);
-
+    // 用一个临时变量保存输入的值
     llvm::AllocaInst *alloc = new llvm::AllocaInst(llvm::Type::getDoubleTy(TheContext), 0, "temp", inblock);
     scanfArgs.push_back(alloc);
     Builder.CreateCall(scan, scanfArgs);
-
+    // 返回输入的值
     Builder.CreateRet(Builder.CreateLoad(alloc));
     return nullptr;
 }
@@ -274,16 +284,18 @@ llvm::Value *Classbody::CodeGen()
 
 llvm::Value *Class::CodeGen()
 {
+    // 把一个class当成是一个函数
     llvm::Type *voidType = llvm::Type::getVoidTy(TheContext);
     llvm::FunctionType *functionType = llvm::FunctionType::get(voidType, false);
-    llvm::Function *function = llvm::Function::Create(functionType, llvm::GlobalValue::ExternalLinkage, this->token->name, TheModule);
-
+    llvm::Function *function = llvm::Function::Create(
+        functionType,
+        llvm::GlobalValue::ExternalLinkage, this->token->name, TheModule);
     llvm::BasicBlock *block = llvm::BasicBlock::Create(TheContext, "class", function);
-
-    cgStb->enter(block);
+    // 类内是一个作用域
+    cgStb->enter(block); // 进入作用域
     this->classbody->CodeGen();
-    llvm::ReturnInst::Create(TheContext, cgStb->curBlock());
-    cgStb->exit();
+    llvm::ReturnInst::Create(TheContext, cgStb->curBlock()); // 函数返回
+    cgStb->exit();                                           // 退出作用域
     return nullptr;
 }
 
@@ -297,33 +309,43 @@ llvm::Value *Proclass::CodeGen()
     return nullptr;
 }
 
+// 赋值表达式
 llvm::Value *Evaluate::CodeGen()
 {
+    // 获取变量实例 (经语义分析semantic()后alloc非nullptr)
     llvm::Value *alloc = cgStb->find(this->left->name);
+    // 赋值，将右边的值赋给左边变量
     Builder.CreateStore(this->right->CodeGen(), alloc);
     return nullptr;
 }
 
 llvm::Value *Number::CodeGen()
 {
+    // 获取一个常量实例(也可以使用Builder获取)
     return llvm::ConstantFP::get(TheContext, llvm::APFloat(this->val));
+    // Builder.getInt32(36);
 }
 
 llvm::Value *Object::CodeGen()
 {
+    // 从符号表中获取变量
     llvm::Value *alloc = cgStb->find(this->token->name);
-    return Builder.CreateLoad(alloc);
+    return Builder.CreateLoad(alloc); // 返回变量的值
 }
 
 llvm::Value *Use::CodeGen()
 {
+    // 声明变量
     llvm::AllocaInst *alloc = new llvm::AllocaInst(llvm::Type::getDoubleTy(TheContext), 0, this->exp->left->name, cgStb->curBlock());
+    // 添加至符号表
     cgStb->table[this->exp->left->name] = alloc;
     Builder.SetInsertPoint(cgStb->curBlock());
+    // 赋值
     Builder.CreateStore(this->exp->right->CodeGen(), alloc);
     return nullptr;
 }
 
+// + - * / 表达式
 llvm::Value *Operation::CodeGen()
 {
     llvm::Value *lv = this->left->CodeGen();
@@ -351,37 +373,39 @@ llvm::Value *Operation::CodeGen()
         return LogErrorV("invalid binary operator");
     }
 }
-
+// todo
 llvm::Value *Parameter::CodeGen()
 {
     return nullptr;
 }
-
+// todo
 llvm::Value *Parameters::CodeGen()
 {
     return nullptr;
 }
-
+// todo
 llvm::Value *Function::CodeGen()
 {
     return nullptr;
 }
 llvm::Value *Call::CodeGen()
 {
+    // 获取函数
     auto func = TheModule->getFunction(llvm::StringRef(this->token->name));
     if (func == nullptr)
     {
         LogErrorV("No this function!");
         return nullptr;
     }
-    // std::vector<llvm::Value *> args;
-    // for (auto arg : this->args)
-    // {
-    //     args.push_back(arg->CodeGen());
-    // }
-    auto it = this->args.begin();
-    if (it != this->args.end())
-        return Builder.CreateCall(func, (*it)->CodeGen());
-    else
-        return Builder.CreateCall(func, llvm::NoneType::None);
+    std::vector<llvm::Value *> args; // 函数参数列表
+    for (auto arg : this->args)
+    {
+        args.push_back(arg->CodeGen());
+    }
+    return Builder.CreateCall(func, args);
+    // auto it = this->args.begin();
+    // if (it != this->args.end())
+    //     return Builder.CreateCall(func, (*it)->CodeGen());
+    // else
+    //     return Builder.CreateCall(func, llvm::NoneType::None);
 }
