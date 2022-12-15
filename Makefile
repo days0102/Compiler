@@ -75,7 +75,7 @@ run:${TARGET} ${SRCS}
 # 输出llvm ir代码
 ir:${TARGET} ${SRCS}
 	@./parser text.dd -I
-	@echo "LLVM IR file ir has been generated!"
+	@echo "LLVM IR file output.ir has been generated!"
 
 # 输出汇编代码
 assembly:${TARGET} ${SRCS}
@@ -86,6 +86,7 @@ assembly:${TARGET} ${SRCS}
 assembly-clean:${TARGET} ${SRCS}
 	@./parser text.dd -o
 	@llvm-objdump -d output.o > output.s
+	@echo "Assembly file output.s has been generated!"
 
 # 输出目标代码
 object:${TARGET} ${SRCS}

@@ -2,9 +2,9 @@
  * @Author: Outsider
  * @Date: 2022-11-30 20:28:10
  * @LastEditors: Outsider
- * @LastEditTime: 2022-12-15 20:55:04
+ * @LastEditTime: 2022-12-15 21:05:24
  * @Description: In User Settings Edit
- * @FilePath: /compiler/readme
+ * @FilePath: /compiler/readme.md
 -->
 # 实验环境
 ## flex
@@ -106,7 +106,7 @@ namespace codeGen
 |:--:|:--:|
 |all|编译产生整个程序 parser|
 |run|运行parser编译文件text.dd,并输出所有文件和内容|
-|ir|输出ir代码到ir文件|
+|ir|输出ir代码到output.ir文件|
 |tree|输出语法树结构到tree中|
 |assembly|输出汇编代码到output.S文件|
 |assembly-clean|输出简洁汇编代码到output.s文件|
@@ -156,4 +156,7 @@ class abc{      @@ 一个程序中可以含有多个class
 ```
 
 **程序实现的编译器不专注于性能问题，申请的内存没有特别回收**
+
+**使用llvm生成代码时并不进行代码优化**
+
 **更多详细内容在代码注释中**
