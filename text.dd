@@ -21,4 +21,5 @@ class abc{
 }
 class abcd{
     use c=3+5
+    out(9)
 }

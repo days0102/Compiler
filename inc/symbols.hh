@@ -2,7 +2,7 @@
  * @Author: Outsider
  * @Date: 2022-10-23 20:18:28
  * @LastEditors: Outsider
- * @LastEditTime: 2022-11-24 09:06:08
+ * @LastEditTime: 2022-12-15 12:00:06
  * @Description: In User Settings Edit
  * @FilePath: /compiler/inc/symbols.hh
  */
@@ -49,10 +49,10 @@ public:
     SymbolTable();
     SymbolTable(SymbolTable *);
     Symbol *globalFind(std::string);
-    Symbol *find(std::string);
+    Symbol *find(std::string);// 在当前作用域查找
     Symbol *add(std::string, Symbol *);
-    SymbolTable *enter();
-    SymbolTable *exit();
+    SymbolTable *enter();// 进入一个作用域
+    SymbolTable *exit();// 退出作用域
 };
 
 #endif

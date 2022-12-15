@@ -1,0 +1,80 @@
+###
+ # @description: 这是编译器的一个脚本，主要用于处理用户传入的参数
+ # 使用getopt 处理传入的参数
+###
+#!/bin/bash
+echo $0 # 输出执行的脚本名
+
+echo $@ # 输出脚本接收到的参数
+ 
+# getopt 参数说明
+#-o或--options选项后面接可接受的短选项，如ab:c::，表示可接受的短选项为-a -b -c，其中-a选项不接参数，-b选项后必须接参数，-c选项的参数为可选的
+#-l或--long选项后面接可接受的长选项(如--a)，用逗号分开，冒号的意义同短选项。
+#-n选项后接选项解析错误时提示的脚本名字
+# 如 getopt -o ab:c:: --long along,blong:,clong:: -n 'complier' -- "$@"
+ARGS=`getopt -o o::S:: --long along,olong::,Slong:: -n 'complier' -- "$@"`
+if [ $? != 0 ]; then
+    echo "Terminating..."
+    exit 1
+fi
+ 
+#echo $ARGS
+#将规范化后的命令行参数分配至位置参数（$1,$2,...)
+eval set -- "${ARGS}"
+
+while true
+do
+    case "$1" in
+        -a|--along)
+            echo "Option a";
+            shift
+            ;;
+        -b|--blong)
+            echo "Option b, argument $2";
+            args=$2
+            shift 2
+            ;;
+        -S|--Slong)
+            case "$2" in
+                "")
+                    echo "Option c, no argument";
+                    shift 2 
+                    ;;
+                *)
+                    echo "Option c, argument $2";
+                    args=${args}$2' '
+                    shift 2;
+                    ;;
+            esac
+            ;;
+        -o|--olong)
+            case "$2" in
+                "")
+                    echo "Option o, no argument";
+                    shift 2 
+                    ;;
+                *)
+                    echo "Option o, argument $2";
+                    args=${args}$2' '
+                    shift 2;
+                    ;;
+            esac
+            ;;
+        --)
+            shift
+            break
+            ;;
+        *)
+            echo "Internal error!"
+            exit 1
+            ;;
+    esac
+done
+ 
+#处理剩余的参数
+for arg in $@
+do
+    echo "processing $arg"
+done
+echo ${args}
+# ./parser $1

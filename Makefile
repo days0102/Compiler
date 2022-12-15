@@ -71,3 +71,24 @@ clean:
 
 run:${TARGET} ${SRCS}
 	@./parser text.dd -A -a
+
+ir:${TARGET} ${SRCS}
+	@./parser text.dd -I
+	@echo "LLVM IR file ir has been generated!"
+
+assembly:${TARGET} ${SRCS}
+	@./parser text.dd -S
+	@echo "Assembly file output.S has been generated!"
+
+assembly-clean:${TARGET} ${SRCS}
+	@./parser text.dd -o
+	@llvm-objdump -d output.o > output.s
+
+object:${TARGET} ${SRCS}
+	@./parser text.dd -o
+	@echo "Object file output.o has been generated!"
+
+out:${TARGET} ${SRCS}
+	@./parser text.dd -S
+	@clang output.S -o a.out
+	@echo "Executable file a.out has been generated!"

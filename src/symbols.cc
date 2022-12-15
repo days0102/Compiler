@@ -2,7 +2,7 @@
  * @Author: Outsider
  * @Date: 2022-10-24 09:42:02
  * @LastEditors: Outsider
- * @LastEditTime: 2022-11-24 09:05:57
+ * @LastEditTime: 2022-12-15 11:56:56
  * @Description: In User Settings Edit
  * @FilePath: /compiler/src/symbols.cc
  */
@@ -32,6 +32,7 @@ Symbol *SymbolTable::globalFind(std::string name)
     }
     if (this->parent != nullptr)
     {
+        // 递归向父作用域查找
         return this->parent->find(name);
     }
     return nullptr;

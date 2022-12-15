@@ -53,7 +53,7 @@ t_program
     | t_using t_classlist
     {   
         ast_root=new Program(yylineno,$1,$2);
-        cout<<"ast_root: "<<ast_root<<"\tline: "<<ast_root->getline()<<endl;
+        /*cout<<"ast_root: "<<ast_root<<"\tline: "<<ast_root->getline()<<endl;*/
     };
 
 t_using

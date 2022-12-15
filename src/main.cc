@@ -2,7 +2,7 @@
  * @Author: Outsider
  * @Date: 2022-10-05 20:08:20
  * @LastEditors: Outsider
- * @LastEditTime: 2022-11-30 16:40:55
+ * @LastEditTime: 2022-12-15 09:52:58
  * @Description: In User Settings Edit
  * @FilePath: /compiler/src/main.cc
  */
@@ -62,15 +62,20 @@ int main(int argc, char **argv)
     }
 
     /*
-        -S 输出汇编代码到文件         -s 控制台输出汇编
-        -T 输出语法树到文件           -t 控制台输出
         -I 输出 LLVM IR 代码到文件   -i 控制台输出
-                                   -l  控制台输出token序列
+        -l 控制台输出token序列
+        -t 输出语法树到控制台
+        -S 输出汇编代码到文件
         -B 输出符号表
         -o 生成目标代码
         -A 生成所有文件
         -a 输出所有内容
     */
+    if (args.size() == 0)
+    {
+        args["-a"]++;
+        args["-A"]++;
+    }
 
     if (args.find("-a") != args.end() || args.find("-l") != args.end())
     {

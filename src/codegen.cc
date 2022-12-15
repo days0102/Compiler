@@ -2,7 +2,7 @@
  * @Author: Outsider
  * @Date: 2022-10-31 21:28:22
  * @LastEditors: Outsider
- * @LastEditTime: 2022-12-07 18:03:27
+ * @LastEditTime: 2022-12-15 08:46:35
  * @Description: In User Settings Edit
  * @FilePath: /compiler/src/codegen.cc
  */
@@ -169,7 +169,7 @@ llvm::Module *Program::CodeGen()
         参数1函数类型，参数2为函数链接类型，参数3函数名，参数4指定生成到哪个模块
     */
     llvm::Function *function = llvm::Function::Create(
-        functionType, llvm::GlobalValue::ExternalLinkage, "program", TheModule);
+        functionType, llvm::GlobalValue::ExternalLinkage, "main", TheModule);
     /*  为函数创建一个基本块
         参数2块名，参数3块所属的函数(如果参数4为nullptr)，参数4块所属的块
     */
@@ -296,6 +296,9 @@ llvm::Value *Class::CodeGen()
     this->classbody->CodeGen();
     llvm::ReturnInst::Create(TheContext, cgStb->curBlock()); // 函数返回
     cgStb->exit();                                           // 退出作用域
+    // 调用函数
+    std::vector<llvm::Value *> args;
+    Builder.CreateCall(function, args);
     return nullptr;
 }
 

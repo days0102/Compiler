@@ -2,7 +2,7 @@
  * @Author: Outsider
  * @Date: 2022-10-31 20:32:31
  * @LastEditors: Outsider
- * @LastEditTime: 2022-11-30 17:40:46
+ * @LastEditTime: 2022-12-15 12:06:28
  * @Description: In User Settings Edit
  * @FilePath: /compiler/inc/codegen.hh
  */
@@ -63,7 +63,6 @@ namespace codeGen
 
     public:
         // 以下函数定义在Codegen.cc
-
         SymbolTable();
         SymbolTable(llvm::BasicBlock *block);
         llvm::BasicBlock *curBlock();        // 当前所处作用域的基本块
