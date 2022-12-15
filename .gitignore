@@ -8,8 +8,10 @@ parser
 output.o
 output.S
 output.s
+output.ir
 out
 a.out
 ir
 ir.bc
 ir.s
+tree

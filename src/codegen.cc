@@ -2,7 +2,7 @@
  * @Author: Outsider
  * @Date: 2022-10-31 21:28:22
  * @LastEditors: Outsider
- * @LastEditTime: 2022-12-15 08:46:35
+ * @LastEditTime: 2022-12-15 15:12:58
  * @Description: In User Settings Edit
  * @FilePath: /compiler/src/codegen.cc
  */
@@ -21,7 +21,7 @@ void IRCode()
 {
     std::error_code EC; // 错误代码
     // 创建LLVM的文件流
-    llvm::raw_fd_ostream dest("ir", EC, llvm::sys::fs::OF_None);
+    llvm::raw_fd_ostream dest("output.ir", EC, llvm::sys::fs::OF_None);
     if (EC)
     {
         llvm::errs() << "Could not open file: " << EC.message();
@@ -181,8 +181,10 @@ llvm::Module *Program::CodeGen()
     //                              llvm::ConstantFP::get(TheContext, llvm::APFloat(3.3)), "", block);
     // llvm::BinaryOperator::Create(llvm::Instruction::Add, llvm::ConstantFP::get(TheContext, llvm::APFloat(2.0)),
     //  llvm::ConstantFP::get(TheContext, llvm::APFloat(3.3)), "", b);
-    this->prohead->CodeGen();
-    this->proclass->CodeGen();
+    if (this->prohead != nullptr)
+        this->prohead->CodeGen();
+    if (this->proclass != nullptr)
+        this->proclass->CodeGen();
     llvm::ReturnInst::Create(TheContext, block); // 在block中添加函数返回值
     Builder.SetInsertPoint(block);               // 设置builder的插入点
     // Builder.CreateAnd(llvm::ConstantFP::get(TheContext, llvm::APFloat(3.3)), llvm::ConstantFP::get(TheContext, llvm::APFloat(3.3)));
@@ -397,7 +399,7 @@ llvm::Value *Call::CodeGen()
     auto func = TheModule->getFunction(llvm::StringRef(this->token->name));
     if (func == nullptr)
     {
-        LogErrorV("No this function!");
+        cout << "No this function " << this->token->name << endl;
         return nullptr;
     }
     std::vector<llvm::Value *> args; // 函数参数列表

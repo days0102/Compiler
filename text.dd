@@ -1,25 +1,18 @@
-using sys
 @@ 这是一条单行注释
-class main{
+using sys @@头文件，要么包含要么不包含。内置out函数
+
+@@ 整个程序会从前往后执行class
+class main{     @@ 目前一个类仅作为一个作用域
     5-3-1+1+3
     3-6+6
-    use a = 1   @@ 定义一个变量a
-    use b=a+4
+    use a = 1   @@ 定义一个变量a，暂不支持连续赋值
+    use b=a+4   @@ 不允许使用逗号表达式use a=1,b=2
     out(b)      @@ 输出b的值
-    use c=b+b
-    out(c)
-    c=in()
-    out(c)
-    out(b)
     out(3+5)
 }
-class abc{
+class abc{      @@ 一个程序中可以含有多个class
     use c=3+5
     use name=c+c
     c=name+c
     out(1)
-}
-class abcd{
-    use c=3+5
-    out(9)
 }

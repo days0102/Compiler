@@ -2,7 +2,7 @@
  * @Author: Outsider
  * @Date: 2022-11-19 14:35:45
  * @LastEditors: Outsider
- * @LastEditTime: 2022-12-07 19:45:48
+ * @LastEditTime: 2022-12-15 13:39:16
  * @Description: 打印 AST
  * @FilePath: /compiler/src/print.cc
  */
@@ -12,18 +12,21 @@
 /*
     Node 有两个构造函数
     1. string 节点名
-    2. string 节点名 
+    2. string 节点名
        Nodes 子节点序列
 */
 
 Node Program::getNode()
 {
     Node n("program");
+    Array_builder<Nodes, Node> b;
+    if (this->prohead != nullptr)
+        b.add(this->prohead->getNode());
+    if (this->proclass != nullptr)
+        b.add(this->proclass->getNode());
     n = {
         "program",
-        Nodes::build_array(
-            this->prohead->getNode(),
-            this->proclass->getNode())};
+        b.build()};
 
     return n;
 }
@@ -80,7 +83,7 @@ Nodes Classbody::getNodes()
 {
     Array_builder<Nodes, Node> b;
     b.add(this->explist->getNode());
-    b.add(Node("function"));
+    // b.add(Node("function"));
 
     return b.build();
 }

@@ -2,7 +2,7 @@
  * @Author: Outsider
  * @Date: 2022-11-21 20:13:24
  * @LastEditors: Outsider
- * @LastEditTime: 2022-12-07 20:13:44
+ * @LastEditTime: 2022-12-15 13:43:05
  * @Description: 简要的语义分析
  * @FilePath: /compiler/src/semantic.cc
  */
@@ -112,6 +112,8 @@ void initSymboltable()
 void Program::semantic()
 {
     stb = new SymbolTable();
-    this->prohead->semantic();
-    this->proclass->semantic();
+    if (this->prohead != nullptr)
+        this->prohead->semantic();
+    if (this->proclass != nullptr)
+        this->proclass->semantic();
 }

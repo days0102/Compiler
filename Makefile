@@ -67,7 +67,7 @@ bison.tab.cc: lex.yy.c bison.y
 # 	bison ${BFLAGS} bison.y
 
 clean:
-	rm *.tab.* lex.yy.c parser ir ir.bc ir.s output.o output.S a.out 2> /dev/null || :
+	rm *.tab.* lex.yy.c parser ir ir.bc ir.s output.o output.S output.s tree  a.out 2> /dev/null || :
 
 run:${TARGET} ${SRCS}
 	@./parser text.dd -A -a
@@ -92,3 +92,7 @@ out:${TARGET} ${SRCS}
 	@./parser text.dd -S
 	@clang output.S -o a.out
 	@echo "Executable file a.out has been generated!"
+
+tree:${TARGET} ${SRCS}
+	@./parser text.dd -t > tree
+	@echo "Tree file a.out has been generated!"
