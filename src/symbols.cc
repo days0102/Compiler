@@ -2,7 +2,7 @@
  * @Author: Outsider
  * @Date: 2022-10-24 09:42:02
  * @LastEditors: Outsider
- * @LastEditTime: 2022-12-15 11:56:56
+ * @LastEditTime: 2022-12-15 18:57:04
  * @Description: In User Settings Edit
  * @FilePath: /compiler/src/symbols.cc
  */
@@ -13,7 +13,7 @@ Symbol::Symbol(std::string name) : name(name) {}
 
 Symbol::~Symbol() {}
 
-IdSymbol::IdSymbol(Token *token, std::string name) : token(token), Symbol(name) {}
+IdSymbol::IdSymbol(Token *token, std::string name,std::string info) : token(token), Symbol(name),info(info) {}
 
 SymbolTable::SymbolTable()
 {

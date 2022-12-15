@@ -72,27 +72,33 @@ clean:
 run:${TARGET} ${SRCS}
 	@./parser text.dd -A -a
 
+# 输出llvm ir代码
 ir:${TARGET} ${SRCS}
 	@./parser text.dd -I
 	@echo "LLVM IR file ir has been generated!"
 
+# 输出汇编代码
 assembly:${TARGET} ${SRCS}
 	@./parser text.dd -S
 	@echo "Assembly file output.S has been generated!"
 
+# 由llvm目标代码反汇编等到简洁的代码
 assembly-clean:${TARGET} ${SRCS}
 	@./parser text.dd -o
 	@llvm-objdump -d output.o > output.s
 
+# 输出目标代码
 object:${TARGET} ${SRCS}
 	@./parser text.dd -o
 	@echo "Object file output.o has been generated!"
 
+# 通过clang链接输出可执行文件
 out:${TARGET} ${SRCS}
 	@./parser text.dd -S
 	@clang output.S -o a.out
 	@echo "Executable file a.out has been generated!"
 
+# 输出语法树
 tree:${TARGET} ${SRCS}
 	@./parser text.dd -t > tree
 	@echo "Tree file a.out has been generated!"

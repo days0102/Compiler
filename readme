@@ -2,7 +2,7 @@
  * @Author: Outsider
  * @Date: 2022-11-30 20:28:10
  * @LastEditors: Outsider
- * @LastEditTime: 2022-12-15 13:29:52
+ * @LastEditTime: 2022-12-15 18:42:38
  * @Description: In User Settings Edit
  * @FilePath: /compiler/readme
 -->
@@ -107,6 +107,7 @@ namespace codeGen
 |all|编译产生整个程序 parser|
 |run|运行parser编译文件text.dd,并输出所有文件和内容|
 |ir|输出ir代码到ir文件|
+|tree|输出语法树结构到tree中|
 |assembly|输出汇编代码到output.S文件|
 |assembly-clean|输出简洁汇编代码到output.s文件|
 |object|输出目标代码到output.o。这是未链接的文件，无法执行|

@@ -2,7 +2,7 @@
  * @Author: Outsider
  * @Date: 2022-11-21 20:13:24
  * @LastEditors: Outsider
- * @LastEditTime: 2022-12-15 13:43:05
+ * @LastEditTime: 2022-12-15 18:57:44
  * @Description: 简要的语义分析
  * @FilePath: /compiler/src/semantic.cc
  */
@@ -15,7 +15,7 @@ void Prohead::semantic()
     auto res = stb->find(this->token->name);
     if (res == nullptr)
     {
-        stb->add(this->token->name, new IdSymbol(this->token, this->token->name));
+        stb->add(this->token->name, new IdSymbol(this->token, this->token->name,"Syshead"));
     }
     else
     {
@@ -40,7 +40,7 @@ void Class::semantic()
     auto res = stb->find(this->token->name);
     if (res == nullptr)
     {
-        stb->add(this->token->name, new IdSymbol(this->token, this->token->name));
+        stb->add(this->token->name, new IdSymbol(this->token, this->token->name,"Class"));
         stb = stb->enter();
         this->classbody->semantic();
         stb = stb->exit();
@@ -85,7 +85,7 @@ void Use::semantic()
     auto res = stb->find(this->exp->left->name);
     if (res == nullptr)
     {
-        stb->add(this->exp->left->name, new IdSymbol(this->exp->left, this->exp->left->name));
+        stb->add(this->exp->left->name, new IdSymbol(this->exp->left, this->exp->left->name,"Variable"));
     }
     else
     {

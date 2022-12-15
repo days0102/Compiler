@@ -2,7 +2,7 @@
  * @Author: Outsider
  * @Date: 2022-10-23 20:18:28
  * @LastEditors: Outsider
- * @LastEditTime: 2022-12-15 12:00:06
+ * @LastEditTime: 2022-12-15 19:14:08
  * @Description: In User Settings Edit
  * @FilePath: /compiler/inc/symbols.hh
  */
@@ -29,9 +29,10 @@ class IdSymbol : public Symbol
 {
 private:
     Token *token;
+    std::string info;
 
 public:
-    IdSymbol(Token *, std::string);
+    IdSymbol(Token *, std::string, std::string);
 };
 
 class SymbolTable
@@ -49,10 +50,10 @@ public:
     SymbolTable();
     SymbolTable(SymbolTable *);
     Symbol *globalFind(std::string);
-    Symbol *find(std::string);// 在当前作用域查找
+    Symbol *find(std::string); // 在当前作用域查找
     Symbol *add(std::string, Symbol *);
-    SymbolTable *enter();// 进入一个作用域
-    SymbolTable *exit();// 退出作用域
+    SymbolTable *enter(); // 进入一个作用域
+    SymbolTable *exit();  // 退出作用域
 };
 
 #endif
