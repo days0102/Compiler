@@ -2,7 +2,7 @@
  * @Author: Outsider
  * @Date: 2022-11-30 20:28:10
  * @LastEditors: Outsider
- * @LastEditTime: 2022-12-15 18:42:38
+ * @LastEditTime: 2022-12-15 20:55:04
  * @Description: In User Settings Edit
  * @FilePath: /compiler/readme
 -->
@@ -124,23 +124,36 @@ namespace codeGen
 |内置函数|说明|例子|
 |:--:|:--:|:--:|
 |out()|控制台输出函数。接受一个参数，参数可以是表达式，数字或已定义变量。使用前要using sys.|out(1+4+3)|
-in()|从控制台接受输入，返回输入数值。这个函数有bug|a=in()|
-
+in()|从控制台接受输入，返回输入数值。这个函数实现有bug|a=in()|
+---
+> linux下使用控制台输出需要调用write系统调用，单纯的实现输出函数比较麻烦
+这里使用在编译时将c库函数printf映射到要预先定义的函数中，
+（codegen.cc文件GenCode函数中映射），再在实现的输出函数中调用预定义函数实现输出
+在自己定义的语言中，定义一个占位函数printf,该函数在这里不实现（相当于定义）
+然后定义一个系统输出函数out,在这里实现该函数，函数主要调用之前定义的printf
+最后将c库函数printf全局映射到这里定义的printf的函数中
+定义的系统输出函数out则在实现时调用先前定义的printf函数以实现输出
+in的实现同理，相关代码在codegen.cc文件中
+---
 ```
 @@ 这是一条单行注释
-using sys @@ 只有使用了这条语句才能使用out和in
-class main{
+using sys @@头文件，要么包含要么不包含。内置out函数
+
+@@ 整个程序会从前往后执行class
+class first{     @@ 目前一个类仅作为一个作用域
     5-3-1+1+3
-    3-6+6
-    use a = 1   @@ 定义一个变量a
-    use b=a+4
+    use a = 1   @@ 定义一个变量a，暂不支持连续赋值
+    use b=a+4   @@ 不允许使用逗号表达式use a=1,b=2
     out(b)      @@ 输出b的值
-    out(3+5)    @@ 输出表达式值
+    out(3+5)
 }
-class abc{
-    use c=3+5
-    use name=c+c
-    c=name+c
-    out(1)
+class abc{      @@ 一个程序中可以含有多个class
+    use a=3+5
+    use name=a+a
+    a=name+a
+    out(a)
 }
 ```
+
+**程序实现的编译器不专注于性能问题，申请的内存没有特别回收**
+**更多详细内容在代码注释中**

@@ -2,7 +2,7 @@
  * @Author: Outsider
  * @Date: 2022-10-31 21:28:22
  * @LastEditors: Outsider
- * @LastEditTime: 2022-12-15 15:12:58
+ * @LastEditTime: 2022-12-15 20:41:28
  * @Description: In User Settings Edit
  * @FilePath: /compiler/src/codegen.cc
  */
@@ -198,8 +198,15 @@ llvm::Value *Prohead::CodeGen()
     // 声明语言的运行时系统，用于输入和输出
     if (this->token->name == "sys")
     {
-        /* 在本语言中输出函数输出实现思路
-           在自己定义的语言中，
+        /* linux下使用控制台输出需要调用write系统调用，单纯的实现输出函数比较麻烦
+            这里使用在编译时将c库函数printf映射到要预先定义的函数中，
+            （在上面GenCode函数中映射），再在实现的输出函数中调用预定义函数实现输出
+            
+           在自己定义的语言中，定义一个占位函数printf,该函数在这里不实现（相当于定义）
+           然后定义一个系统输出函数out,在这里实现该函数，函数主要调用之前定义的printf
+           最后将c库函数printf全局映射到这里定义的printf的函数中
+           定义的系统输出函数out则在实现时调用先前定义的printf函数以实现输出
+           in的实现同理
         */
 
         // 声明printf输出函数,将c库printf函数映射到这声明的函数中
