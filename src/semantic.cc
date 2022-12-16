@@ -2,7 +2,7 @@
  * @Author: Outsider
  * @Date: 2022-11-21 20:13:24
  * @LastEditors: Outsider
- * @LastEditTime: 2022-12-16 15:02:07
+ * @LastEditTime: 2022-12-16 16:17:39
  * @Description: 简要的语义分析
  * @FilePath: /compiler/src/semantic.cc
  */
@@ -45,7 +45,7 @@ void Class::semantic()
         stb->add(this->token->name, new IdSymbol(this->token, this->token->name, "Class"));
         if (this->classbody != nullptr)
         {
-            stb = stb->enter();
+            stb = stb->enter(this->token->name);
             this->classbody->semantic();
             stb = stb->exit();
         }

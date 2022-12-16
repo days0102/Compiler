@@ -2,7 +2,7 @@
  * @Author: Outsider
  * @Date: 2022-10-05 20:08:20
  * @LastEditors: Outsider
- * @LastEditTime: 2022-12-16 14:45:13
+ * @LastEditTime: 2022-12-16 16:31:25
  * @Description: In User Settings Edit
  * @FilePath: /compiler/src/main.cc
  */
@@ -28,6 +28,7 @@ extern Program *ast_root;
 
 extern Tokentable tokentable;
 extern int displaytoken(int);
+extern SymbolTable *stb;
 
 int line = 1, word = 0;
 
@@ -118,6 +119,12 @@ int main(int argc, char **argv)
     {
         cout << "Semantic error!" << endl;
         return 0;
+    }
+    if (args.find("-a") != args.end() || args.find("-B") != args.end())
+    {
+        cout << "--------SymbolTable-----------" << endl;
+        stb->show(0);
+        cout << "-----------------------" << endl;
     }
 
     // llvm::Value *v = ast_root->proclass->classes.front()->classbody->explist->explist.front()->CodeGen();

@@ -2,7 +2,7 @@
  * @Author: Outsider
  * @Date: 2022-11-30 20:28:10
  * @LastEditors: Outsider
- * @LastEditTime: 2022-12-16 14:04:13
+ * @LastEditTime: 2022-12-16 16:36:25
  * @Description: In User Settings Edit
  * @FilePath: /compiler/readme.md
 -->
@@ -64,17 +64,19 @@ private:
     一个作用域，可能有多个子作用域
     一个作用域，自能有一个直接父作用域
     */
-    SymbolTable *parent;              // 外部作用域
-    std::list<SymbolTable *> childen; // 内部作用域
+    SymbolTable *parent;                          // 外部作用域
+    std::map<std::string, SymbolTable *> childen; // 内部作用域
 
 public:
     SymbolTable();
     SymbolTable(SymbolTable *);
     Symbol *globalFind(std::string);
-    Symbol *find(std::string);// 在当前作用域查找
+    Symbol *find(std::string); // 在当前作用域查找
     Symbol *add(std::string, Symbol *);
-    SymbolTable *enter();// 进入一个作用域
-    SymbolTable *exit();// 退出作用域
+    SymbolTable *enter(std::string); // 进入一个作用域
+    SymbolTable *exit();             // 退出作用域
+
+    void show(int level); // 输出符号表
 };
 ```
 2. 代码生成时所使用的符号表
