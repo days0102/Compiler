@@ -52,7 +52,6 @@ FTN     ftn
 "*"         {return int('*');}
 "/"         {return int('/');}
 "="         {return int('=');}
-","         {return int(',');}
 "{"         {return int('{');}
 "}"         {return int('}');}
 "("         {return int('(');}
@@ -95,9 +94,6 @@ int displaytoken(int token){
       break;
     case ('='):
       cout<<" Sym\t->  "<<'='<<endl;
-      break;
-    case (','):
-      cout<<" Sym\t->  "<<','<<endl;
       break;
     case ('{'):
       cout<<" Sym\t->  "<<'{'<<endl;

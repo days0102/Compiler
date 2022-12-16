@@ -2,24 +2,26 @@
  * @Author: Outsider
  * @Date: 2022-11-21 20:13:24
  * @LastEditors: Outsider
- * @LastEditTime: 2022-12-15 18:57:44
+ * @LastEditTime: 2022-12-16 15:02:07
  * @Description: 简要的语义分析
  * @FilePath: /compiler/src/semantic.cc
  */
 #include "semantic.hh"
 
 SymbolTable *stb;
+extern bool crash;
 
 void Prohead::semantic()
 {
     auto res = stb->find(this->token->name);
     if (res == nullptr)
     {
-        stb->add(this->token->name, new IdSymbol(this->token, this->token->name,"Syshead"));
+        stb->add(this->token->name, new IdSymbol(this->token, this->token->name, "Syshead"));
     }
     else
     {
         std::cout << "reuse head " << this->token << std::endl;
+        crash = true;
     }
 }
 
@@ -40,14 +42,18 @@ void Class::semantic()
     auto res = stb->find(this->token->name);
     if (res == nullptr)
     {
-        stb->add(this->token->name, new IdSymbol(this->token, this->token->name,"Class"));
-        stb = stb->enter();
-        this->classbody->semantic();
-        stb = stb->exit();
+        stb->add(this->token->name, new IdSymbol(this->token, this->token->name, "Class"));
+        if (this->classbody != nullptr)
+        {
+            stb = stb->enter();
+            this->classbody->semantic();
+            stb = stb->exit();
+        }
     }
     else
     {
         std::cout << "redefine class " << this->token << std::endl;
+        crash = true;
         // std::cout << "first define at line " << cs->getline() << std::endl;
         // std::cout << "redeine define at line "  << std::endl;
     }
@@ -68,6 +74,7 @@ void Evaluate::semantic()
     if (res == nullptr)
     {
         std::cout << "undefine id " << this->left->name << std::endl;
+        crash = true;
     }
     else
     {
@@ -78,18 +85,27 @@ void Evaluate::semantic()
 
 void Number::semantic() {}
 
-void Object::semantic() {}
+void Object::semantic()
+{
+    auto res = stb->globalFind(this->token->name);
+    if (res == nullptr)
+    {
+        std::cout << "undefine id " << this->token->name << std::endl;
+        crash = true;
+    }
+}
 
 void Use::semantic()
 {
     auto res = stb->find(this->exp->left->name);
     if (res == nullptr)
     {
-        stb->add(this->exp->left->name, new IdSymbol(this->exp->left, this->exp->left->name,"Variable"));
+        stb->add(this->exp->left->name, new IdSymbol(this->exp->left, this->exp->left->name, "Variable"));
     }
     else
     {
         std::cout << "redefine id " << this->exp->left->name << std::endl;
+        crash = true;
     }
     this->exp->right->semantic();
 }

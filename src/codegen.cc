@@ -2,17 +2,19 @@
  * @Author: Outsider
  * @Date: 2022-10-31 21:28:22
  * @LastEditors: Outsider
- * @LastEditTime: 2022-12-15 20:41:28
+ * @LastEditTime: 2022-12-16 14:56:52
  * @Description: In User Settings Edit
  * @FilePath: /compiler/src/codegen.cc
  */
 #include "codegen.hh"
 #include "tree.hh"
 
+extern bool crash;
 // 用于报告 LLVM 代码生成过程中发现的错误
 llvm::Value *LogErrorV(const char *Str)
 {
     cout << Str << endl;
+    crash = true;
     return nullptr;
 }
 
@@ -56,9 +58,11 @@ void GenCode(int type)
                                     .create();
     // 获取IR中声明的printf函数
     auto print = TheModule->getFunction(llvm::StringRef("printf"));
-    ee->addGlobalMapping(print, (void *)printf); // 生成映射
+    if (print != nullptr)
+        ee->addGlobalMapping(print, (void *)printf); // 生成映射
     auto scan = TheModule->getFunction(llvm::StringRef("scanf"));
-    ee->addGlobalMapping(scan, (void *)scanf);
+    if (scan != nullptr)
+        ee->addGlobalMapping(scan, (void *)scanf);
 
     std::string Error;
     auto Target = llvm::TargetRegistry::lookupTarget(TargetTriple, Error);
@@ -201,7 +205,7 @@ llvm::Value *Prohead::CodeGen()
         /* linux下使用控制台输出需要调用write系统调用，单纯的实现输出函数比较麻烦
             这里使用在编译时将c库函数printf映射到要预先定义的函数中，
             （在上面GenCode函数中映射），再在实现的输出函数中调用预定义函数实现输出
-            
+
            在自己定义的语言中，定义一个占位函数printf,该函数在这里不实现（相当于定义）
            然后定义一个系统输出函数out,在这里实现该函数，函数主要调用之前定义的printf
            最后将c库函数printf全局映射到这里定义的printf的函数中
@@ -279,16 +283,16 @@ llvm::Value *Prohead::CodeGen()
 llvm::Value *Expressions::CodeGen()
 {
     auto it = this->explist.begin();
+    llvm::Value *ret;
     for (; it != this->explist.end(); ++it)
     {
-        (*it)->CodeGen();
+        ret = (*it)->CodeGen();
     }
-    return nullptr;
+    return ret;
 }
 llvm::Value *Classbody::CodeGen()
 {
-    this->explist->CodeGen();
-    return nullptr;
+    return this->explist->CodeGen();
 }
 
 llvm::Value *Class::CodeGen()
@@ -302,7 +306,8 @@ llvm::Value *Class::CodeGen()
     llvm::BasicBlock *block = llvm::BasicBlock::Create(TheContext, "class", function);
     // 类内是一个作用域
     cgStb->enter(block); // 进入作用域
-    this->classbody->CodeGen();
+    if (this->classbody != nullptr)
+        this->classbody->CodeGen();
     llvm::ReturnInst::Create(TheContext, cgStb->curBlock()); // 函数返回
     cgStb->exit();                                           // 退出作用域
     // 调用函数
@@ -327,8 +332,7 @@ llvm::Value *Evaluate::CodeGen()
     // 获取变量实例 (经语义分析semantic()后alloc非nullptr)
     llvm::Value *alloc = cgStb->find(this->left->name);
     // 赋值，将右边的值赋给左边变量
-    Builder.CreateStore(this->right->CodeGen(), alloc);
-    return nullptr;
+    return Builder.CreateStore(this->right->CodeGen(), alloc);
 }
 
 llvm::Value *Number::CodeGen()
@@ -353,8 +357,7 @@ llvm::Value *Use::CodeGen()
     cgStb->table[this->exp->left->name] = alloc;
     Builder.SetInsertPoint(cgStb->curBlock());
     // 赋值
-    Builder.CreateStore(this->exp->right->CodeGen(), alloc);
-    return nullptr;
+    return Builder.CreateStore(this->exp->right->CodeGen(), alloc);
 }
 
 // + - * / 表达式

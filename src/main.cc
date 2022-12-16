@@ -2,7 +2,7 @@
  * @Author: Outsider
  * @Date: 2022-10-05 20:08:20
  * @LastEditors: Outsider
- * @LastEditTime: 2022-12-15 09:52:58
+ * @LastEditTime: 2022-12-16 14:45:13
  * @Description: In User Settings Edit
  * @FilePath: /compiler/src/main.cc
  */
@@ -30,6 +30,8 @@ extern Tokentable tokentable;
 extern int displaytoken(int);
 
 int line = 1, word = 0;
+
+bool crash = false;
 /*
 void initkeyword()
 {
@@ -94,6 +96,14 @@ int main(int argc, char **argv)
     fseek(yyin, 0, SEEK_SET);
     yyparse();
     cout << endl;
+    if (crash)
+    {
+        cout << "Syntax error!" << endl;
+        return 0;
+    }
+
+    if (ast_root == nullptr)
+        return 1;
 
     if (args.find("-a") != args.end() || args.find("-t") != args.end())
     {
@@ -104,9 +114,19 @@ int main(int argc, char **argv)
     }
 
     ast_root->semantic();
+    if (crash)
+    {
+        cout << "Semantic error!" << endl;
+        return 0;
+    }
 
     // llvm::Value *v = ast_root->proclass->classes.front()->classbody->explist->explist.front()->CodeGen();
     llvm::Module *m = ast_root->CodeGen();
+    if (crash)
+    {
+        cout << "Codegen error!" << endl;
+        return 0;
+    }
 
     if (args.find("-a") != args.end() || args.find("-i") != args.end())
     {

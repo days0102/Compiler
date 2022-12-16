@@ -3,7 +3,7 @@ bison.tab.h
 bison.tab.hh
 stack.hh
 lex.yy.c
-*.d
+*/*.d
 parser
 output.o
 output.S

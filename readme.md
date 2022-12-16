@@ -2,7 +2,7 @@
  * @Author: Outsider
  * @Date: 2022-11-30 20:28:10
  * @LastEditors: Outsider
- * @LastEditTime: 2022-12-15 21:05:24
+ * @LastEditTime: 2022-12-16 14:04:13
  * @Description: In User Settings Edit
  * @FilePath: /compiler/readme.md
 -->
@@ -124,12 +124,12 @@ namespace codeGen
 |内置函数|说明|例子|
 |:--:|:--:|:--:|
 |out()|控制台输出函数。接受一个参数，参数可以是表达式，数字或已定义变量。使用前要using sys.|out(1+4+3)|
-in()|从控制台接受输入，返回输入数值。这个函数实现有bug|a=in()|
+in()|从控制台接受输入，返回输入数值。这个函数实现暂时还有bug|a=in()|
 ---
 > linux下使用控制台输出需要调用write系统调用，单纯的实现输出函数比较麻烦
 这里使用在编译时将c库函数printf映射到要预先定义的函数中，
 （codegen.cc文件GenCode函数中映射），再在实现的输出函数中调用预定义函数实现输出
-在自己定义的语言中，定义一个占位函数printf,该函数在这里不实现（相当于定义）
+> 在自己定义的语言中，定义一个占位函数printf,该函数在这里不实现（相当于定义）
 然后定义一个系统输出函数out,在这里实现该函数，函数主要调用之前定义的printf
 最后将c库函数printf全局映射到这里定义的printf的函数中
 定义的系统输出函数out则在实现时调用先前定义的printf函数以实现输出

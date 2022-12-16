@@ -4,6 +4,7 @@
 #include "tree.hh"
 
 extern int line;
+extern bool crash; /*记录是否发生错误,定义在main.cc*/
 void yyerror(char *s);
 
 
@@ -132,5 +133,6 @@ t_evaluation
 void yyerror(char *msg)
 {
     cout<<"yyerror: "<<msg<<" at line "<<yylineno<<" with \""<<yytext<<"\""<<endl;
+    crash=true;
     /* yyparse(); */
 }
