@@ -6,7 +6,7 @@
  * @Description: In User Settings Edit
  * @FilePath: /compiler/readme.md
 -->
-# 实验环境
+# 测试环境
 ## flex
 ### flex 版本 flex 2.5.4  (apt install flex-old)
 ## llvm
@@ -62,7 +62,7 @@ private:
     std::map<std::string, Symbol *> table;
     /*
     一个作用域，可能有多个子作用域
-    一个作用域，自能有一个直接父作用域
+    一个作用域，只能有一个直接父作用域
     */
     SymbolTable *parent;                          // 外部作用域
     std::map<std::string, SymbolTable *> childen; // 内部作用域
